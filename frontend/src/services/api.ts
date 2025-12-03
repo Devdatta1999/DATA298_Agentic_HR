@@ -23,7 +23,8 @@ export interface QueryResponse {
   };
   insights?: string[];
   explanation?: string;
-  token_count?: number;
+  token_count?: number;  // Total session tokens
+  query_tokens?: number;  // Tokens for this query only
   error?: string;
 }
 

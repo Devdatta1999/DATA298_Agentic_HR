@@ -29,13 +29,17 @@ class QueryResponse(BaseModel):
     visualization: Optional[Dict] = None
     insights: Optional[List[str]] = None
     explanation: Optional[str] = None
-    token_count: Optional[int] = None
+    token_count: Optional[int] = None  # Total session tokens
+    query_tokens: Optional[int] = None  # Tokens for this query only
     error: Optional[str] = None
 
 
 @router.post("/query", response_model=QueryResponse)
 async def process_query(request: QueryRequest):
     """Process a natural language HR analytics query"""
+    import time
+    
+    start_time = time.time()
     
     # Create or use existing session
     if not request.session_id:
@@ -80,8 +84,13 @@ async def process_query(request: QueryRequest):
         }
         add_message(session_id, "assistant", answer, metadata)
         
-        # Get token count
-        token_count = get_session_token_count(session_id)
+        # Get token count - use LLM tokens from result, add stored message tokens
+        llm_tokens = result.get("tokens", 0)  # Tokens used for this query
+        stored_message_tokens = get_session_token_count(session_id)
+        # Total = LLM tokens (from this query) + stored message tokens (from previous messages)
+        total_token_count = llm_tokens + stored_message_tokens
+        
+        response_time = int((time.time() - start_time) * 1000)  # in milliseconds
         
         return QueryResponse(
             success=True,
@@ -94,7 +103,8 @@ async def process_query(request: QueryRequest):
             visualization=result.get("visualization"),
             insights=result.get("insights", []),
             explanation=result.get("explanation"),
-            token_count=token_count
+            token_count=total_token_count,  # Total tokens for session
+            query_tokens=llm_tokens  # Tokens for this query only
         )
     
     except Exception as e:

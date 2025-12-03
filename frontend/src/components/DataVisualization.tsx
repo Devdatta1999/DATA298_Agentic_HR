@@ -14,6 +14,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import SingleValueCard from './SingleValueCard';
 
 interface DataVisualizationProps {
   data: any[];
@@ -40,9 +41,7 @@ const DataVisualization: React.FC<DataVisualizationProps> = ({ data, visualizati
 
   if (visualization_type === 'none') {
     return (
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 text-gray-300">
-        {visualization.explanation || 'Single value result - no visualization needed'}
-      </div>
+      <SingleValueCard data={data} />
     );
   }
 
@@ -63,21 +62,46 @@ const DataVisualization: React.FC<DataVisualizationProps> = ({ data, visualizati
 
   if (visualization_type === 'bar') {
     return (
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
-        <ResponsiveContainer width="100%" height={400}>
+      <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 border border-slate-700/50 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
+        <ResponsiveContainer width="100%" height={450}>
           <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey={xKey} stroke="#9ca3af" />
-            <YAxis stroke="#9ca3af" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#475569" opacity={0.2} />
+            <XAxis 
+              dataKey={xKey} 
+              stroke="#94a3b8" 
+              tick={{ fill: '#cbd5e1', fontSize: 12, fontWeight: 500 }}
+              angle={-45}
+              textAnchor="end"
+              height={80}
+            />
+            <YAxis 
+              stroke="#94a3b8" 
+              tick={{ fill: '#cbd5e1', fontSize: 12, fontWeight: 500 }}
+            />
             <Tooltip
               contentStyle={{
-                backgroundColor: '#1f2937',
-                border: '1px solid #374151',
-                borderRadius: '6px',
+                backgroundColor: '#1e293b',
+                border: '1px solid #475569',
+                borderRadius: '8px',
+                color: '#e2e8f0',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
               }}
+              cursor={{ fill: 'rgba(139, 92, 246, 0.1)' }}
             />
-            <Legend />
-            <Bar dataKey={yKey} fill="#8b5cf6" />
+            <Legend 
+              wrapperStyle={{ color: '#cbd5e1', fontSize: '13px' }}
+            />
+            <Bar 
+              dataKey={yKey} 
+              fill="url(#barGradient)"
+              radius={[8, 8, 0, 0]}
+            />
+            <defs>
+              <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1} />
+                <stop offset="100%" stopColor="#6366f1" stopOpacity={0.8} />
+              </linearGradient>
+            </defs>
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -86,21 +110,40 @@ const DataVisualization: React.FC<DataVisualizationProps> = ({ data, visualizati
 
   if (visualization_type === 'line') {
     return (
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
-        <ResponsiveContainer width="100%" height={400}>
+      <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 border border-slate-700/50 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
+        <ResponsiveContainer width="100%" height={450}>
           <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey={xKey} stroke="#9ca3af" />
-            <YAxis stroke="#9ca3af" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#475569" opacity={0.2} />
+            <XAxis 
+              dataKey={xKey} 
+              stroke="#94a3b8" 
+              tick={{ fill: '#cbd5e1', fontSize: 12, fontWeight: 500 }}
+            />
+            <YAxis 
+              stroke="#94a3b8" 
+              tick={{ fill: '#cbd5e1', fontSize: 12, fontWeight: 500 }}
+            />
             <Tooltip
               contentStyle={{
-                backgroundColor: '#1f2937',
-                border: '1px solid #374151',
-                borderRadius: '6px',
+                backgroundColor: '#1e293b',
+                border: '1px solid #475569',
+                borderRadius: '8px',
+                color: '#e2e8f0',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
               }}
+              cursor={{ stroke: '#8b5cf6', strokeWidth: 1 }}
             />
-            <Legend />
-            <Line type="monotone" dataKey={yKey} stroke="#8b5cf6" strokeWidth={2} />
+            <Legend 
+              wrapperStyle={{ color: '#cbd5e1', fontSize: '13px' }}
+            />
+            <Line 
+              type="monotone" 
+              dataKey={yKey} 
+              stroke="#8b5cf6" 
+              strokeWidth={3}
+              dot={{ fill: '#8b5cf6', r: 4 }}
+              activeDot={{ r: 6, fill: '#8b5cf6' }}
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>
@@ -109,8 +152,8 @@ const DataVisualization: React.FC<DataVisualizationProps> = ({ data, visualizati
 
   if (visualization_type === 'pie') {
     return (
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
-        <ResponsiveContainer width="100%" height={400}>
+      <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 border border-slate-700/50 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
+        <ResponsiveContainer width="100%" height={450}>
           <PieChart>
             <Pie
               data={chartData}
@@ -118,8 +161,9 @@ const DataVisualization: React.FC<DataVisualizationProps> = ({ data, visualizati
               nameKey={xKey}
               cx="50%"
               cy="50%"
-              outerRadius={120}
-              label
+              outerRadius={140}
+              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+              labelLine={false}
             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -127,12 +171,16 @@ const DataVisualization: React.FC<DataVisualizationProps> = ({ data, visualizati
             </Pie>
             <Tooltip
               contentStyle={{
-                backgroundColor: '#1f2937',
-                border: '1px solid #374151',
-                borderRadius: '6px',
+                backgroundColor: '#1e293b',
+                border: '1px solid #475569',
+                borderRadius: '8px',
+                color: '#e2e8f0',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
               }}
             />
-            <Legend />
+            <Legend 
+              wrapperStyle={{ color: '#cbd5e1', fontSize: '13px' }}
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -141,23 +189,26 @@ const DataVisualization: React.FC<DataVisualizationProps> = ({ data, visualizati
 
   // Default: Table view
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
+    <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 border border-slate-700/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm">
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-700">
+          <thead className="bg-gradient-to-r from-slate-700/80 to-slate-800/80">
             <tr>
               {Object.keys(data[0]).map((key) => (
-                <th key={key} className="px-4 py-3 text-left text-sm font-semibold text-gray-200">
-                  {key}
+                <th key={key} className="px-6 py-4 text-left text-sm font-semibold text-slate-200 uppercase tracking-wide">
+                  {key.replace(/_/g, ' ')}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {data.slice(0, 100).map((row, idx) => (
-              <tr key={idx} className="border-t border-gray-700 hover:bg-gray-750">
+              <tr 
+                key={idx} 
+                className="border-t border-slate-700/50 hover:bg-slate-700/30 transition-colors"
+              >
                 {Object.values(row).map((value: any, colIdx) => (
-                  <td key={colIdx} className="px-4 py-3 text-sm text-gray-300">
+                  <td key={colIdx} className="px-6 py-4 text-sm text-slate-200">
                     {value}
                   </td>
                 ))}
@@ -166,7 +217,7 @@ const DataVisualization: React.FC<DataVisualizationProps> = ({ data, visualizati
           </tbody>
         </table>
         {data.length > 100 && (
-          <div className="px-4 py-2 text-sm text-gray-400 bg-gray-750">
+          <div className="px-6 py-3 text-sm text-slate-400 bg-slate-800/30 border-t border-slate-700/50">
             Showing first 100 of {data.length} rows
           </div>
         )}
