@@ -41,15 +41,15 @@ const InsightsCard: React.FC<InsightsCardProps> = ({ insights, explanation }) =>
     <div className="space-y-4 mt-4">
       {/* Key Insights Section */}
       {insights && insights.length > 0 && (
-        <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-xl p-5 shadow-lg">
+        <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-xl p-5 shadow-lg">
           <div className="flex items-center gap-2 mb-3">
-            <Lightbulb className="w-5 h-5 text-purple-400" />
-            <h4 className="text-lg font-semibold text-purple-300">Key Insights</h4>
+            <Lightbulb className="w-5 h-5 text-emerald-400" />
+            <h4 className="text-lg font-semibold text-emerald-300">Key Insights</h4>
           </div>
           <ul className="space-y-3">
             {insights.map((insight, idx) => (
-              <li key={idx} className="flex items-start gap-3 text-gray-200">
-                <span className="text-purple-400 mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+              <li key={idx} className="flex items-start gap-3 text-emerald-50">
+                <span className="text-emerald-400 mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                 <span className="flex-1 leading-relaxed">{insight.replace(/\*\*/g, '').trim()}</span>
               </li>
             ))}
@@ -59,12 +59,12 @@ const InsightsCard: React.FC<InsightsCardProps> = ({ insights, explanation }) =>
 
       {/* Explanation Section */}
       {cleanExplanation && (
-        <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-xl p-5 shadow-lg">
+        <div className="bg-gradient-to-br from-teal-500/10 to-cyan-500/10 border border-teal-500/20 rounded-xl p-5 shadow-lg">
           <div className="flex items-center gap-2 mb-3">
-            <TrendingUp className="w-5 h-5 text-blue-400" />
-            <h4 className="text-lg font-semibold text-blue-300">Analysis</h4>
+            <TrendingUp className="w-5 h-5 text-teal-400" />
+            <h4 className="text-lg font-semibold text-teal-300">Analysis</h4>
           </div>
-          <p className="text-gray-200 leading-relaxed whitespace-pre-line">{cleanExplanation.replace(/\*\*/g, '').trim()}</p>
+          <p className="text-emerald-50 leading-relaxed whitespace-pre-line">{cleanExplanation.replace(/\*\*/g, '').trim()}</p>
         </div>
       )}
 

@@ -10,32 +10,32 @@ const TokenCounter: React.FC = () => {
   return (
     <div className="flex items-center gap-4">
       {/* Total Tokens */}
-      <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-800/90 to-slate-900/90 border border-slate-700/50 rounded-lg shadow-lg backdrop-blur-sm">
-        <Zap className="w-4 h-4 text-yellow-400" />
-        <span className="text-sm text-slate-300">
-          <span className="font-bold text-yellow-400">{tokenCount.toLocaleString()}</span>
-          <span className="text-slate-400 ml-1">total tokens</span>
+      <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-800/90 to-teal-900/90 border border-emerald-700/50 rounded-lg shadow-lg backdrop-blur-sm">
+        <Zap className="w-4 h-4 text-emerald-300" />
+        <span className="text-sm text-emerald-100">
+          <span className="font-bold text-emerald-300">{tokenCount.toLocaleString()}</span>
+          <span className="text-emerald-200/70 ml-1">total tokens</span>
         </span>
       </div>
 
       {/* Last Query Tokens */}
       {lastQueryTokens > 0 && (
-        <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-800/90 to-blue-900/90 border border-blue-700/50 rounded-lg shadow-lg backdrop-blur-sm">
-          <Zap className="w-4 h-4 text-blue-400" />
-          <span className="text-sm text-slate-300">
-            <span className="font-bold text-blue-400">{lastQueryTokens.toLocaleString()}</span>
-            <span className="text-slate-400 ml-1">this query</span>
+        <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-800/90 to-cyan-900/90 border border-teal-700/50 rounded-lg shadow-lg backdrop-blur-sm">
+          <Zap className="w-4 h-4 text-teal-300" />
+          <span className="text-sm text-teal-100">
+            <span className="font-bold text-teal-300">{lastQueryTokens.toLocaleString()}</span>
+            <span className="text-teal-200/70 ml-1">this query</span>
           </span>
         </div>
       )}
 
       {/* Response Time */}
       {lastResponseTime > 0 && (
-        <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-800/90 to-green-900/90 border border-green-700/50 rounded-lg shadow-lg backdrop-blur-sm">
-          <Clock className="w-4 h-4 text-green-400" />
-          <span className="text-sm text-slate-300">
-            <span className="font-bold text-green-400">{(lastResponseTime / 1000).toFixed(1)}s</span>
-            <span className="text-slate-400 ml-1">response time</span>
+        <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-800/90 to-emerald-900/90 border border-emerald-700/50 rounded-lg shadow-lg backdrop-blur-sm">
+          <Clock className="w-4 h-4 text-emerald-300" />
+          <span className="text-sm text-emerald-100">
+            <span className="font-bold text-emerald-300">{(lastResponseTime / 1000).toFixed(1)}s</span>
+            <span className="text-emerald-200/70 ml-1">response time</span>
           </span>
         </div>
       )}

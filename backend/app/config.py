@@ -13,8 +13,24 @@ class Settings(BaseSettings):
     # SQLite for conversation storage
     SQLITE_DB_PATH: str = "conversations.db"
     
-    # CORS
-    CORS_ORIGINS: list = ["http://localhost:3000", "http://localhost:5173"]
+    # CORS - Updated for RAG branch (different ports)
+    CORS_ORIGINS: list = ["http://localhost:3001", "http://localhost:5174"]
+    
+    # Qdrant Configuration (for RAG and Semantic Caching)
+    QDRANT_URL: str = "http://localhost:6333"
+    QDRANT_API_KEY: Optional[str] = None
+    
+    # RAG Configuration
+    RAG_COLLECTION_NAME: str = "rag_knowledge"
+    RAG_SIMILARITY_THRESHOLD: float = 0.60  # Threshold for RAG retrieval (lowered for better matching)
+    
+    # Semantic Cache Configuration
+    CACHE_COLLECTION_NAME: str = "semantic_cache"
+    CACHE_SIMILARITY_THRESHOLD: float = 0.65  # Lowered to 0.65 for better matching with improved normalization
+    CACHE_ENABLED: bool = True
+    
+    # Embedding Model
+    EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"  # Local model
     
     class Config:
         env_file = ".env"

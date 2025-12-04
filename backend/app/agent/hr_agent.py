@@ -13,6 +13,11 @@ from app.agent.prompts import (
     INSIGHTS_GENERATION_PROMPT
 )
 from app.services.token_counter import token_counter
+from app.rag.rag_retriever import RAGRetriever
+from app.cache.semantic_cache import SemanticCache
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class HRAgent:
@@ -26,10 +31,25 @@ class HRAgent:
                 temperature=0.1
             )
             self.output_parser = StrOutputParser()
+            
+            # Initialize RAG and Cache
+            try:
+                self.rag_retriever = RAGRetriever()
+                logger.info("RAG retriever initialized successfully")
+            except Exception as e:
+                logger.warning(f"Failed to initialize RAG retriever: {e}. RAG will be disabled.")
+                self.rag_retriever = None
+            
+            try:
+                self.semantic_cache = SemanticCache()
+                logger.info("Semantic cache initialized successfully")
+            except Exception as e:
+                logger.warning(f"Failed to initialize semantic cache: {e}. Caching will be disabled.")
+                self.semantic_cache = None
         except Exception as e:
             raise Exception(f"Failed to initialize LLM: {str(e)}. Make sure Ollama is running at {settings.OLLAMA_BASE_URL}")
     
-    def generate_sql(self, question: str, conversation_history: List[Dict] = None) -> Dict[str, Any]:
+    def generate_sql(self, question: str, conversation_history: List[Dict] = None, rag_context: str = "") -> Dict[str, Any]:
         """Generate SQL query from natural language question
         Returns: {"sql": str, "tokens": int}
         """
@@ -42,7 +62,13 @@ class HRAgent:
                     content = msg.get("content", "")
                     history_text += f"{role}: {content}\n"
             
-            prompt = ChatPromptTemplate.from_template(SQL_GENERATION_PROMPT)
+            # Add RAG context to prompt if available
+            prompt_template = SQL_GENERATION_PROMPT
+            if rag_context:
+                # Append RAG context to the prompt
+                prompt_template = SQL_GENERATION_PROMPT + "\n\n" + rag_context
+            
+            prompt = ChatPromptTemplate.from_template(prompt_template)
             chain = prompt | self.llm | self.output_parser
             
             # Build full prompt for token counting
@@ -823,10 +849,44 @@ Use ACTUAL numbers from the data. Avoid generic statements."""
         """Process a natural language query and return complete analysis"""
         
         total_tokens = 0  # Track total LLM tokens used
+        cache_hit = False
+        rag_context_used = False
+        
+        # Step 0: Check semantic cache first
+        if self.semantic_cache:
+            cached_response = self.semantic_cache.get_cached_response(question)
+            if cached_response:
+                logger.info(f"Cache HIT for query: {question[:50]}...")
+                cache_hit = True
+                return {
+                    "success": True,
+                    "sql_query": cached_response.get("sql_query"),
+                    "results": cached_response.get("results", []),
+                    "tables": cached_response.get("tables", []),
+                    "columns": cached_response.get("columns", {}),
+                    "visualization": cached_response.get("visualization"),
+                    "insights": cached_response.get("insights", []),
+                    "explanation": cached_response.get("explanation", ""),
+                    "tokens": 0,  # No tokens used for cached response
+                    "cache_hit": True,
+                    "cache_similarity": cached_response.get("cache_similarity", 0.0)
+                }
+        
+        # Step 0.5: Retrieve RAG context if available
+        rag_context = ""
+        if self.rag_retriever:
+            try:
+                rag_results = self.rag_retriever.retrieve_relevant_context(question, top_k=3)
+                if rag_results:
+                    rag_context = self.rag_retriever.format_rag_context_for_prompt(rag_results)
+                    rag_context_used = True
+                    logger.info(f"Retrieved {len(rag_results)} RAG contexts for query")
+            except Exception as e:
+                logger.warning(f"RAG retrieval failed: {e}")
         
         try:
-            # Step 1: Generate SQL
-            sql_result = self.generate_sql(question, conversation_history)
+            # Step 1: Generate SQL (with RAG context if available)
+            sql_result = self.generate_sql(question, conversation_history, rag_context=rag_context)
             sql_query = sql_result["sql"]
             total_tokens += sql_result.get("tokens", 0)
         except Exception as e:
@@ -1002,7 +1062,8 @@ Use ACTUAL numbers from the data. Avoid generic statements."""
                 "explanation": f"Query executed successfully. Retrieved {len(results)} records."
             }
         
-        return {
+        # Build response
+        response = {
             "success": True,
             "sql_query": sql_query,
             "results": results,
@@ -1011,8 +1072,19 @@ Use ACTUAL numbers from the data. Avoid generic statements."""
             "visualization": viz_recommendation,
             "insights": insights_data.get("insights", []),
             "explanation": insights_data.get("explanation", ""),
-            "tokens": total_tokens
+            "tokens": total_tokens,
+            "cache_hit": cache_hit,
+            "rag_used": rag_context_used
         }
+        
+        # Step 8: Cache the response for future similar queries
+        if self.semantic_cache and not cache_hit:
+            try:
+                self.semantic_cache.cache_response(question, response)
+            except Exception as e:
+                logger.warning(f"Failed to cache response: {e}")
+        
+        return response
 
 
 # Global agent instance

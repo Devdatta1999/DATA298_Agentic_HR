@@ -14,6 +14,9 @@ export interface Message {
     insights?: string[];
     explanation?: string;
     error?: boolean;
+    cache_hit?: boolean;
+    rag_used?: boolean;
+    cache_similarity?: number;
   };
 }
 

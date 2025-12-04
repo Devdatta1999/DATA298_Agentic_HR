@@ -31,6 +31,9 @@ class QueryResponse(BaseModel):
     explanation: Optional[str] = None
     token_count: Optional[int] = None  # Total session tokens
     query_tokens: Optional[int] = None  # Tokens for this query only
+    cache_hit: Optional[bool] = None  # Whether response came from cache
+    rag_used: Optional[bool] = None  # Whether RAG was used
+    cache_similarity: Optional[float] = None  # Cache similarity score
     error: Optional[str] = None
 
 
@@ -104,7 +107,10 @@ async def process_query(request: QueryRequest):
             insights=result.get("insights", []),
             explanation=result.get("explanation"),
             token_count=total_token_count,  # Total tokens for session
-            query_tokens=llm_tokens  # Tokens for this query only
+            query_tokens=llm_tokens,  # Tokens for this query only
+            cache_hit=result.get("cache_hit", False),  # Cache hit flag
+            rag_used=result.get("rag_used", False),  # RAG usage flag
+            cache_similarity=result.get("cache_similarity")  # Cache similarity score
         )
     
     except Exception as e:

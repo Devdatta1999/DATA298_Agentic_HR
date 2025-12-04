@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// For RAG branch, use port 8001. For main branch, use 8000
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
 
 export interface QueryRequest {
   question: string;
@@ -25,6 +26,9 @@ export interface QueryResponse {
   explanation?: string;
   token_count?: number;  // Total session tokens
   query_tokens?: number;  // Tokens for this query only
+  cache_hit?: boolean;  // Whether response came from cache
+  rag_used?: boolean;  // Whether RAG was used
+  cache_similarity?: number;  // Cache similarity score
   error?: string;
 }
 

@@ -11,7 +11,7 @@
 
   color-scheme: dark;
   color: rgba(255, 255, 255, 0.9);
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: linear-gradient(135deg, #022c22 0%, #134e4a 100%);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,7 +22,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0e1a 0%, #0f172a 50%, #1a1f2e 100%);
+  background: linear-gradient(135deg, #022c22 0%, #0f172a 50%, #134e4a 100%);
   background-attachment: fixed;
 }
 
@@ -37,16 +37,32 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: #022c22;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #475569;
+  background: #065f46;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: #047857;
+}
+
+/* Fade-in animation for indicators */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
 }
 
 
