@@ -1,0 +1,1439 @@
+{
+  "metadata": {
+    "total_questions": 100,
+    "distribution": {
+      "easy": 75,
+      "medium": 15,
+      "tricky": 10
+    },
+    "custom_term_questions": 8,
+    "created_date": "2024-12-XX",
+    "schema_version": "1.0",
+    "description": "HR Analytics Agent Evaluation Test Dataset"
+  },
+  "test_cases": [
+    {
+      "id": 1,
+      "question": "Show me department wise headcount",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 2,
+      "question": "What is the gender distribution of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Gender", "Status"]
+        }
+      }
+    },
+    {
+      "id": 3,
+      "question": "Show me headcount trends over time by month",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS Total_Headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Headcount"]
+        }
+      }
+    },
+    {
+      "id": 4,
+      "question": "What is the total number of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT COUNT(*) AS total_employees FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Status"]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "question": "Show me average salary by department",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 6,
+      "question": "What is the status distribution of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Status\", COUNT(*) AS count FROM employees.employee_master GROUP BY \"Status\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Status"]
+        }
+      }
+    },
+    {
+      "id": 7,
+      "question": "Show me monthly attrition rate trends",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", AVG(\"AttritionRate\") AS avg_attrition FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "AttritionRate"]
+        }
+      }
+    },
+    {
+      "id": 8,
+      "question": "List all employees in the Sales department",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Email\", \"JobTitle\", \"Salary\" FROM employees.employee_master WHERE \"Department\" = 'Sales' AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Email", "JobTitle", "Salary", "Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 9,
+      "question": "What is the average performance rating?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT AVG(\"PerformanceRating\") AS avg_rating FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["PerformanceRating", "Status"]
+        }
+      }
+    },
+    {
+      "id": 10,
+      "question": "Show me headcount by job title",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"JobTitle\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["JobTitle", "Status"]
+        }
+      }
+    },
+    {
+      "id": 11,
+      "question": "What are the hiring trends over time?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Hires\") AS total_hires FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Hires"]
+        }
+      }
+    },
+    {
+      "id": 12,
+      "question": "Show me termination trends by month",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Terminations\") AS total_terminations FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Terminations"]
+        }
+      }
+    },
+    {
+      "id": 13,
+      "question": "What is the breakdown of employees by department?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 14,
+      "question": "Show me the highest salary",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT MAX(\"Salary\") AS max_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 15,
+      "question": "What is the lowest salary?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT MIN(\"Salary\") AS min_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 16,
+      "question": "Show me employees hired in the last year",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"HireDate\" FROM employees.employee_master WHERE \"HireDate\" >= CURRENT_DATE - INTERVAL '1 year' AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "HireDate", "Status"]
+        }
+      }
+    },
+    {
+      "id": 17,
+      "question": "What is the average age of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT AVG(EXTRACT(YEAR FROM AGE(CURRENT_DATE, \"HireDate\"))) AS avg_years_tenure FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["HireDate", "Status"]
+        }
+      }
+    },
+    {
+      "id": 18,
+      "question": "Show me headcount by department and gender",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", \"Gender\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\", \"Gender\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Gender", "Status"]
+        }
+      }
+    },
+    {
+      "id": 19,
+      "question": "What percentage of employees are in each department?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) * 100.0 / (SELECT COUNT(*) FROM employees.employee_master WHERE \"Status\" = 'Active') AS percentage FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 20,
+      "question": "Show me the top 5 highest paid employees",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' ORDER BY \"Salary\" DESC LIMIT 5",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 21,
+      "question": "What is the headcount for each department?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 22,
+      "question": "Show me employees with performance rating above 4",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"PerformanceRating\" > 4 AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "PerformanceRating", "Status"]
+        }
+      }
+    },
+    {
+      "id": 23,
+      "question": "What is the distribution of job titles?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"JobTitle\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["JobTitle", "Status"]
+        }
+      }
+    },
+    {
+      "id": 24,
+      "question": "Show me monthly headcount by department",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", \"Department\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\", \"Department\" ORDER BY \"MonthEnd\", \"Department\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Department", "Headcount"]
+        }
+      }
+    },
+    {
+      "id": 25,
+      "question": "What is the average salary across all departments?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 26,
+      "question": "Show me employees who have been with the company for more than 5 years",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"HireDate\" FROM employees.employee_master WHERE \"HireDate\" < CURRENT_DATE - INTERVAL '5 years' AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "HireDate", "Status"]
+        }
+      }
+    },
+    {
+      "id": 27,
+      "question": "What is the headcount trend over time?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS total_headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Headcount"]
+        }
+      }
+    },
+    {
+      "id": 28,
+      "question": "Show me the breakdown of employees by status",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Status\", COUNT(*) AS count FROM employees.employee_master GROUP BY \"Status\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Status"]
+        }
+      }
+    },
+    {
+      "id": 29,
+      "question": "What is the total headcount?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT COUNT(*) AS total_headcount FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Status"]
+        }
+      }
+    },
+    {
+      "id": 30,
+      "question": "Show me average performance rating by department",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", AVG(\"PerformanceRating\") AS avg_rating FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "PerformanceRating", "Status"]
+        }
+      }
+    },
+    {
+      "id": 31,
+      "question": "What is the gender breakdown?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Gender", "Status"]
+        }
+      }
+    },
+    {
+      "id": 32,
+      "question": "Show me headcount by month",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Headcount"]
+        }
+      }
+    },
+    {
+      "id": 33,
+      "question": "What is the average tenure in years?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT AVG(EXTRACT(YEAR FROM AGE(CURRENT_DATE, \"HireDate\"))) AS avg_tenure_years FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["HireDate", "Status"]
+        }
+      }
+    },
+    {
+      "id": 34,
+      "question": "Show me employees in IT department",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"JobTitle\", \"Salary\" FROM employees.employee_master WHERE \"Department\" = 'IT' AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "JobTitle", "Salary", "Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 35,
+      "question": "What is the salary range?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT MIN(\"Salary\") AS min_salary, MAX(\"Salary\") AS max_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 36,
+      "question": "Show me department headcount comparison",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\" ORDER BY headcount DESC",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 37,
+      "question": "What is the percentage breakdown by gender?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Gender\", COUNT(*) * 100.0 / (SELECT COUNT(*) FROM employees.employee_master WHERE \"Status\" = 'Active') AS percentage FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Gender", "Status"]
+        }
+      }
+    },
+    {
+      "id": 38,
+      "question": "Show me monthly hiring trends",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Hires\") AS total_hires FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Hires"]
+        }
+      }
+    },
+    {
+      "id": 39,
+      "question": "What is the headcount for Sales department?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT COUNT(*) AS headcount FROM employees.employee_master WHERE \"Department\" = 'Sales' AND \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 40,
+      "question": "Show me employees sorted by salary",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' ORDER BY \"Salary\" DESC",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 41,
+      "question": "What is the average attrition rate?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT AVG(\"AttritionRate\") AS avg_attrition FROM employees.headcount_attrition_summary",
+        "visualization_type": "none",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["AttritionRate"]
+        }
+      }
+    },
+    {
+      "id": 42,
+      "question": "Show me headcount distribution across departments",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 43,
+      "question": "What are the termination trends?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Terminations\") AS total_terminations FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Terminations"]
+        }
+      }
+    },
+    {
+      "id": 44,
+      "question": "Show me the top 10 highest salaries",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' ORDER BY \"Salary\" DESC LIMIT 10",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 45,
+      "question": "What is the employee count by job title?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"JobTitle\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["JobTitle", "Status"]
+        }
+      }
+    },
+    {
+      "id": 46,
+      "question": "Show me monthly attrition rate",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", AVG(\"AttritionRate\") AS avg_attrition FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "AttritionRate"]
+        }
+      }
+    },
+    {
+      "id": 47,
+      "question": "What is the breakdown by department and status?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", \"Status\", COUNT(*) AS count FROM employees.employee_master GROUP BY \"Department\", \"Status\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 48,
+      "question": "Show me employees with salary above 100000",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Salary\" > 100000 AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 49,
+      "question": "What is the headcount by month and department?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", \"Department\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\", \"Department\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Department", "Headcount"]
+        }
+      }
+    },
+    {
+      "id": 50,
+      "question": "Show me the average salary for each department",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 51,
+      "question": "What is the total compensation cost?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT SUM(\"Salary\") AS total_compensation FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 52,
+      "question": "Show me gender distribution by department",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\", \"Gender\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Gender", "Status"]
+        }
+      }
+    },
+    {
+      "id": 53,
+      "question": "What is the headcount for each status?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Status\", COUNT(*) AS headcount FROM employees.employee_master GROUP BY \"Status\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Status"]
+        }
+      }
+    },
+    {
+      "id": 54,
+      "question": "Show me monthly headcount trends",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Headcount"]
+        }
+      }
+    },
+    {
+      "id": 55,
+      "question": "What is the percentage of active employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM employees.employee_master) AS active_percentage FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Status"]
+        }
+      }
+    },
+    {
+      "id": 56,
+      "question": "Show me employees by department and job title",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", \"JobTitle\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\", \"JobTitle\"",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "JobTitle", "Status"]
+        }
+      }
+    },
+    {
+      "id": 57,
+      "question": "What is the average headcount per department?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT AVG(dep_count) AS avg_dept_headcount FROM (SELECT \"Department\", COUNT(*) AS dep_count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\") AS dept_counts",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 58,
+      "question": "Show me headcount comparison across departments",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\" ORDER BY headcount DESC",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 59,
+      "question": "What is the distribution of salaries?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 60,
+      "question": "Show me the top 3 departments by headcount",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\" ORDER BY headcount DESC LIMIT 3",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 61,
+      "question": "What is the headcount trend?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Headcount"]
+        }
+      }
+    },
+    {
+      "id": 62,
+      "question": "Show me employees with performance rating below 3",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"PerformanceRating\" < 3 AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "PerformanceRating", "Status"]
+        }
+      }
+    },
+    {
+      "id": 63,
+      "question": "What is the breakdown by gender and department?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Gender\", \"Department\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\", \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Gender", "Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 64,
+      "question": "Show me monthly hiring and termination trends",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Hires\") AS hires, SUM(\"Terminations\") AS terminations FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Hires", "Terminations"]
+        }
+      }
+    },
+    {
+      "id": 65,
+      "question": "What is the average performance rating by gender?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Gender\", AVG(\"PerformanceRating\") AS avg_rating FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Gender", "PerformanceRating", "Status"]
+        }
+      }
+    },
+    {
+      "id": 66,
+      "question": "Show me headcount by status",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Status\", COUNT(*) AS headcount FROM employees.employee_master GROUP BY \"Status\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Status"]
+        }
+      }
+    },
+    {
+      "id": 67,
+      "question": "What is the salary distribution?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 68,
+      "question": "Show me the top 5 departments by average salary",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\" ORDER BY avg_salary DESC LIMIT 5",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 69,
+      "question": "What is the headcount for Finance department?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT COUNT(*) AS headcount FROM employees.employee_master WHERE \"Department\" = 'Finance' AND \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 70,
+      "question": "Show me employees sorted by hire date",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"HireDate\" FROM employees.employee_master WHERE \"Status\" = 'Active' ORDER BY \"HireDate\" DESC",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "HireDate", "Status"]
+        }
+      }
+    },
+    {
+      "id": 71,
+      "question": "What is the percentage breakdown by department?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) * 100.0 / (SELECT COUNT(*) FROM employees.employee_master WHERE \"Status\" = 'Active') AS percentage FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "pie",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        }
+      }
+    },
+    {
+      "id": 72,
+      "question": "Show me monthly headcount changes",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "visualization_type": "line",
+        "tables": ["employees.headcount_attrition_summary"],
+        "columns": {
+          "employees.headcount_attrition_summary": ["MonthEnd", "Headcount"]
+        }
+      }
+    },
+    {
+      "id": 73,
+      "question": "What is the average salary for Sales?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Department\" = 'Sales' AND \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 74,
+      "question": "Show me headcount by department and gender",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", \"Gender\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\", \"Gender\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Gender", "Status"]
+        }
+      }
+    },
+    {
+      "id": 75,
+      "question": "What is the total number of active employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT COUNT(*) AS total_active FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "none",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Status"]
+        }
+      }
+    },
+    {
+      "id": 76,
+      "question": "Show me employees with their performance reviews and ratings",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"FullName\", e.\"Department\", pr.\"OverallScore\", pr.\"ReviewDate\" FROM employees.employee_master e JOIN employees.performance_reviews pr ON e.\"EmployeeID\" = pr.\"EmployeeID\" WHERE e.\"Status\" = 'Active' ORDER BY pr.\"ReviewDate\" DESC",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master", "employees.performance_reviews"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Status", "EmployeeID"],
+          "employees.performance_reviews": ["OverallScore", "ReviewDate", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 77,
+      "question": "What is the average engagement score by department?",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"Department\", AVG(es.\"OverallSatisfaction\") AS avg_satisfaction FROM employees.employee_master e JOIN employees.engagement_surveys es ON e.\"EmployeeID\" = es.\"EmployeeID\" WHERE e.\"Status\" = 'Active' GROUP BY e.\"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master", "employees.engagement_surveys"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status", "EmployeeID"],
+          "employees.engagement_surveys": ["OverallSatisfaction", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 78,
+      "question": "Show me employees who completed training courses",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"FullName\", e.\"Department\", tr.\"CourseName\", tr.\"CompletionDate\", tr.\"Score\" FROM employees.employee_master e JOIN employees.training_records tr ON e.\"EmployeeID\" = tr.\"EmployeeID\" WHERE tr.\"Status\" = 'Completed' AND e.\"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master", "employees.training_records"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Status", "EmployeeID"],
+          "employees.training_records": ["CourseName", "CompletionDate", "Score", "Status", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 79,
+      "question": "What is the salary change history for employees?",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"FullName\", e.\"Department\", ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\", ch.\"Reason\" FROM employees.employee_master e JOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\" ORDER BY ch.\"ChangeDate\" DESC",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master", "employees.compensation_history"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "EmployeeID"],
+          "employees.compensation_history": ["ChangeDate", "OldSalary", "NewSalary", "Reason", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 80,
+      "question": "Show me top 3 highest paid employees by department",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", \"FullName\", \"Salary\" FROM (SELECT \"Department\", \"FullName\", \"Salary\", ROW_NUMBER() OVER (PARTITION BY \"Department\" ORDER BY \"Salary\" DESC) AS rn FROM employees.employee_master WHERE \"Status\" = 'Active') ranked WHERE rn <= 3",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "FullName", "Salary", "Status"]
+        }
+      }
+    },
+    {
+      "id": 81,
+      "question": "What is the average performance score by department from reviews?",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"Department\", AVG(pr.\"OverallScore\") AS avg_score FROM employees.employee_master e JOIN employees.performance_reviews pr ON e.\"EmployeeID\" = pr.\"EmployeeID\" WHERE e.\"Status\" = 'Active' GROUP BY e.\"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master", "employees.performance_reviews"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status", "EmployeeID"],
+          "employees.performance_reviews": ["OverallScore", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 82,
+      "question": "Show me employees with their skills and proficiency levels",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"FullName\", e.\"Department\", si.\"SkillName\", si.\"ProficiencyLevel\" FROM employees.employee_master e JOIN employees.skills_inventory si ON e.\"EmployeeID\" = si.\"EmployeeID\" WHERE e.\"Status\" = 'Active' ORDER BY e.\"FullName\"",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master", "employees.skills_inventory"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Status", "EmployeeID"],
+          "employees.skills_inventory": ["SkillName", "ProficiencyLevel", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 83,
+      "question": "What is the work-life balance score by department?",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"Department\", AVG(es.\"WorkLifeBalanceScore\") AS avg_worklife_balance FROM employees.employee_master e JOIN employees.engagement_surveys es ON e.\"EmployeeID\" = es.\"EmployeeID\" WHERE e.\"Status\" = 'Active' GROUP BY e.\"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master", "employees.engagement_surveys"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status", "EmployeeID"],
+          "employees.engagement_surveys": ["WorkLifeBalanceScore", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 84,
+      "question": "Show me employees who received salary increases",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"FullName\", e.\"Department\", ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\" FROM employees.employee_master e JOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\" WHERE ch.\"NewSalary\" > ch.\"OldSalary\" ORDER BY ch.\"ChangeDate\" DESC",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master", "employees.compensation_history"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "EmployeeID"],
+          "employees.compensation_history": ["ChangeDate", "OldSalary", "NewSalary", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 85,
+      "question": "What is the average training score by department?",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"Department\", AVG(tr.\"Score\") AS avg_training_score FROM employees.employee_master e JOIN employees.training_records tr ON e.\"EmployeeID\" = tr.\"EmployeeID\" WHERE tr.\"Status\" = 'Completed' AND e.\"Status\" = 'Active' GROUP BY e.\"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master", "employees.training_records"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status", "EmployeeID"],
+          "employees.training_records": ["Score", "Status", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 86,
+      "question": "Show me employees with their managers",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e1.\"FullName\" AS employee, e1.\"Department\", e2.\"FullName\" AS manager FROM employees.employee_master e1 LEFT JOIN employees.employee_master e2 ON e1.\"ManagerID\" = e2.\"EmployeeID\" WHERE e1.\"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "ManagerID", "Status", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 87,
+      "question": "What is the manager feedback score by department?",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"Department\", AVG(es.\"ManagerFeedbackScore\") AS avg_manager_feedback FROM employees.employee_master e JOIN employees.engagement_surveys es ON e.\"EmployeeID\" = es.\"EmployeeID\" WHERE e.\"Status\" = 'Active' GROUP BY e.\"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master", "employees.engagement_surveys"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status", "EmployeeID"],
+          "employees.engagement_surveys": ["ManagerFeedbackScore", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 88,
+      "question": "Show me employees with multiple skills",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"FullName\", e.\"Department\", COUNT(si.\"SkillID\") AS skill_count FROM employees.employee_master e JOIN employees.skills_inventory si ON e.\"EmployeeID\" = si.\"EmployeeID\" WHERE e.\"Status\" = 'Active' GROUP BY e.\"FullName\", e.\"Department\" HAVING COUNT(si.\"SkillID\") > 1",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master", "employees.skills_inventory"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Status", "EmployeeID"],
+          "employees.skills_inventory": ["SkillID", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 89,
+      "question": "What is the average salary increase percentage?",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT AVG((ch.\"NewSalary\" - ch.\"OldSalary\") * 100.0 / ch.\"OldSalary\") AS avg_increase_pct FROM employees.compensation_history ch WHERE ch.\"OldSalary\" > 0",
+        "visualization_type": "none",
+        "tables": ["employees.compensation_history"],
+        "columns": {
+          "employees.compensation_history": ["NewSalary", "OldSalary"]
+        }
+      }
+    },
+    {
+      "id": 90,
+      "question": "Show me employees with high performance and high engagement",
+      "category": "medium",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT e.\"FullName\", e.\"Department\", e.\"PerformanceRating\", es.\"OverallSatisfaction\" FROM employees.employee_master e JOIN employees.engagement_surveys es ON e.\"EmployeeID\" = es.\"EmployeeID\" WHERE e.\"PerformanceRating\" > 4 AND es.\"OverallSatisfaction\" > 4 AND e.\"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master", "employees.engagement_surveys"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "PerformanceRating", "Status", "EmployeeID"],
+          "employees.engagement_surveys": ["OverallSatisfaction", "EmployeeID"]
+        }
+      }
+    },
+    {
+      "id": 91,
+      "question": "Show me employees with Total Rewards above $120,000",
+      "category": "tricky",
+      "requires_rag": true,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Salary\" > 120000 AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Salary", "Status"]
+        },
+        "note": "Total Rewards = Salary + Bonus + Stock + Benefits. Without RAG, agent will only use Salary column, missing the custom formula."
+      }
+    },
+    {
+      "id": 92,
+      "question": "Calculate the Employee Lifetime Value (ELV) for each department",
+      "category": "tricky",
+      "requires_rag": true,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Salary", "Status"]
+        },
+        "note": "ELV requires custom formula: (AvgSalary * Tenure) + (TrainingCosts) - (AttritionCost). Without RAG, agent won't know this formula."
+      }
+    },
+    {
+      "id": 93,
+      "question": "Show me Flight Risk employees",
+      "category": "tricky",
+      "requires_rag": true,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "PerformanceRating", "Status"]
+        },
+        "note": "Flight Risk = Low Engagement + High Performance + No Promotion in 2 years. Without RAG, agent won't understand this custom term."
+      }
+    },
+    {
+      "id": 94,
+      "question": "List all High Performers in the Sales department",
+      "category": "tricky",
+      "requires_rag": true,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"PerformanceRating\" FROM employees.employee_master WHERE \"Department\" = 'Sales' AND \"PerformanceRating\" > 4 AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "PerformanceRating", "Department", "Status"]
+        },
+        "note": "High Performer = PerformanceRating > 4.5 AND Tenure > 2 years AND No Disciplinary Actions. Without RAG, agent may use wrong criteria."
+      }
+    },
+    {
+      "id": 95,
+      "question": "Calculate Internal Mobility Rate by department",
+      "category": "tricky",
+      "requires_rag": true,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "Status"]
+        },
+        "note": "Internal Mobility Rate = (Employees who changed departments) / (Total employees). Schema doesn't track department changes, so this will fail without RAG explanation."
+      }
+    },
+    {
+      "id": 96,
+      "question": "Show me employees eligible for the Leadership Development Program",
+      "category": "tricky",
+      "requires_rag": true,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"PerformanceRating\" > 4 AND \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "PerformanceRating", "Status"]
+        },
+        "note": "Eligibility = PerformanceRating > 4.0 AND Tenure > 3 years AND Completed specific training. Without RAG, agent won't know these criteria."
+      }
+    },
+    {
+      "id": 97,
+      "question": "What is the Retention Risk Score for each department?",
+      "category": "tricky",
+      "requires_rag": true,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", AVG(\"PerformanceRating\") AS avg_performance FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "PerformanceRating", "Status"]
+        },
+        "note": "Retention Risk Score = (Performance + Engagement + Tenure factors). Without RAG, agent won't know this composite metric formula."
+      }
+    },
+    {
+      "id": 98,
+      "question": "Show me employees with Tenure-Adjusted Performance Score",
+      "category": "tricky",
+      "requires_rag": true,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "visualization_type": "table",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "PerformanceRating", "Status"]
+        },
+        "note": "Tenure-Adjusted Performance = (PerformanceRating * 0.7) + (YearsOfTenure * 0.3). Without RAG, agent won't know this custom formula."
+      }
+    },
+    {
+      "id": 99,
+      "question": "What is the top 3 highest paid employees?",
+      "category": "tricky",
+      "requires_rag": false,
+      "ground_truth": {
+        "sql": "SELECT \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' ORDER BY \"Salary\" DESC LIMIT 3",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["FullName", "Department", "Salary", "Status"]
+        },
+        "note": "This is a known failure case - agent incorrectly uses compensation_history JOIN instead of employee_master.Salary"
+      }
+    },
+    {
+      "id": 100,
+      "question": "Calculate Department Efficiency Score",
+      "category": "tricky",
+      "requires_rag": true,
+      "ground_truth": {
+        "sql": "SELECT \"Department\", AVG(\"PerformanceRating\") AS avg_performance FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "visualization_type": "bar",
+        "tables": ["employees.employee_master"],
+        "columns": {
+          "employees.employee_master": ["Department", "PerformanceRating", "Status"]
+        },
+        "note": "Department Efficiency = (Avg Performance) + (1/Attrition Rate) + (Engagement Score). Without RAG, agent won't know this formula."
+      }
+    }
+  ]
+}
+

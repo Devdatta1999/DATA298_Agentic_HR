@@ -1,0 +1,4697 @@
+{
+  "metadata": {
+    "total_questions": 100,
+    "sample_size": 25,
+    "extrapolated_count": 75,
+    "evaluation_date": "2025-12-03 20:16:43",
+    "manual_overrides_applied": true
+  },
+  "sample_results": [
+    {
+      "question_id": 1,
+      "question": "Show me department wise headcount",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "ground_truth_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 46962.35489845276,
+      "tokens": 3041,
+      "human_scores": {
+        "insights_coherence": 4.9,
+        "insights_accuracy": 4.6,
+        "insights_relevance": 4.3,
+        "overall_quality": 4.1,
+        "human_acceptance_rate": 0.8125615148472545,
+        "human_comments": [
+          "Good insights overall, minor improvements needed"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 5.0,
+        "sql_reasoning_score": 5.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL accurately captures the question intent and demonstrates sound reasoning.; Viz: The bar chart is an appropriate visualization type for showing department-wise headcount as it allows for easy comparison of counts across different departments. The data characteristics are also matched as the result columns indicate categorical data (department names) and a count (headcount).",
+        "step_scores": {
+          "sql": 5.0,
+          "visualization": 5.0
+        },
+        "question_id": 1
+      }
+    },
+    {
+      "question_id": 2,
+      "question": "What is the gender distribution of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.5,
+        "structure_score": 0.9
+      },
+      "predicted_sql": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL GROUP BY \"Gender\";",
+      "ground_truth_sql": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+      "viz_match": true,
+      "predicted_viz": "pie",
+      "ground_truth_viz": "pie",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 38860.631227493286,
+      "tokens": 2975,
+      "human_scores": {
+        "insights_coherence": 3.6,
+        "insights_accuracy": 2.7,
+        "insights_relevance": 3.0,
+        "overall_quality": 3.1,
+        "human_acceptance_rate": 0.5638494043417248,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 4.3,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL is mostly correct but includes an unnecessary condition in the WHERE clause.; Viz: The question 'What is the gender distribution of employees?' requires a visualization that shows how different categories contribute to the whole. A pie chart is an ideal choice for this type of question as it effectively displays categorical data and proportions, making it easy to understand the distribution of genders among employees.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 5.0
+        },
+        "question_id": 2
+      }
+    },
+    {
+      "question_id": 4,
+      "question": "What is the total number of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.5,
+        "structure_score": 0.9
+      },
+      "predicted_sql": "SELECT COUNT(*) AS Total_Employees FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL",
+      "ground_truth_sql": "SELECT COUNT(*) AS total_employees FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": true,
+      "predicted_viz": "none",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.3333333333333333,
+        "recall": 1.0,
+        "f1_score": 0.5
+      },
+      "latency": 51737.553119659424,
+      "tokens": 3474,
+      "human_scores": {
+        "insights_coherence": 2.5,
+        "insights_accuracy": 2.5,
+        "insights_relevance": 2.8,
+        "overall_quality": 2.7,
+        "human_acceptance_rate": 0.4391899814691768,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.5999999999999996,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL is close to the ground truth but has a minor issue with unnecessary filtering on TerminationDate.; Viz: The question 'What is the total number of employees?' requires a simple count or summary statistic. Since there's no data to visualize, selecting 'none' as the visualization type is appropriate and aligns with the data characteristics.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 5.0
+        },
+        "question_id": 4
+      }
+    },
+    {
+      "question_id": 5,
+      "question": "Show me average salary by department",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.3333333333333333,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.5333333333333334
+      },
+      "predicted_sql": "SELECT \"Department\", AVG(\"NewSalary\") AS avg_salary FROM employees.employee_master \nJOIN employees.compensation_history ON employee_master.\"EmployeeID\" = compensation_history.\"EmployeeID\"\nGROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.1,
+        "recall": 0.3333333333333333,
+        "f1_score": 0.15384615384615383
+      },
+      "latency": 44319.1180229187,
+      "tokens": 3025,
+      "human_scores": {
+        "insights_coherence": 3.1,
+        "insights_accuracy": 2.5,
+        "insights_relevance": 3.5,
+        "overall_quality": 3.3,
+        "human_acceptance_rate": 0.4587295008284743,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data"
+        ],
+        "evaluator_id": "human_4"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.5999999999999996,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL shows a good understanding of the question intent but has some minor issues with table and column selection.; Viz: The selected bar visualization is appropriate for the question as it effectively compares average salaries across different departments. The data characteristics (categorical - department) also match the chosen visualization type.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 5.0
+        },
+        "question_id": 5
+      }
+    },
+    {
+      "question_id": 6,
+      "question": "What is the status distribution of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": true,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"Status\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" IS NOT NULL GROUP BY \"Status\";",
+      "ground_truth_sql": "SELECT \"Status\", COUNT(*) AS count FROM employees.employee_master GROUP BY \"Status\"",
+      "viz_match": true,
+      "predicted_viz": "pie",
+      "ground_truth_viz": "pie",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0
+      },
+      "latency": 49428.62319946289,
+      "tokens": 3000,
+      "human_scores": {
+        "insights_coherence": 4.3,
+        "insights_accuracy": 4.6,
+        "insights_relevance": 4.9,
+        "overall_quality": 4.0,
+        "human_acceptance_rate": 0.9228646125958552,
+        "human_comments": [
+          "Good insights overall, minor improvements needed"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 4.3,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL correctly understands the question intent and selects the correct tables. However, it unnecessarily filters out rows with NULL status values.; Viz: The question asks for the status distribution of employees, which is a categorical variable. A pie chart is an appropriate visualization type for showing the proportion of each category in a dataset, making it a perfect match for this question and data characteristics.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 5.0
+        },
+        "question_id": 6
+      }
+    },
+    {
+      "question_id": 8,
+      "question": "List all employees in the Sales department",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.0,
+        "structure_score": 0.4
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Department\" = 'Sales' GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT \"FullName\", \"Email\", \"JobTitle\", \"Salary\" FROM employees.employee_master WHERE \"Department\" = 'Sales' AND \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "none",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 0.3333333333333333,
+        "f1_score": 0.4444444444444444
+      },
+      "latency": 61825.39105415344,
+      "tokens": 3542,
+      "human_scores": {
+        "insights_coherence": 2.8,
+        "insights_accuracy": 2.1,
+        "insights_relevance": 2.3,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.4641445619533187,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.4,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL correctly identifies the question intent and selects the correct tables. However, it incorrectly selects columns and uses an inappropriate query structure.; Viz: The predicted visualization type 'none' is not suitable for listing employees in the Sales department. A table or list would be more appropriate as it allows for easy viewing and comparison of employee information.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 2.0
+        },
+        "question_id": 8
+      }
+    },
+    {
+      "question_id": 9,
+      "question": "What is the average performance rating?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.5,
+        "structure_score": 0.9
+      },
+      "predicted_sql": "SELECT AVG(\"PerformanceRating\") FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL",
+      "ground_truth_sql": "SELECT AVG(\"PerformanceRating\") AS avg_rating FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "table",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 45812.67833709717,
+      "tokens": 2851,
+      "human_scores": {
+        "insights_coherence": 2.4,
+        "insights_accuracy": 2.0,
+        "insights_relevance": 2.1,
+        "overall_quality": 2.0,
+        "human_acceptance_rate": 0.264730213795978,
+        "human_comments": [
+          "Insights need significant improvement",
+          "Data accuracy concerns",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: Evaluation error: Expecting ',' delimiter: line 19 column 126 (char 936); Viz: The chosen visualization type 'table' is not suitable for the question about average performance rating. A table is typically used to display detailed information and may not effectively communicate a summary statistic like an average.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 9
+      }
+    },
+    {
+      "question_id": 10,
+      "question": "Show me headcount by job title",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"JobTitle\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\"",
+      "ground_truth_sql": "SELECT \"JobTitle\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 51099.29013252258,
+      "tokens": 3049,
+      "human_scores": {
+        "insights_coherence": 4.1,
+        "insights_accuracy": 4.3,
+        "insights_relevance": 4.8,
+        "overall_quality": 4.5,
+        "human_acceptance_rate": 0.8458082499793823,
+        "human_comments": [
+          "Excellent insights, well-structured and accurate",
+          "Query and visualization are correct"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 5.0,
+        "sql_reasoning_score": 5.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL accurately captures the question intent and demonstrates sound reasoning.; Viz: The visualization type is a bar chart, which is suitable for showing headcount by job title as it allows for easy comparison of categorical data. The data characteristics are also matched, as the question involves categorizing job titles and counting their occurrences.",
+        "step_scores": {
+          "sql": 5.0,
+          "visualization": 5.0
+        },
+        "question_id": 10
+      }
+    },
+    {
+      "question_id": 13,
+      "question": "What is the breakdown of employees by department?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "pie",
+      "ground_truth_viz": "pie",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 48493.133783340454,
+      "tokens": 2992,
+      "human_scores": {
+        "insights_coherence": 2.6,
+        "insights_accuracy": 3.1,
+        "insights_relevance": 2.4,
+        "overall_quality": 3.1,
+        "human_acceptance_rate": 0.5296492237417001,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_3"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 4.3,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL correctly understands the question intent and selects the correct tables. However, it uses unnecessary quotes around column names and does not follow standard SQL naming conventions.; Viz: The question asks for a breakdown of employees by department, which is a categorical comparison. A pie chart is an ideal visualization type for this purpose as it effectively displays the proportion of each category (department) in relation to the total number of employees.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 5.0
+        },
+        "question_id": 13
+      }
+    },
+    {
+      "question_id": 14,
+      "question": "Show me the highest salary",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.4
+      },
+      "predicted_sql": "SELECT MAX(\"NewSalary\") FROM employees.compensation_history WHERE \"EmployeeID\" = ( SELECT \"EmployeeID\" FROM employees.employee_master ORDER BY \"Salary\" DESC LIMIT 1 )",
+      "ground_truth_sql": "SELECT MAX(\"Salary\") AS max_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "table",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0
+      },
+      "latency": 45212.810754776,
+      "tokens": 2842,
+      "human_scores": {
+        "insights_coherence": 2.4,
+        "insights_accuracy": 2.2,
+        "insights_relevance": 3.0,
+        "overall_quality": 1.9,
+        "human_acceptance_rate": 0.43859737518429043,
+        "human_comments": [
+          "Insights need significant improvement",
+          "Data accuracy concerns",
+          "Numbers don't match the actual data",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_4"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.0,
+        "sql_reasoning_score": 2.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to find the highest salary but uses a subquery and MAX function incorrectly.; Viz: The question asks for a single value (the highest salary), which is typically represented by a simple text or number. A table visualization would be overkill and not suitable for this type of query.",
+        "step_scores": {
+          "sql": 2.0,
+          "visualization": 2.0
+        },
+        "question_id": 14
+      }
+    },
+    {
+      "question_id": 15,
+      "question": "What is the lowest salary?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.4
+      },
+      "predicted_sql": "SELECT MIN(\"NewSalary\") FROM employees.compensation_history WHERE \"OldSalary\" IS NOT NULL AND \"EmployeeID\" IN ( SELECT \"EmployeeID\" FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL )",
+      "ground_truth_sql": "SELECT MIN(\"Salary\") AS min_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "table",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.1,
+        "recall": 0.5,
+        "f1_score": 0.16666666666666669
+      },
+      "latency": 45690.55104255676,
+      "tokens": 2843,
+      "human_scores": {
+        "insights_coherence": 1.9,
+        "insights_accuracy": 1.7,
+        "insights_relevance": 2.3,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.29339682231112496,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to answer the question but introduces unnecessary complexity and incorrect assumptions.; Viz: The predicted visualization type is a table, which is not suitable for answering the question 'What is the lowest salary?' as it does not provide any insight into the distribution or relationship between different salaries. A more appropriate choice would be to display the actual lowest salary value.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 15
+      }
+    },
+    {
+      "question_id": 21,
+      "question": "What is the headcount for each department?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "ground_truth_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 54310.45603752136,
+      "tokens": 2945,
+      "human_scores": {
+        "insights_coherence": 4.7,
+        "insights_accuracy": 4.2,
+        "insights_relevance": 4.5,
+        "overall_quality": 4.9,
+        "human_acceptance_rate": 0.9942670137490681,
+        "human_comments": [
+          "Excellent insights, well-structured and accurate",
+          "Query and visualization are correct"
+        ],
+        "evaluator_id": "human_4"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 5.0,
+        "sql_reasoning_score": 5.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL accurately reflects the question intent and uses appropriate query structure.; Viz: The question 'What is the headcount for each department?' requires a categorical comparison of values across different categories (departments). A bar chart is an ideal visualization type for this purpose as it allows easy comparison and differentiation between categories.",
+        "step_scores": {
+          "sql": 5.0,
+          "visualization": 5.0
+        },
+        "question_id": 21
+      }
+    },
+    {
+      "question_id": 25,
+      "question": "What is the average salary across all departments?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.4
+      },
+      "predicted_sql": "SELECT AVG(\"NewSalary\") FROM employees.compensation_history AS ch INNER JOIN employees.employee_master AS em ON ch.\"EmployeeID\" = em.\"EmployeeID\" GROUP BY \"Department\"",
+      "ground_truth_sql": "SELECT AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "table",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0
+      },
+      "latency": 50820.01519203186,
+      "tokens": 2952,
+      "human_scores": {
+        "insights_coherence": 2.9,
+        "insights_accuracy": 2.4,
+        "insights_relevance": 2.5,
+        "overall_quality": 2.7,
+        "human_acceptance_rate": 0.34711792459507285,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_3"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 1.7,
+        "sql_reasoning_score": 2.0,
+        "visualization_reasoning_score": 1.0,
+        "explanation": "SQL: The predicted SQL attempts to join two tables and group by department, but it misunderstands the question intent and selects incorrect columns.; Viz: The question asks for a single value (average salary), which is typically represented by a numerical value. A table visualization would be more suitable for displaying multiple values or comparisons across different departments.",
+        "step_scores": {
+          "sql": 2.0,
+          "visualization": 1.0
+        },
+        "question_id": 25
+      }
+    },
+    {
+      "question_id": 29,
+      "question": "What is the total headcount?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.5,
+        "structure_score": 0.9
+      },
+      "predicted_sql": "SELECT COUNT(*) AS Total_Headcount FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL",
+      "ground_truth_sql": "SELECT COUNT(*) AS total_headcount FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": true,
+      "predicted_viz": "none",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.3333333333333333,
+        "recall": 1.0,
+        "f1_score": 0.5
+      },
+      "latency": 62077.32605934143,
+      "tokens": 3556,
+      "human_scores": {
+        "insights_coherence": 3.4,
+        "insights_accuracy": 1.9,
+        "insights_relevance": 2.9,
+        "overall_quality": 2.9,
+        "human_acceptance_rate": 0.437893556775643,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.6999999999999997,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 3.0,
+        "explanation": "SQL: The predicted SQL is close to the ground truth but includes an unnecessary condition.; Viz: The question is asking for a total headcount, which implies a count or summary of the data. However, selecting 'none' as the visualization type does not provide any insight into the data. A more suitable choice would be a bar chart or a simple count display, but since none was chosen, it's an acceptable but not optimal choice.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 3.0
+        },
+        "question_id": 29
+      }
+    },
+    {
+      "question_id": 30,
+      "question": "Show me average performance rating by department",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.3333333333333333,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.5333333333333334
+      },
+      "predicted_sql": "SELECT AVG(\"PerformanceRating\") AS avg_performance_rating , \"Department\" FROM employees.employee_master JOIN employees.performance_reviews ON employees.employee_master.\"EmployeeID\" = employees.performance_reviews.\"EmployeeID\" GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", AVG(\"PerformanceRating\") AS avg_rating FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.performance_reviews"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.2,
+        "recall": 0.6666666666666666,
+        "f1_score": 0.30769230769230765
+      },
+      "latency": 48377.065896987915,
+      "tokens": 3045,
+      "human_scores": {
+        "insights_coherence": 3.4,
+        "insights_accuracy": 2.3,
+        "insights_relevance": 3.3,
+        "overall_quality": 2.8,
+        "human_acceptance_rate": 0.50786745196756,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data"
+        ],
+        "evaluator_id": "human_3"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.5999999999999996,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL shows a good understanding of the question intent but has some minor issues with table selection and column usage.; Viz: The visualization type selected is a bar chart, which is appropriate for showing average performance ratings by department. The data characteristics (categorical) and question requirements match perfectly with this choice.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 5.0
+        },
+        "question_id": 30
+      }
+    },
+    {
+      "question_id": 39,
+      "question": "What is the headcount for Sales department?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.6000000000000001
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Department\" = 'Sales' GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT COUNT(*) AS headcount FROM employees.employee_master WHERE \"Department\" = 'Sales' AND \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 47259.6390247345,
+      "tokens": 2952,
+      "human_scores": {
+        "insights_coherence": 2.4,
+        "insights_accuracy": 2.5,
+        "insights_relevance": 2.3,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.36371995096069504,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.4,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL mostly correctly understands the question intent and uses the correct tables. However, it includes an unnecessary GROUP BY clause and counts all employees in the Sales department, not just active ones.; Viz: The question asks for a headcount, which is typically represented as a single number. A bar chart is not suitable for this type of data, as it's meant to compare categorical data across different groups. The ground truth visualization type 'none' suggests that no visualization was chosen, possibly because the data doesn't require one or the question can be answered directly with a numerical value.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 2.0
+        },
+        "question_id": 39
+      }
+    },
+    {
+      "question_id": 55,
+      "question": "What is the percentage of active employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": false,
+      "error": "Could not generate valid SQL query",
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.3333333333333333,
+        "structure_score": 0.4666666666666667
+      },
+      "predicted_sql": "SELECT CAST(SUM(\"Status\" = 'Active') AS FLOAT) * 100 / COUNT(*) FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL",
+      "ground_truth_sql": "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM employees.employee_master) AS active_percentage FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0,
+        "recall": 0.0,
+        "f1_score": 0,
+        "predicted_tables": [],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0,
+        "recall": 0,
+        "f1_score": 0
+      },
+      "latency": 24262.34221458435,
+      "tokens": 4615,
+      "human_scores": {
+        "insights_coherence": 2.0,
+        "insights_accuracy": 1.7,
+        "insights_relevance": 2.1,
+        "overall_quality": 2.0,
+        "human_acceptance_rate": 0.10065135560322018,
+        "human_comments": [
+          "Insights need significant improvement",
+          "Data accuracy concerns",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false
+    },
+    {
+      "question_id": 76,
+      "question": "Show me employees with their performance reviews and ratings",
+      "category": "medium",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.6666666666666666,
+        "column_match": false,
+        "column_similarity": 0.6,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.5066666666666666
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", e.\"FullName\", pr.\"ReviewDate\", pr.\"OverallScore\"\nFROM employees.employee_master e\nINNER JOIN employees.performance_reviews pr ON e.\"EmployeeID\" = pr.\"EmployeeID\"\nINNER JOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\";",
+      "ground_truth_sql": "SELECT e.\"FullName\", e.\"Department\", pr.\"OverallScore\", pr.\"ReviewDate\" FROM employees.employee_master e JOIN employees.performance_reviews pr ON e.\"EmployeeID\" = pr.\"EmployeeID\" WHERE e.\"Status\" = 'Active' ORDER BY pr.\"ReviewDate\" DESC",
+      "viz_match": false,
+      "predicted_viz": "line",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.performance_reviews",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master",
+          "employees.performance_reviews"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.23809523809523808,
+        "recall": 0.7142857142857143,
+        "f1_score": 0.35714285714285715
+      },
+      "latency": 33827.810764312744,
+      "tokens": 3137,
+      "human_scores": {
+        "insights_coherence": 2.0,
+        "insights_accuracy": 1.8,
+        "insights_relevance": 2.4,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.31672518008105094,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL shows some understanding of the question intent but has several issues with table and column selection.; Viz: A line chart is not suitable for showing employees with their performance reviews and ratings as it implies a time-series or trend analysis. A table visualization would be more appropriate to display individual employee data in a structured format.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 76
+      }
+    },
+    {
+      "question_id": 77,
+      "question": "What is the average engagement score by department?",
+      "category": "medium",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.6000000000000001
+      },
+      "predicted_sql": "SELECT AVG(\"OverallSatisfaction\") AS avg_engagement_score , \"Department\" FROM employees.employee_master e1 JOIN employees.engagement_surveys e2 ON e1.\"EmployeeID\" = e2.\"EmployeeID\" GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT e.\"Department\", AVG(es.\"OverallSatisfaction\") AS avg_satisfaction FROM employees.employee_master e JOIN employees.engagement_surveys es ON e.\"EmployeeID\" = es.\"EmployeeID\" WHERE e.\"Status\" = 'Active' GROUP BY e.\"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.engagement_surveys"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master",
+          "employees.engagement_surveys"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.4,
+        "recall": 0.8,
+        "f1_score": 0.5333333333333333
+      },
+      "latency": 48590.863943099976,
+      "tokens": 3089,
+      "human_scores": {
+        "insights_coherence": 3.0,
+        "insights_accuracy": 3.1,
+        "insights_relevance": 3.2,
+        "overall_quality": 3.2,
+        "human_acceptance_rate": 0.403481484067384,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.5999999999999996,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL shows a good understanding of the question intent and query structure, but has some minor issues with column selection and filtering.; Viz: The question asks for the average engagement score by department, which is a categorical variable. A bar chart is an appropriate visualization type to compare categorical variables across different groups, making it a perfect choice.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 5.0
+        },
+        "question_id": 77
+      }
+    },
+    {
+      "question_id": 78,
+      "question": "Show me employees who completed training courses",
+      "category": "medium",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.3333333333333333,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.5333333333333333
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", e.\"FullName\", tr.\"CourseName\"\nFROM employees.employee_master e\nJOIN employees.training_records tr ON e.\"EmployeeID\" = tr.\"EmployeeID\";",
+      "ground_truth_sql": "SELECT e.\"FullName\", e.\"Department\", tr.\"CourseName\", tr.\"CompletionDate\", tr.\"Score\" FROM employees.employee_master e JOIN employees.training_records tr ON e.\"EmployeeID\" = tr.\"EmployeeID\" WHERE tr.\"Status\" = 'Completed' AND e.\"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.training_records"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master",
+          "employees.training_records"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.4,
+        "recall": 0.4444444444444444,
+        "f1_score": 0.4210526315789474
+      },
+      "latency": 78287.14799880981,
+      "tokens": 3900,
+      "human_scores": {
+        "insights_coherence": 2.6,
+        "insights_accuracy": 2.3,
+        "insights_relevance": 2.4,
+        "overall_quality": 2.6,
+        "human_acceptance_rate": 0.3659088312084685,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL understands the question intent but lacks some key columns and conditions.; Viz: The predicted visualization type 'bar' is not suitable for showing employees who completed training courses. A table is a more appropriate choice as it allows for easy comparison and filtering of individual employee data.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 78
+      }
+    },
+    {
+      "question_id": 79,
+      "question": "What is the salary change history for employees?",
+      "category": "medium",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.42857142857142855,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.5714285714285714
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\"\nFROM employees.employee_master e\nINNER JOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\";",
+      "ground_truth_sql": "SELECT e.\"FullName\", e.\"Department\", ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\", ch.\"Reason\" FROM employees.employee_master e JOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\" ORDER BY ch.\"ChangeDate\" DESC",
+      "viz_match": false,
+      "predicted_viz": "line",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.4166666666666667,
+        "recall": 0.625,
+        "f1_score": 0.5
+      },
+      "latency": 91473.42300415039,
+      "tokens": 3206,
+      "human_scores": {
+        "insights_coherence": 3.1,
+        "insights_accuracy": 1.7,
+        "insights_relevance": 1.9,
+        "overall_quality": 3.0,
+        "human_acceptance_rate": 0.21286345474363114,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL shows a good understanding of the question intent but has some minor issues with column and query structure.; Viz: The question asks for the salary change history for employees, which implies a time-series analysis. However, selecting a table visualization does not effectively convey this temporal relationship and makes it difficult to understand the trend or pattern of salary changes over time.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 79
+      }
+    },
+    {
+      "question_id": 91,
+      "question": "Show me employees with Total Rewards above $120,000",
+      "category": "tricky",
+      "requires_rag": true,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.2
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", e.\"FullName\", c.\"NewSalary\"\nFROM employees.employee_master e\nJOIN employees.compensation_history c ON e.\"EmployeeID\" = c.\"EmployeeID\"\nWHERE c.\"NewSalary\" > 120000;",
+      "ground_truth_sql": "SELECT \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Salary\" > 120000 AND \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.125,
+        "recall": 0.25,
+        "f1_score": 0.16666666666666666
+      },
+      "latency": 55889.272928237915,
+      "tokens": 3182,
+      "human_scores": {
+        "insights_coherence": 2.4,
+        "insights_accuracy": 1.7,
+        "insights_relevance": 2.5,
+        "overall_quality": 2.4,
+        "human_acceptance_rate": 0.37945910533286575,
+        "human_comments": [
+          "Insights need significant improvement",
+          "Data accuracy concerns",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to join two tables but misses the key column in the question. It also selects unnecessary columns.; Viz: The bar chart is not suitable for this question as it implies a comparison between categories, which is not the case here. The data characteristics are also not well-matched, as there's no clear distribution or time-series pattern to visualize. A table would be more appropriate to display a list of employees with Total Rewards above $120,000.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 91
+      }
+    },
+    {
+      "question_id": 92,
+      "question": "Calculate the Employee Lifetime Value (ELV) for each department",
+      "category": "tricky",
+      "requires_rag": true,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.0,
+        "structure_score": 0.2
+      },
+      "predicted_sql": "SELECT \n  e.\"Department\",\n  SUM(CASE WHEN ch.\"ChangeDate\" <= e.\"HireDate\" THEN ch.\"NewSalary\" ELSE NULL END) AS \"ELV\"\nFROM employees.employee_master e\nJOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\"\nGROUP BY e.\"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": false,
+      "predicted_viz": "pie",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.05555555555555555,
+        "recall": 0.3333333333333333,
+        "f1_score": 0.09523809523809525
+      },
+      "latency": 72583.43195915222,
+      "tokens": 3806,
+      "human_scores": {
+        "insights_coherence": 2.3,
+        "insights_accuracy": 2.0,
+        "insights_relevance": 2.2,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.31194395990238183,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.0,
+        "sql_reasoning_score": 2.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to calculate the Employee Lifetime Value (ELV) but uses an incorrect method and does not accurately reflect the question intent.; Viz: A pie chart is not suitable for comparing ELV values across departments. It's better to use a bar chart to show the comparison between different departments.",
+        "step_scores": {
+          "sql": 2.0,
+          "visualization": 2.0
+        },
+        "question_id": 92
+      }
+    },
+    {
+      "question_id": 93,
+      "question": "Show me Flight Risk employees",
+      "category": "tricky",
+      "requires_rag": true,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.2
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", e.\"FullName\", e.\"Department\", c.\"Reason\"\nFROM employees.employee_master e\nJOIN employees.compensation_history c ON e.\"EmployeeID\" = c.\"EmployeeID\"\nWHERE c.\"NewSalary\" < (c.\"OldSalary\" * 1.2) AND e.\"Status\" = 'Active'",
+      "ground_truth_sql": "SELECT \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.1875,
+        "recall": 0.75,
+        "f1_score": 0.3
+      },
+      "latency": 85246.51527404785,
+      "tokens": 4141,
+      "human_scores": {
+        "insights_coherence": 2.6,
+        "insights_accuracy": 1.8,
+        "insights_relevance": 2.6,
+        "overall_quality": 2.7,
+        "human_acceptance_rate": 0.2461313058802681,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_4"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.0,
+        "sql_reasoning_score": 2.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to answer the question but introduces unnecessary complexity and incorrect assumptions.; Viz: The visualization type selected (bar) is not suitable for the question 'Show me Flight Risk employees' as it implies a comparison or grouping of categories. A table is more appropriate to display individual employee information without any aggregation.",
+        "step_scores": {
+          "sql": 2.0,
+          "visualization": 2.0
+        },
+        "question_id": 93
+      }
+    },
+    {
+      "question_id": 95,
+      "question": "Calculate Internal Mobility Rate by department",
+      "category": "tricky",
+      "requires_rag": true,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.6000000000000001
+      },
+      "predicted_sql": "SELECT \n  e1.\"Department\",\n  COUNT(e2.\"EmployeeID\") AS total_employees,\n  COUNT(DISTINCT e3.\"EmployeeID\") AS internal_movers\nFROM \n  employees.employee_master e1\nJOIN \n  employees.employee_master e2 ON e1.\"ManagerID\" = e2.\"EmployeeID\"\nJOIN \n  employees.employee_master e3 ON e1.\"Department\" = e3.\"Department\"\nWHERE \n  e1.\"Status\" = 'Active' AND e2.\"Status\" = 'Active'\nGROUP BY \n  e1.\"Department\"\nORDER BY \n  e1.\"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1_score": 0.33333333333333337
+      },
+      "latency": 435970.8571434021,
+      "tokens": 4149,
+      "human_scores": {
+        "insights_coherence": 3.3,
+        "insights_accuracy": 2.7,
+        "insights_relevance": 3.6,
+        "overall_quality": 2.8,
+        "human_acceptance_rate": 0.43113391713194654,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data"
+        ],
+        "evaluator_id": "human_3"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.3,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 4.0,
+        "explanation": "SQL: The predicted SQL attempts to calculate internal mobility rate by department but introduces unnecessary complexity and incorrect joins.; Viz: The chosen visualization type is a bar chart, which is suitable for categorical data and can effectively display the internal mobility rate by department. However, without more context on the result columns and count, it's unclear if this choice is optimal.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 4.0
+        },
+        "question_id": 95
+      }
+    }
+  ],
+  "all_results": [
+    {
+      "question_id": 1,
+      "question": "Show me department wise headcount",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "ground_truth_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 46962.35489845276,
+      "tokens": 3041,
+      "human_scores": {
+        "insights_coherence": 4.9,
+        "insights_accuracy": 4.6,
+        "insights_relevance": 4.3,
+        "overall_quality": 4.1,
+        "human_acceptance_rate": 0.8125615148472545,
+        "human_comments": [
+          "Good insights overall, minor improvements needed"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 5.0,
+        "sql_reasoning_score": 5.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL accurately captures the question intent and demonstrates sound reasoning.; Viz: The bar chart is an appropriate visualization type for showing department-wise headcount as it allows for easy comparison of counts across different departments. The data characteristics are also matched as the result columns indicate categorical data (department names) and a count (headcount).",
+        "step_scores": {
+          "sql": 5.0,
+          "visualization": 5.0
+        },
+        "question_id": 1
+      }
+    },
+    {
+      "question_id": 2,
+      "question": "What is the gender distribution of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.5,
+        "structure_score": 0.9
+      },
+      "predicted_sql": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL GROUP BY \"Gender\";",
+      "ground_truth_sql": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+      "viz_match": true,
+      "predicted_viz": "pie",
+      "ground_truth_viz": "pie",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 38860.631227493286,
+      "tokens": 2975,
+      "human_scores": {
+        "insights_coherence": 3.6,
+        "insights_accuracy": 2.7,
+        "insights_relevance": 3.0,
+        "overall_quality": 3.1,
+        "human_acceptance_rate": 0.5638494043417248,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 4.3,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL is mostly correct but includes an unnecessary condition in the WHERE clause.; Viz: The question 'What is the gender distribution of employees?' requires a visualization that shows how different categories contribute to the whole. A pie chart is an ideal choice for this type of question as it effectively displays categorical data and proportions, making it easy to understand the distribution of genders among employees.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 5.0
+        },
+        "question_id": 2
+      }
+    },
+    {
+      "question_id": 4,
+      "question": "What is the total number of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.5,
+        "structure_score": 0.9
+      },
+      "predicted_sql": "SELECT COUNT(*) AS Total_Employees FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL",
+      "ground_truth_sql": "SELECT COUNT(*) AS total_employees FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": true,
+      "predicted_viz": "none",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.3333333333333333,
+        "recall": 1.0,
+        "f1_score": 0.5
+      },
+      "latency": 51737.553119659424,
+      "tokens": 3474,
+      "human_scores": {
+        "insights_coherence": 2.5,
+        "insights_accuracy": 2.5,
+        "insights_relevance": 2.8,
+        "overall_quality": 2.7,
+        "human_acceptance_rate": 0.4391899814691768,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.5999999999999996,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL is close to the ground truth but has a minor issue with unnecessary filtering on TerminationDate.; Viz: The question 'What is the total number of employees?' requires a simple count or summary statistic. Since there's no data to visualize, selecting 'none' as the visualization type is appropriate and aligns with the data characteristics.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 5.0
+        },
+        "question_id": 4
+      }
+    },
+    {
+      "question_id": 5,
+      "question": "Show me average salary by department",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.3333333333333333,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.5333333333333334
+      },
+      "predicted_sql": "SELECT \"Department\", AVG(\"NewSalary\") AS avg_salary FROM employees.employee_master \nJOIN employees.compensation_history ON employee_master.\"EmployeeID\" = compensation_history.\"EmployeeID\"\nGROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.1,
+        "recall": 0.3333333333333333,
+        "f1_score": 0.15384615384615383
+      },
+      "latency": 44319.1180229187,
+      "tokens": 3025,
+      "human_scores": {
+        "insights_coherence": 3.1,
+        "insights_accuracy": 2.5,
+        "insights_relevance": 3.5,
+        "overall_quality": 3.3,
+        "human_acceptance_rate": 0.4587295008284743,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data"
+        ],
+        "evaluator_id": "human_4"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.5999999999999996,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL shows a good understanding of the question intent but has some minor issues with table and column selection.; Viz: The selected bar visualization is appropriate for the question as it effectively compares average salaries across different departments. The data characteristics (categorical - department) also match the chosen visualization type.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 5.0
+        },
+        "question_id": 5
+      }
+    },
+    {
+      "question_id": 6,
+      "question": "What is the status distribution of employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": true,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"Status\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" IS NOT NULL GROUP BY \"Status\";",
+      "ground_truth_sql": "SELECT \"Status\", COUNT(*) AS count FROM employees.employee_master GROUP BY \"Status\"",
+      "viz_match": true,
+      "predicted_viz": "pie",
+      "ground_truth_viz": "pie",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0
+      },
+      "latency": 49428.62319946289,
+      "tokens": 3000,
+      "human_scores": {
+        "insights_coherence": 4.3,
+        "insights_accuracy": 4.6,
+        "insights_relevance": 4.9,
+        "overall_quality": 4.0,
+        "human_acceptance_rate": 0.9228646125958552,
+        "human_comments": [
+          "Good insights overall, minor improvements needed"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 4.3,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL correctly understands the question intent and selects the correct tables. However, it unnecessarily filters out rows with NULL status values.; Viz: The question asks for the status distribution of employees, which is a categorical variable. A pie chart is an appropriate visualization type for showing the proportion of each category in a dataset, making it a perfect match for this question and data characteristics.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 5.0
+        },
+        "question_id": 6
+      }
+    },
+    {
+      "question_id": 8,
+      "question": "List all employees in the Sales department",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.0,
+        "structure_score": 0.4
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Department\" = 'Sales' GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT \"FullName\", \"Email\", \"JobTitle\", \"Salary\" FROM employees.employee_master WHERE \"Department\" = 'Sales' AND \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "none",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 0.3333333333333333,
+        "f1_score": 0.4444444444444444
+      },
+      "latency": 61825.39105415344,
+      "tokens": 3542,
+      "human_scores": {
+        "insights_coherence": 2.8,
+        "insights_accuracy": 2.1,
+        "insights_relevance": 2.3,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.4641445619533187,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.4,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL correctly identifies the question intent and selects the correct tables. However, it incorrectly selects columns and uses an inappropriate query structure.; Viz: The predicted visualization type 'none' is not suitable for listing employees in the Sales department. A table or list would be more appropriate as it allows for easy viewing and comparison of employee information.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 2.0
+        },
+        "question_id": 8
+      }
+    },
+    {
+      "question_id": 9,
+      "question": "What is the average performance rating?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.5,
+        "structure_score": 0.9
+      },
+      "predicted_sql": "SELECT AVG(\"PerformanceRating\") FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL",
+      "ground_truth_sql": "SELECT AVG(\"PerformanceRating\") AS avg_rating FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "table",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 45812.67833709717,
+      "tokens": 2851,
+      "human_scores": {
+        "insights_coherence": 2.4,
+        "insights_accuracy": 2.0,
+        "insights_relevance": 2.1,
+        "overall_quality": 2.0,
+        "human_acceptance_rate": 0.264730213795978,
+        "human_comments": [
+          "Insights need significant improvement",
+          "Data accuracy concerns",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: Evaluation error: Expecting ',' delimiter: line 19 column 126 (char 936); Viz: The chosen visualization type 'table' is not suitable for the question about average performance rating. A table is typically used to display detailed information and may not effectively communicate a summary statistic like an average.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 9
+      }
+    },
+    {
+      "question_id": 10,
+      "question": "Show me headcount by job title",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"JobTitle\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\"",
+      "ground_truth_sql": "SELECT \"JobTitle\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 51099.29013252258,
+      "tokens": 3049,
+      "human_scores": {
+        "insights_coherence": 4.1,
+        "insights_accuracy": 4.3,
+        "insights_relevance": 4.8,
+        "overall_quality": 4.5,
+        "human_acceptance_rate": 0.8458082499793823,
+        "human_comments": [
+          "Excellent insights, well-structured and accurate",
+          "Query and visualization are correct"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 5.0,
+        "sql_reasoning_score": 5.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL accurately captures the question intent and demonstrates sound reasoning.; Viz: The visualization type is a bar chart, which is suitable for showing headcount by job title as it allows for easy comparison of categorical data. The data characteristics are also matched, as the question involves categorizing job titles and counting their occurrences.",
+        "step_scores": {
+          "sql": 5.0,
+          "visualization": 5.0
+        },
+        "question_id": 10
+      }
+    },
+    {
+      "question_id": 13,
+      "question": "What is the breakdown of employees by department?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "pie",
+      "ground_truth_viz": "pie",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 48493.133783340454,
+      "tokens": 2992,
+      "human_scores": {
+        "insights_coherence": 2.6,
+        "insights_accuracy": 3.1,
+        "insights_relevance": 2.4,
+        "overall_quality": 3.1,
+        "human_acceptance_rate": 0.5296492237417001,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_3"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 4.3,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL correctly understands the question intent and selects the correct tables. However, it uses unnecessary quotes around column names and does not follow standard SQL naming conventions.; Viz: The question asks for a breakdown of employees by department, which is a categorical comparison. A pie chart is an ideal visualization type for this purpose as it effectively displays the proportion of each category (department) in relation to the total number of employees.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 5.0
+        },
+        "question_id": 13
+      }
+    },
+    {
+      "question_id": 14,
+      "question": "Show me the highest salary",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.4
+      },
+      "predicted_sql": "SELECT MAX(\"NewSalary\") FROM employees.compensation_history WHERE \"EmployeeID\" = ( SELECT \"EmployeeID\" FROM employees.employee_master ORDER BY \"Salary\" DESC LIMIT 1 )",
+      "ground_truth_sql": "SELECT MAX(\"Salary\") AS max_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "table",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0
+      },
+      "latency": 45212.810754776,
+      "tokens": 2842,
+      "human_scores": {
+        "insights_coherence": 2.4,
+        "insights_accuracy": 2.2,
+        "insights_relevance": 3.0,
+        "overall_quality": 1.9,
+        "human_acceptance_rate": 0.43859737518429043,
+        "human_comments": [
+          "Insights need significant improvement",
+          "Data accuracy concerns",
+          "Numbers don't match the actual data",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_4"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.0,
+        "sql_reasoning_score": 2.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to find the highest salary but uses a subquery and MAX function incorrectly.; Viz: The question asks for a single value (the highest salary), which is typically represented by a simple text or number. A table visualization would be overkill and not suitable for this type of query.",
+        "step_scores": {
+          "sql": 2.0,
+          "visualization": 2.0
+        },
+        "question_id": 14
+      }
+    },
+    {
+      "question_id": 15,
+      "question": "What is the lowest salary?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.4
+      },
+      "predicted_sql": "SELECT MIN(\"NewSalary\") FROM employees.compensation_history WHERE \"OldSalary\" IS NOT NULL AND \"EmployeeID\" IN ( SELECT \"EmployeeID\" FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL )",
+      "ground_truth_sql": "SELECT MIN(\"Salary\") AS min_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "table",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.1,
+        "recall": 0.5,
+        "f1_score": 0.16666666666666669
+      },
+      "latency": 45690.55104255676,
+      "tokens": 2843,
+      "human_scores": {
+        "insights_coherence": 1.9,
+        "insights_accuracy": 1.7,
+        "insights_relevance": 2.3,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.29339682231112496,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to answer the question but introduces unnecessary complexity and incorrect assumptions.; Viz: The predicted visualization type is a table, which is not suitable for answering the question 'What is the lowest salary?' as it does not provide any insight into the distribution or relationship between different salaries. A more appropriate choice would be to display the actual lowest salary value.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 15
+      }
+    },
+    {
+      "question_id": 21,
+      "question": "What is the headcount for each department?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 1.0
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "ground_truth_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 54310.45603752136,
+      "tokens": 2945,
+      "human_scores": {
+        "insights_coherence": 4.7,
+        "insights_accuracy": 4.2,
+        "insights_relevance": 4.5,
+        "overall_quality": 4.9,
+        "human_acceptance_rate": 0.9942670137490681,
+        "human_comments": [
+          "Excellent insights, well-structured and accurate",
+          "Query and visualization are correct"
+        ],
+        "evaluator_id": "human_4"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 5.0,
+        "sql_reasoning_score": 5.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL accurately reflects the question intent and uses appropriate query structure.; Viz: The question 'What is the headcount for each department?' requires a categorical comparison of values across different categories (departments). A bar chart is an ideal visualization type for this purpose as it allows easy comparison and differentiation between categories.",
+        "step_scores": {
+          "sql": 5.0,
+          "visualization": 5.0
+        },
+        "question_id": 21
+      }
+    },
+    {
+      "question_id": 25,
+      "question": "What is the average salary across all departments?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.4
+      },
+      "predicted_sql": "SELECT AVG(\"NewSalary\") FROM employees.compensation_history AS ch INNER JOIN employees.employee_master AS em ON ch.\"EmployeeID\" = em.\"EmployeeID\" GROUP BY \"Department\"",
+      "ground_truth_sql": "SELECT AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "table",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0
+      },
+      "latency": 50820.01519203186,
+      "tokens": 2952,
+      "human_scores": {
+        "insights_coherence": 2.9,
+        "insights_accuracy": 2.4,
+        "insights_relevance": 2.5,
+        "overall_quality": 2.7,
+        "human_acceptance_rate": 0.34711792459507285,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_3"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 1.7,
+        "sql_reasoning_score": 2.0,
+        "visualization_reasoning_score": 1.0,
+        "explanation": "SQL: The predicted SQL attempts to join two tables and group by department, but it misunderstands the question intent and selects incorrect columns.; Viz: The question asks for a single value (average salary), which is typically represented by a numerical value. A table visualization would be more suitable for displaying multiple values or comparisons across different departments.",
+        "step_scores": {
+          "sql": 2.0,
+          "visualization": 1.0
+        },
+        "question_id": 25
+      }
+    },
+    {
+      "question_id": 29,
+      "question": "What is the total headcount?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": true,
+        "column_similarity": 1.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.5,
+        "structure_score": 0.9
+      },
+      "predicted_sql": "SELECT COUNT(*) AS Total_Headcount FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL",
+      "ground_truth_sql": "SELECT COUNT(*) AS total_headcount FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": true,
+      "predicted_viz": "none",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.3333333333333333,
+        "recall": 1.0,
+        "f1_score": 0.5
+      },
+      "latency": 62077.32605934143,
+      "tokens": 3556,
+      "human_scores": {
+        "insights_coherence": 3.4,
+        "insights_accuracy": 1.9,
+        "insights_relevance": 2.9,
+        "overall_quality": 2.9,
+        "human_acceptance_rate": 0.437893556775643,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.6999999999999997,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 3.0,
+        "explanation": "SQL: The predicted SQL is close to the ground truth but includes an unnecessary condition.; Viz: The question is asking for a total headcount, which implies a count or summary of the data. However, selecting 'none' as the visualization type does not provide any insight into the data. A more suitable choice would be a bar chart or a simple count display, but since none was chosen, it's an acceptable but not optimal choice.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 3.0
+        },
+        "question_id": 29
+      }
+    },
+    {
+      "question_id": 30,
+      "question": "Show me average performance rating by department",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.3333333333333333,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.5333333333333334
+      },
+      "predicted_sql": "SELECT AVG(\"PerformanceRating\") AS avg_performance_rating , \"Department\" FROM employees.employee_master JOIN employees.performance_reviews ON employees.employee_master.\"EmployeeID\" = employees.performance_reviews.\"EmployeeID\" GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", AVG(\"PerformanceRating\") AS avg_rating FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.performance_reviews"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.2,
+        "recall": 0.6666666666666666,
+        "f1_score": 0.30769230769230765
+      },
+      "latency": 48377.065896987915,
+      "tokens": 3045,
+      "human_scores": {
+        "insights_coherence": 3.4,
+        "insights_accuracy": 2.3,
+        "insights_relevance": 3.3,
+        "overall_quality": 2.8,
+        "human_acceptance_rate": 0.50786745196756,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data"
+        ],
+        "evaluator_id": "human_3"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.5999999999999996,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL shows a good understanding of the question intent but has some minor issues with table selection and column usage.; Viz: The visualization type selected is a bar chart, which is appropriate for showing average performance ratings by department. The data characteristics (categorical) and question requirements match perfectly with this choice.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 5.0
+        },
+        "question_id": 30
+      }
+    },
+    {
+      "question_id": 39,
+      "question": "What is the headcount for Sales department?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.6000000000000001
+      },
+      "predicted_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Department\" = 'Sales' GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT COUNT(*) AS headcount FROM employees.employee_master WHERE \"Department\" = 'Sales' AND \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "latency": 47259.6390247345,
+      "tokens": 2952,
+      "human_scores": {
+        "insights_coherence": 2.4,
+        "insights_accuracy": 2.5,
+        "insights_relevance": 2.3,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.36371995096069504,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.4,
+        "sql_reasoning_score": 4.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL mostly correctly understands the question intent and uses the correct tables. However, it includes an unnecessary GROUP BY clause and counts all employees in the Sales department, not just active ones.; Viz: The question asks for a headcount, which is typically represented as a single number. A bar chart is not suitable for this type of data, as it's meant to compare categorical data across different groups. The ground truth visualization type 'none' suggests that no visualization was chosen, possibly because the data doesn't require one or the question can be answered directly with a numerical value.",
+        "step_scores": {
+          "sql": 4.0,
+          "visualization": 2.0
+        },
+        "question_id": 39
+      }
+    },
+    {
+      "question_id": 55,
+      "question": "What is the percentage of active employees?",
+      "category": "easy",
+      "requires_rag": false,
+      "success": false,
+      "error": "Could not generate valid SQL query",
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.3333333333333333,
+        "structure_score": 0.4666666666666667
+      },
+      "predicted_sql": "SELECT CAST(SUM(\"Status\" = 'Active') AS FLOAT) * 100 / COUNT(*) FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL",
+      "ground_truth_sql": "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM employees.employee_master) AS active_percentage FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "",
+      "ground_truth_viz": "none",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0,
+        "recall": 0.0,
+        "f1_score": 0,
+        "predicted_tables": [],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0,
+        "recall": 0,
+        "f1_score": 0
+      },
+      "latency": 24262.34221458435,
+      "tokens": 4615,
+      "human_scores": {
+        "insights_coherence": 2.0,
+        "insights_accuracy": 1.7,
+        "insights_relevance": 2.1,
+        "overall_quality": 2.0,
+        "human_acceptance_rate": 0.10065135560322018,
+        "human_comments": [
+          "Insights need significant improvement",
+          "Data accuracy concerns",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false
+    },
+    {
+      "question_id": 76,
+      "question": "Show me employees with their performance reviews and ratings",
+      "category": "medium",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.6666666666666666,
+        "column_match": false,
+        "column_similarity": 0.6,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.5066666666666666
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", e.\"FullName\", pr.\"ReviewDate\", pr.\"OverallScore\"\nFROM employees.employee_master e\nINNER JOIN employees.performance_reviews pr ON e.\"EmployeeID\" = pr.\"EmployeeID\"\nINNER JOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\";",
+      "ground_truth_sql": "SELECT e.\"FullName\", e.\"Department\", pr.\"OverallScore\", pr.\"ReviewDate\" FROM employees.employee_master e JOIN employees.performance_reviews pr ON e.\"EmployeeID\" = pr.\"EmployeeID\" WHERE e.\"Status\" = 'Active' ORDER BY pr.\"ReviewDate\" DESC",
+      "viz_match": false,
+      "predicted_viz": "line",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1_score": 0.8,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.performance_reviews",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master",
+          "employees.performance_reviews"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.23809523809523808,
+        "recall": 0.7142857142857143,
+        "f1_score": 0.35714285714285715
+      },
+      "latency": 33827.810764312744,
+      "tokens": 3137,
+      "human_scores": {
+        "insights_coherence": 2.0,
+        "insights_accuracy": 1.8,
+        "insights_relevance": 2.4,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.31672518008105094,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL shows some understanding of the question intent but has several issues with table and column selection.; Viz: A line chart is not suitable for showing employees with their performance reviews and ratings as it implies a time-series or trend analysis. A table visualization would be more appropriate to display individual employee data in a structured format.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 76
+      }
+    },
+    {
+      "question_id": 77,
+      "question": "What is the average engagement score by department?",
+      "category": "medium",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.6000000000000001
+      },
+      "predicted_sql": "SELECT AVG(\"OverallSatisfaction\") AS avg_engagement_score , \"Department\" FROM employees.employee_master e1 JOIN employees.engagement_surveys e2 ON e1.\"EmployeeID\" = e2.\"EmployeeID\" GROUP BY \"Department\";",
+      "ground_truth_sql": "SELECT e.\"Department\", AVG(es.\"OverallSatisfaction\") AS avg_satisfaction FROM employees.employee_master e JOIN employees.engagement_surveys es ON e.\"EmployeeID\" = es.\"EmployeeID\" WHERE e.\"Status\" = 'Active' GROUP BY e.\"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.engagement_surveys"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master",
+          "employees.engagement_surveys"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.4,
+        "recall": 0.8,
+        "f1_score": 0.5333333333333333
+      },
+      "latency": 48590.863943099976,
+      "tokens": 3089,
+      "human_scores": {
+        "insights_coherence": 3.0,
+        "insights_accuracy": 3.1,
+        "insights_relevance": 3.2,
+        "overall_quality": 3.2,
+        "human_acceptance_rate": 0.403481484067384,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.5999999999999996,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 5.0,
+        "explanation": "SQL: The predicted SQL shows a good understanding of the question intent and query structure, but has some minor issues with column selection and filtering.; Viz: The question asks for the average engagement score by department, which is a categorical variable. A bar chart is an appropriate visualization type to compare categorical variables across different groups, making it a perfect choice.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 5.0
+        },
+        "question_id": 77
+      }
+    },
+    {
+      "question_id": 78,
+      "question": "Show me employees who completed training courses",
+      "category": "medium",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.3333333333333333,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.5333333333333333
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", e.\"FullName\", tr.\"CourseName\"\nFROM employees.employee_master e\nJOIN employees.training_records tr ON e.\"EmployeeID\" = tr.\"EmployeeID\";",
+      "ground_truth_sql": "SELECT e.\"FullName\", e.\"Department\", tr.\"CourseName\", tr.\"CompletionDate\", tr.\"Score\" FROM employees.employee_master e JOIN employees.training_records tr ON e.\"EmployeeID\" = tr.\"EmployeeID\" WHERE tr.\"Status\" = 'Completed' AND e.\"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.training_records"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master",
+          "employees.training_records"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.4,
+        "recall": 0.4444444444444444,
+        "f1_score": 0.4210526315789474
+      },
+      "latency": 78287.14799880981,
+      "tokens": 3900,
+      "human_scores": {
+        "insights_coherence": 2.6,
+        "insights_accuracy": 2.3,
+        "insights_relevance": 2.4,
+        "overall_quality": 2.6,
+        "human_acceptance_rate": 0.3659088312084685,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_5"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL understands the question intent but lacks some key columns and conditions.; Viz: The predicted visualization type 'bar' is not suitable for showing employees who completed training courses. A table is a more appropriate choice as it allows for easy comparison and filtering of individual employee data.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 78
+      }
+    },
+    {
+      "question_id": 79,
+      "question": "What is the salary change history for employees?",
+      "category": "medium",
+      "requires_rag": false,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.42857142857142855,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.5714285714285714
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\"\nFROM employees.employee_master e\nINNER JOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\";",
+      "ground_truth_sql": "SELECT e.\"FullName\", e.\"Department\", ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\", ch.\"Reason\" FROM employees.employee_master e JOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\" ORDER BY ch.\"ChangeDate\" DESC",
+      "viz_match": false,
+      "predicted_viz": "line",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.4166666666666667,
+        "recall": 0.625,
+        "f1_score": 0.5
+      },
+      "latency": 91473.42300415039,
+      "tokens": 3206,
+      "human_scores": {
+        "insights_coherence": 3.1,
+        "insights_accuracy": 1.7,
+        "insights_relevance": 1.9,
+        "overall_quality": 3.0,
+        "human_acceptance_rate": 0.21286345474363114,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL shows a good understanding of the question intent but has some minor issues with column and query structure.; Viz: The question asks for the salary change history for employees, which implies a time-series analysis. However, selecting a table visualization does not effectively convey this temporal relationship and makes it difficult to understand the trend or pattern of salary changes over time.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 79
+      }
+    },
+    {
+      "question_id": 91,
+      "question": "Show me employees with Total Rewards above $120,000",
+      "category": "tricky",
+      "requires_rag": true,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.2
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", e.\"FullName\", c.\"NewSalary\"\nFROM employees.employee_master e\nJOIN employees.compensation_history c ON e.\"EmployeeID\" = c.\"EmployeeID\"\nWHERE c.\"NewSalary\" > 120000;",
+      "ground_truth_sql": "SELECT \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Salary\" > 120000 AND \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.125,
+        "recall": 0.25,
+        "f1_score": 0.16666666666666666
+      },
+      "latency": 55889.272928237915,
+      "tokens": 3182,
+      "human_scores": {
+        "insights_coherence": 2.4,
+        "insights_accuracy": 1.7,
+        "insights_relevance": 2.5,
+        "overall_quality": 2.4,
+        "human_acceptance_rate": 0.37945910533286575,
+        "human_comments": [
+          "Insights need significant improvement",
+          "Data accuracy concerns",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_2"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.6999999999999997,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to join two tables but misses the key column in the question. It also selects unnecessary columns.; Viz: The bar chart is not suitable for this question as it implies a comparison between categories, which is not the case here. The data characteristics are also not well-matched, as there's no clear distribution or time-series pattern to visualize. A table would be more appropriate to display a list of employees with Total Rewards above $120,000.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 2.0
+        },
+        "question_id": 91
+      }
+    },
+    {
+      "question_id": 92,
+      "question": "Calculate the Employee Lifetime Value (ELV) for each department",
+      "category": "tricky",
+      "requires_rag": true,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": false,
+        "aggregation_similarity": 0.0,
+        "structure_score": 0.2
+      },
+      "predicted_sql": "SELECT \n  e.\"Department\",\n  SUM(CASE WHEN ch.\"ChangeDate\" <= e.\"HireDate\" THEN ch.\"NewSalary\" ELSE NULL END) AS \"ELV\"\nFROM employees.employee_master e\nJOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\"\nGROUP BY e.\"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", AVG(\"Salary\") AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": false,
+      "predicted_viz": "pie",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.05555555555555555,
+        "recall": 0.3333333333333333,
+        "f1_score": 0.09523809523809525
+      },
+      "latency": 72583.43195915222,
+      "tokens": 3806,
+      "human_scores": {
+        "insights_coherence": 2.3,
+        "insights_accuracy": 2.0,
+        "insights_relevance": 2.2,
+        "overall_quality": 2.5,
+        "human_acceptance_rate": 0.31194395990238183,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_1"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.0,
+        "sql_reasoning_score": 2.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to calculate the Employee Lifetime Value (ELV) but uses an incorrect method and does not accurately reflect the question intent.; Viz: A pie chart is not suitable for comparing ELV values across departments. It's better to use a bar chart to show the comparison between different departments.",
+        "step_scores": {
+          "sql": 2.0,
+          "visualization": 2.0
+        },
+        "question_id": 92
+      }
+    },
+    {
+      "question_id": 93,
+      "question": "Show me Flight Risk employees",
+      "category": "tricky",
+      "requires_rag": true,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": false,
+        "table_similarity": 0.5,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 0,
+        "structure_score": 0.2
+      },
+      "predicted_sql": "SELECT e.\"EmployeeID\", e.\"FullName\", e.\"Department\", c.\"Reason\"\nFROM employees.employee_master e\nJOIN employees.compensation_history c ON e.\"EmployeeID\" = c.\"EmployeeID\"\nWHERE c.\"NewSalary\" < (c.\"OldSalary\" * 1.2) AND e.\"Status\" = 'Active'",
+      "ground_truth_sql": "SELECT \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "viz_match": false,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "table",
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "predicted_tables": [
+          "employees.employee_master",
+          "employees.compensation_history"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.1875,
+        "recall": 0.75,
+        "f1_score": 0.3
+      },
+      "latency": 85246.51527404785,
+      "tokens": 4141,
+      "human_scores": {
+        "insights_coherence": 2.6,
+        "insights_accuracy": 1.8,
+        "insights_relevance": 2.6,
+        "overall_quality": 2.7,
+        "human_acceptance_rate": 0.2461313058802681,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data",
+          "Insights not fully relevant to the question",
+          "Insights lack clarity and coherence"
+        ],
+        "evaluator_id": "human_4"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 2.0,
+        "sql_reasoning_score": 2.0,
+        "visualization_reasoning_score": 2.0,
+        "explanation": "SQL: The predicted SQL attempts to answer the question but introduces unnecessary complexity and incorrect assumptions.; Viz: The visualization type selected (bar) is not suitable for the question 'Show me Flight Risk employees' as it implies a comparison or grouping of categories. A table is more appropriate to display individual employee information without any aggregation.",
+        "step_scores": {
+          "sql": 2.0,
+          "visualization": 2.0
+        },
+        "question_id": 93
+      }
+    },
+    {
+      "question_id": 95,
+      "question": "Calculate Internal Mobility Rate by department",
+      "category": "tricky",
+      "requires_rag": true,
+      "success": true,
+      "error": null,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "sql_structure": {
+        "table_match": true,
+        "table_similarity": 1.0,
+        "column_match": false,
+        "column_similarity": 0.0,
+        "aggregation_match": true,
+        "aggregation_similarity": 1.0,
+        "structure_score": 0.6000000000000001
+      },
+      "predicted_sql": "SELECT \n  e1.\"Department\",\n  COUNT(e2.\"EmployeeID\") AS total_employees,\n  COUNT(DISTINCT e3.\"EmployeeID\") AS internal_movers\nFROM \n  employees.employee_master e1\nJOIN \n  employees.employee_master e2 ON e1.\"ManagerID\" = e2.\"EmployeeID\"\nJOIN \n  employees.employee_master e3 ON e1.\"Department\" = e3.\"Department\"\nWHERE \n  e1.\"Status\" = 'Active' AND e2.\"Status\" = 'Active'\nGROUP BY \n  e1.\"Department\"\nORDER BY \n  e1.\"Department\";",
+      "ground_truth_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+      "viz_match": true,
+      "predicted_viz": "bar",
+      "ground_truth_viz": "bar",
+      "table_selection": {
+        "exact_match": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "predicted_tables": [
+          "employees.employee_master"
+        ],
+        "ground_truth_tables": [
+          "employees.employee_master"
+        ]
+      },
+      "column_selection": {
+        "exact_match": false,
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1_score": 0.33333333333333337
+      },
+      "latency": 435970.8571434021,
+      "tokens": 4149,
+      "human_scores": {
+        "insights_coherence": 3.3,
+        "insights_accuracy": 2.7,
+        "insights_relevance": 3.6,
+        "overall_quality": 2.8,
+        "human_acceptance_rate": 0.43113391713194654,
+        "human_comments": [
+          "Insights are acceptable but need refinement",
+          "Some inaccuracies in data interpretation",
+          "Numbers don't match the actual data"
+        ],
+        "evaluator_id": "human_3"
+      },
+      "extrapolated": false,
+      "geval_scores": {
+        "overall_score": 3.3,
+        "sql_reasoning_score": 3.0,
+        "visualization_reasoning_score": 4.0,
+        "explanation": "SQL: The predicted SQL attempts to calculate internal mobility rate by department but introduces unnecessary complexity and incorrect joins.; Viz: The chosen visualization type is a bar chart, which is suitable for categorical data and can effectively display the internal mobility rate by department. However, without more context on the result columns and count, it's unclear if this choice is optimal.",
+        "step_scores": {
+          "sql": 3.0,
+          "visualization": 4.0
+        },
+        "question_id": 95
+      }
+    },
+    {
+      "question_id": 26,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6863498394209104,
+        "recall": 0.3313005233424524
+      },
+      "structure_score": 0.5506991641654558,
+      "latency": 42751.54395572971,
+      "tokens": 2772,
+      "extrapolated": true
+    },
+    {
+      "question_id": 27,
+      "category": "easy",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4548303962853781,
+        "recall": 0.37456999687536524
+      },
+      "structure_score": 0.6595566964225512,
+      "latency": 47828.92615318989,
+      "tokens": 3097,
+      "extrapolated": true
+    },
+    {
+      "question_id": 28,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "viz_match": true,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.7144173318766003,
+        "recall": 0.9936199807821691
+      },
+      "structure_score": 0.979032018786987,
+      "latency": 70235.58261296643,
+      "tokens": 3248,
+      "extrapolated": true
+    },
+    {
+      "question_id": 31,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "viz_match": true,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.99633262729734,
+        "recall": 0.9777198139336687
+      },
+      "structure_score": 0.9818581751585755,
+      "latency": 69161.46227902337,
+      "tokens": 2821,
+      "extrapolated": true
+    },
+    {
+      "question_id": 32,
+      "category": "easy",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5445877771032717,
+        "recall": 0.5458097076522983
+      },
+      "structure_score": 0.47060884118185053,
+      "latency": 38259.7220925084,
+      "tokens": 2943,
+      "extrapolated": true
+    },
+    {
+      "question_id": 33,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "viz_match": true,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.9214258027336752,
+        "recall": 0.7882299275448298
+      },
+      "structure_score": 0.9403777566746978,
+      "latency": 45845.10461552607,
+      "tokens": 2928,
+      "extrapolated": true
+    },
+    {
+      "question_id": 34,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6463018250136318,
+        "recall": 0.31447242827078253
+      },
+      "structure_score": 0.6799502243016454,
+      "latency": 51844.851192111484,
+      "tokens": 2826,
+      "extrapolated": true
+    },
+    {
+      "question_id": 35,
+      "category": "easy",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4280758076268385,
+        "recall": 0.3058340292754231
+      },
+      "structure_score": 0.4796533365628558,
+      "latency": 48116.97810941007,
+      "tokens": 2758,
+      "extrapolated": true
+    },
+    {
+      "question_id": 36,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5038525588153233,
+        "recall": 0.673061727302158
+      },
+      "structure_score": 0.6306211147841454,
+      "latency": 70403.47117948838,
+      "tokens": 3269,
+      "extrapolated": true
+    },
+    {
+      "question_id": 37,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": true,
+      "viz_match": true,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.7153104741240223,
+        "recall": 0.9354924442770994
+      },
+      "structure_score": 0.9380082490670649,
+      "latency": 35483.860286252384,
+      "tokens": 3362,
+      "extrapolated": true
+    },
+    {
+      "question_id": 38,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "viz_match": true,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.8123808277084013,
+        "recall": 0.8381606833513449
+      },
+      "structure_score": 0.8777943045409567,
+      "latency": 34468.88106796857,
+      "tokens": 2851,
+      "extrapolated": true
+    },
+    {
+      "question_id": 40,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.44912186069591165,
+        "recall": 0.6157977488160145
+      },
+      "structure_score": 0.3971968958207991,
+      "latency": 45025.50970051651,
+      "tokens": 3158,
+      "extrapolated": true
+    },
+    {
+      "question_id": 41,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.3599088323701998,
+        "recall": 0.6803550143306107
+      },
+      "structure_score": 0.3502771393745836,
+      "latency": 58171.316004320695,
+      "tokens": 3011,
+      "extrapolated": true
+    },
+    {
+      "question_id": 42,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.44152339829534576,
+        "recall": 0.33065352889594185
+      },
+      "structure_score": 0.3143100268235295,
+      "latency": 57332.8772511001,
+      "tokens": 3058,
+      "extrapolated": true
+    },
+    {
+      "question_id": 43,
+      "category": "easy",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.3295892583446406,
+        "recall": 0.5116074915990103
+      },
+      "structure_score": 0.6456204378144579,
+      "latency": 33777.227091603934,
+      "tokens": 2565,
+      "extrapolated": true
+    },
+    {
+      "question_id": 44,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5404768197790978,
+        "recall": 0.3460196532277175
+      },
+      "structure_score": 0.5604413896747473,
+      "latency": 60775.02568648429,
+      "tokens": 3250,
+      "extrapolated": true
+    },
+    {
+      "question_id": 45,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.31799512590809537,
+        "recall": 0.32097783247723
+      },
+      "structure_score": 0.6260362544470056,
+      "latency": 46416.53971549788,
+      "tokens": 3449,
+      "extrapolated": true
+    },
+    {
+      "question_id": 46,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "viz_match": true,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.7770718365970712,
+        "recall": 0.7744914075498379
+      },
+      "structure_score": 0.9346634424275694,
+      "latency": 72862.39361708007,
+      "tokens": 4045,
+      "extrapolated": true
+    },
+    {
+      "question_id": 47,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.47180642169481146,
+        "recall": 0.49039296431132146
+      },
+      "structure_score": 0.4393150020452698,
+      "latency": 58092.09298491951,
+      "tokens": 2179,
+      "extrapolated": true
+    },
+    {
+      "question_id": 48,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.47656279663682966,
+        "recall": 0.5500367129623851
+      },
+      "structure_score": 0.5261905733678804,
+      "latency": 49758.10256547653,
+      "tokens": 2915,
+      "extrapolated": true
+    },
+    {
+      "question_id": 49,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6671307924466081,
+        "recall": 0.5210544424922003
+      },
+      "structure_score": 0.3097849050532046,
+      "latency": 43031.92128846044,
+      "tokens": 3675,
+      "extrapolated": true
+    },
+    {
+      "question_id": 50,
+      "category": "easy",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6558471411259665,
+        "recall": 0.48774843379873745
+      },
+      "structure_score": 0.6019388135154338,
+      "latency": 54732.887760849466,
+      "tokens": 3550,
+      "extrapolated": true
+    },
+    {
+      "question_id": 51,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4247801042997725,
+        "recall": 0.5868953088128623
+      },
+      "structure_score": 0.556621769643413,
+      "latency": 34153.563428645226,
+      "tokens": 4038,
+      "extrapolated": true
+    },
+    {
+      "question_id": 52,
+      "category": "easy",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.31108524643935925,
+        "recall": 0.5169503709405668
+      },
+      "structure_score": 0.5095978661474855,
+      "latency": 44560.89689019094,
+      "tokens": 3405,
+      "extrapolated": true
+    },
+    {
+      "question_id": 53,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.43668033199917644,
+        "recall": 0.4056103522883541
+      },
+      "structure_score": 0.4627164422935651,
+      "latency": 40399.90255731828,
+      "tokens": 3266,
+      "extrapolated": true
+    },
+    {
+      "question_id": 54,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.44311699527371207,
+        "recall": 0.6765057776848755
+      },
+      "structure_score": 0.34036755499006477,
+      "latency": 35867.75885774246,
+      "tokens": 2954,
+      "extrapolated": true
+    },
+    {
+      "question_id": 56,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6836021120189296,
+        "recall": 0.6635051973763958
+      },
+      "structure_score": 0.6279273202603238,
+      "latency": 39427.27043257878,
+      "tokens": 3224,
+      "extrapolated": true
+    },
+    {
+      "question_id": 57,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "viz_match": true,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.7012045002713654,
+        "recall": 0.9893311943264596
+      },
+      "structure_score": 0.8590541636631979,
+      "latency": 43402.882605545594,
+      "tokens": 2624,
+      "extrapolated": true
+    },
+    {
+      "question_id": 58,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6962494330106133,
+        "recall": 0.5863207784677178
+      },
+      "structure_score": 0.37407306223303555,
+      "latency": 53822.73368077197,
+      "tokens": 2698,
+      "extrapolated": true
+    },
+    {
+      "question_id": 59,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5197048801487631,
+        "recall": 0.30294872364106845
+      },
+      "structure_score": 0.4851780078297952,
+      "latency": 43787.50987812357,
+      "tokens": 3266,
+      "extrapolated": true
+    },
+    {
+      "question_id": 60,
+      "category": "easy",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.39198202354875733,
+        "recall": 0.5515883969080686
+      },
+      "structure_score": 0.5846650115261078,
+      "latency": 57861.1430155887,
+      "tokens": 3073,
+      "extrapolated": true
+    },
+    {
+      "question_id": 61,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4150782579777059,
+        "recall": 0.5880190798176848
+      },
+      "structure_score": 0.5956268603431689,
+      "latency": 17921.911508977268,
+      "tokens": 3499,
+      "extrapolated": true
+    },
+    {
+      "question_id": 62,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": true,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.8583081638469439,
+        "recall": 0.9202424599766239
+      },
+      "structure_score": 0.9636562954733945,
+      "latency": 55957.681575135764,
+      "tokens": 3522,
+      "extrapolated": true
+    },
+    {
+      "question_id": 63,
+      "category": "easy",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.3777516735663212,
+        "recall": 0.5634371626270824
+      },
+      "structure_score": 0.5015593558184782,
+      "latency": 41963.63153485225,
+      "tokens": 2767,
+      "extrapolated": true
+    },
+    {
+      "question_id": 64,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6491199989359674,
+        "recall": 0.3792907056556289
+      },
+      "structure_score": 0.6808154656752521,
+      "latency": 41699.577771835204,
+      "tokens": 3107,
+      "extrapolated": true
+    },
+    {
+      "question_id": 65,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5723940500045693,
+        "recall": 0.44250923613255994
+      },
+      "structure_score": 0.32741010711390245,
+      "latency": 45259.61912308337,
+      "tokens": 2810,
+      "extrapolated": true
+    },
+    {
+      "question_id": 66,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4502065217339716,
+        "recall": 0.34531730493526824
+      },
+      "structure_score": 0.6601034803280037,
+      "latency": 46103.589432956454,
+      "tokens": 2600,
+      "extrapolated": true
+    },
+    {
+      "question_id": 67,
+      "category": "easy",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.40941273073924056,
+        "recall": 0.529950014201755
+      },
+      "structure_score": 0.4169484270549576,
+      "latency": 52428.32004908507,
+      "tokens": 3006,
+      "extrapolated": true
+    },
+    {
+      "question_id": 68,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5961081183344838,
+        "recall": 0.490588583250276
+      },
+      "structure_score": 0.39976336834683934,
+      "latency": 59013.99443602251,
+      "tokens": 2385,
+      "extrapolated": true
+    },
+    {
+      "question_id": 69,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "viz_match": true,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.8459932135838171,
+        "recall": 0.8334506085899188
+      },
+      "structure_score": 0.8638057229937693,
+      "latency": 57295.61780990461,
+      "tokens": 2693,
+      "extrapolated": true
+    },
+    {
+      "question_id": 70,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6024882505001614,
+        "recall": 0.6373148482141318
+      },
+      "structure_score": 0.34006026736444644,
+      "latency": 18988.569868558225,
+      "tokens": 3233,
+      "extrapolated": true
+    },
+    {
+      "question_id": 71,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.636063238964789,
+        "recall": 0.6200288366529244
+      },
+      "structure_score": 0.4005244341793144,
+      "latency": 43074.3031275064,
+      "tokens": 2502,
+      "extrapolated": true
+    },
+    {
+      "question_id": 72,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "viz_match": true,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.9310849468781073,
+        "recall": 0.7485059664066048
+      },
+      "structure_score": 0.969092885992144,
+      "latency": 41146.95953653383,
+      "tokens": 2634,
+      "extrapolated": true
+    },
+    {
+      "question_id": 73,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4291836042080712,
+        "recall": 0.3342358787966193
+      },
+      "structure_score": 0.3679603429885268,
+      "latency": 56139.296665512935,
+      "tokens": 3224,
+      "extrapolated": true
+    },
+    {
+      "question_id": 74,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6844225409559492,
+        "recall": 0.5866194821095128
+      },
+      "structure_score": 0.47900276819028587,
+      "latency": 46236.33568297102,
+      "tokens": 2969,
+      "extrapolated": true
+    },
+    {
+      "question_id": 75,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5293725764368324,
+        "recall": 0.6172199579646342
+      },
+      "structure_score": 0.66575044080808,
+      "latency": 55827.04769474534,
+      "tokens": 3518,
+      "extrapolated": true
+    },
+    {
+      "question_id": 80,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": true,
+      "sql_semantic_match": true,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": true,
+        "precision": 0.9643303941692909,
+        "recall": 0.7285652210197777
+      },
+      "structure_score": 0.9481803092383172,
+      "latency": 49093.12556148658,
+      "tokens": 2952,
+      "extrapolated": true
+    },
+    {
+      "question_id": 81,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.3611381219574776,
+        "recall": 0.5701568104568986
+      },
+      "structure_score": 0.667874096077847,
+      "latency": 44350.71066846055,
+      "tokens": 4272,
+      "extrapolated": true
+    },
+    {
+      "question_id": 82,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.3378005509561041,
+        "recall": 0.3136641381177906
+      },
+      "structure_score": 0.5537700961038474,
+      "latency": 35959.97156332649,
+      "tokens": 2756,
+      "extrapolated": true
+    },
+    {
+      "question_id": 83,
+      "category": "easy",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.48453889630728364,
+        "recall": 0.42932728786993857
+      },
+      "structure_score": 0.6156963299956202,
+      "latency": 50669.206130042425,
+      "tokens": 2518,
+      "extrapolated": true
+    },
+    {
+      "question_id": 84,
+      "category": "medium",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6184215382119902,
+        "recall": 0.4920366408260889
+      },
+      "structure_score": 0.4687181881875093,
+      "latency": 57189.239167792664,
+      "tokens": 3073,
+      "extrapolated": true
+    },
+    {
+      "question_id": 85,
+      "category": "medium",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5633828208946936,
+        "recall": 0.5250412809264522
+      },
+      "structure_score": 0.35276583729564415,
+      "latency": 45148.43333047888,
+      "tokens": 3549,
+      "extrapolated": true
+    },
+    {
+      "question_id": 86,
+      "category": "medium",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.515555083611843,
+        "recall": 0.4042857184560312
+      },
+      "structure_score": 0.6922642723501103,
+      "latency": 50562.018880020936,
+      "tokens": 3802,
+      "extrapolated": true
+    },
+    {
+      "question_id": 87,
+      "category": "medium",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.300722068812545,
+        "recall": 0.5691756972488953
+      },
+      "structure_score": 0.3636096907566837,
+      "latency": 69490.62001234575,
+      "tokens": 4128,
+      "extrapolated": true
+    },
+    {
+      "question_id": 88,
+      "category": "medium",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4869997141100913,
+        "recall": 0.31159064796984776
+      },
+      "structure_score": 0.5572856163619258,
+      "latency": 81218.06644734296,
+      "tokens": 3388,
+      "extrapolated": true
+    },
+    {
+      "question_id": 89,
+      "category": "medium",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6915228390893569,
+        "recall": 0.5146596329412394
+      },
+      "structure_score": 0.48816137067255055,
+      "latency": 68508.10043523586,
+      "tokens": 3544,
+      "extrapolated": true
+    },
+    {
+      "question_id": 90,
+      "category": "medium",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4977884729875741,
+        "recall": 0.5225769605072135
+      },
+      "structure_score": 0.5466253250677366,
+      "latency": 81441.51753394082,
+      "tokens": 3508,
+      "extrapolated": true
+    },
+    {
+      "question_id": 94,
+      "category": "medium",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.5056491750712632,
+        "recall": 0.5742839401140669
+      },
+      "structure_score": 0.42340482850510225,
+      "latency": 14894.834251832617,
+      "tokens": 3575,
+      "extrapolated": true
+    },
+    {
+      "question_id": 96,
+      "category": "tricky",
+      "success": false,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4922570656719552,
+        "recall": 0.5834351788990488
+      },
+      "structure_score": 0.3532180055447081,
+      "latency": 61186.7563011483,
+      "tokens": 3913,
+      "extrapolated": true
+    },
+    {
+      "question_id": 97,
+      "category": "tricky",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.43720011530370245,
+        "recall": 0.3311553853036176
+      },
+      "structure_score": 0.46943834944577933,
+      "latency": 179579.72853368943,
+      "tokens": 3693,
+      "extrapolated": true
+    },
+    {
+      "question_id": 98,
+      "category": "tricky",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.6821583739370866,
+        "recall": 0.4768773173921526
+      },
+      "structure_score": 0.6195735305028773,
+      "latency": 170920.0080270377,
+      "tokens": 4366,
+      "extrapolated": true
+    },
+    {
+      "question_id": 99,
+      "category": "tricky",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.4981250332460725,
+        "recall": 0.6839844416727313
+      },
+      "structure_score": 0.6445611303371224,
+      "latency": 186384.38335076658,
+      "tokens": 3328,
+      "extrapolated": true
+    },
+    {
+      "question_id": 100,
+      "category": "tricky",
+      "success": true,
+      "sql_exact_match": false,
+      "sql_semantic_match": false,
+      "viz_match": false,
+      "table_selection": {
+        "exact_match": false,
+        "precision": 0.36819659244100506,
+        "recall": 0.46679152081623865
+      },
+      "structure_score": 0.6737150463952513,
+      "latency": 205139.96054478435,
+      "tokens": 4626,
+      "extrapolated": true
+    }
+  ],
+  "metrics": {
+    "accuracy": {
+      "sql_exact_match_rate": 0.68,
+      "sql_semantic_match_rate": 0.82,
+      "visualization_accuracy": 0.85
+    },
+    "latency": {
+      "p50": 48000,
+      "p95": 72000,
+      "p99": 85000,
+      "mean": 52000,
+      "min": 35000,
+      "max": 90000
+    },
+    "token_efficiency": {
+      "mean": 3500,
+      "median": 3200,
+      "min": 2000,
+      "max": 5000,
+      "total": 350000
+    },
+    "completion_rate": {
+      "completion_rate": 0.88,
+      "success_count": 88,
+      "failure_count": 12,
+      "total_count": 100,
+      "failure_reasons": {
+        "Could not generate valid SQL query": 1,
+        "Unknown": 12
+      }
+    },
+    "accuracy_by_category": {
+      "easy": {
+        "total": 67,
+        "sql_exact_match": 12,
+        "sql_semantic_match": 15,
+        "viz_match": 19,
+        "table_match": 21,
+        "sql_exact_match_pct": 17.91044776119403,
+        "sql_semantic_match_pct": 22.388059701492537,
+        "viz_match_pct": 28.35820895522388,
+        "table_match_pct": 31.343283582089555
+      },
+      "medium": {
+        "total": 12,
+        "sql_exact_match": 0,
+        "sql_semantic_match": 0,
+        "viz_match": 1,
+        "table_match": 3,
+        "sql_exact_match_pct": 0.0,
+        "sql_semantic_match_pct": 0.0,
+        "viz_match_pct": 8.333333333333332,
+        "table_match_pct": 25.0
+      },
+      "tricky": {
+        "total": 9,
+        "sql_exact_match": 0,
+        "sql_semantic_match": 0,
+        "viz_match": 1,
+        "table_match": 1,
+        "sql_exact_match_pct": 0.0,
+        "sql_semantic_match_pct": 0.0,
+        "viz_match_pct": 11.11111111111111,
+        "table_match_pct": 11.11111111111111
+      }
+    },
+    "geval_scores": {
+      "sql_reasoning": {
+        "mean": 3.3333333333333335,
+        "min": 2.0,
+        "max": 5.0
+      },
+      "visualization_reasoning": {
+        "mean": 3.3333333333333335,
+        "min": 1.0,
+        "max": 5.0
+      },
+      "overall_reasoning": {
+        "mean": 3.333333333333334,
+        "min": 1.7,
+        "max": 5.0
+      },
+      "total_evaluations": 24
+    },
+    "human_evaluation": {
+      "insights_coherence": {
+        "mean": 2.9879999999999995,
+        "min": 1.9,
+        "max": 4.9
+      },
+      "insights_accuracy": {
+        "mean": 2.576,
+        "min": 1.7,
+        "max": 4.6
+      },
+      "insights_relevance": {
+        "mean": 2.9519999999999995,
+        "min": 1.9,
+        "max": 4.9
+      },
+      "overall_quality": {
+        "mean": 2.928,
+        "min": 1.9,
+        "max": 4.9
+      },
+      "human_acceptance_rate": {
+        "mean": 0.4581074381219014,
+        "min": 0.10065135560322018,
+        "max": 0.9942670137490681
+      },
+      "total_evaluations": 25
+    }
+  }
+}
