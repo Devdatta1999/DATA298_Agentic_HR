@@ -5,13 +5,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
+  /* Executive Midnight Theme Colors */
+  --primary-bg: #0A0F1F;
+  --section-surface: #11182A;
+  --secondary: #1E2A40;
+  --accent-1: #F9A23F;
+  --accent-2: #6EC1E4;
+  --text-primary: #FFFFFF;
+  --text-muted: #B6C2CC;
+
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   font-weight: 400;
 
   color-scheme: dark;
-  color: rgba(255, 255, 255, 0.9);
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: var(--text-primary);
+  background: var(--primary-bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,7 +31,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0e1a 0%, #0f172a 50%, #1a1f2e 100%);
+  background: var(--primary-bg);
   background-attachment: fixed;
 }
 
@@ -37,16 +46,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: var(--section-surface);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #475569;
+  background: var(--secondary);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: var(--accent-2);
 }
 
 /* Landing Page Animations */

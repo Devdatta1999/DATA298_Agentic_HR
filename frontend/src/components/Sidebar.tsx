@@ -28,27 +28,60 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
   const { sql_query, tables, columns } = showCurrent ? currentMessage.metadata! : { sql_query: undefined, tables: undefined, columns: undefined };
 
   return (
-    <div className="w-[420px] bg-gradient-to-b from-slate-900 to-slate-950 border-l border-slate-700 flex flex-col h-full shadow-2xl">
+    <div className="w-[420px] border-l flex flex-col h-full shadow-2xl" style={{ 
+      backgroundColor: '#11182A',
+      borderColor: 'rgba(30, 42, 64, 0.5)'
+    }}>
       {/* Header */}
-      <div className="p-5 border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-900 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-200">Query Details</h3>
+      <div className="p-5 border-b flex items-center justify-between" style={{ 
+        backgroundColor: '#1E2A40',
+        borderColor: 'rgba(30, 42, 64, 0.5)'
+      }}>
+        <h3 className="text-lg font-semibold" style={{ color: '#FFFFFF' }}>Query Details</h3>
         <button
           onClick={onClose}
-          className="text-slate-400 hover:text-slate-200 transition-colors p-1 hover:bg-slate-700 rounded"
+          className="transition-colors p-1 rounded"
+          style={{ color: '#B6C2CC' }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#FFFFFF';
+            e.currentTarget.style.backgroundColor = '#1E2A40';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#B6C2CC';
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
         >
           <X className="w-5 h-5" />
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-700 bg-slate-800/50">
+      <div className="flex border-b" style={{ 
+        borderColor: 'rgba(30, 42, 64, 0.5)',
+        backgroundColor: '#1E2A40'
+      }}>
         <button
           onClick={() => setActiveTab('tables')}
           className={`flex-1 px-3 py-3 text-xs font-medium transition-all ${
-            activeTab === 'tables'
-              ? 'text-purple-400 border-b-2 border-purple-400 bg-slate-800/50'
-              : 'text-slate-400 hover:text-slate-200'
+            activeTab === 'tables' ? '' : ''
           }`}
+          style={activeTab === 'tables' ? {
+            color: '#F9A23F',
+            borderBottom: '2px solid #F9A23F',
+            backgroundColor: '#1E2A40'
+          } : {
+            color: '#B6C2CC'
+          }}
+          onMouseEnter={(e) => {
+            if (activeTab !== 'tables') {
+              e.currentTarget.style.color = '#FFFFFF';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (activeTab !== 'tables') {
+              e.currentTarget.style.color = '#B6C2CC';
+            }
+          }}
         >
           <Database className="w-3 h-3 inline mr-1" />
           Current
@@ -56,10 +89,25 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
         <button
           onClick={() => setActiveTab('sql')}
           className={`flex-1 px-3 py-3 text-xs font-medium transition-all ${
-            activeTab === 'sql'
-              ? 'text-purple-400 border-b-2 border-purple-400 bg-slate-800/50'
-              : 'text-slate-400 hover:text-slate-200'
+            activeTab === 'sql' ? '' : ''
           }`}
+          style={activeTab === 'sql' ? {
+            color: '#F9A23F',
+            borderBottom: '2px solid #F9A23F',
+            backgroundColor: '#1E2A40'
+          } : {
+            color: '#B6C2CC'
+          }}
+          onMouseEnter={(e) => {
+            if (activeTab !== 'sql') {
+              e.currentTarget.style.color = '#FFFFFF';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (activeTab !== 'sql') {
+              e.currentTarget.style.color = '#B6C2CC';
+            }
+          }}
         >
           <Code className="w-3 h-3 inline mr-1" />
           SQL
@@ -67,10 +115,25 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
         <button
           onClick={() => setActiveTab('history')}
           className={`flex-1 px-3 py-3 text-xs font-medium transition-all ${
-            activeTab === 'history'
-              ? 'text-purple-400 border-b-2 border-purple-400 bg-slate-800/50'
-              : 'text-slate-400 hover:text-slate-200'
+            activeTab === 'history' ? '' : ''
           }`}
+          style={activeTab === 'history' ? {
+            color: '#F9A23F',
+            borderBottom: '2px solid #F9A23F',
+            backgroundColor: '#1E2A40'
+          } : {
+            color: '#B6C2CC'
+          }}
+          onMouseEnter={(e) => {
+            if (activeTab !== 'history') {
+              e.currentTarget.style.color = '#FFFFFF';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (activeTab !== 'history') {
+              e.currentTarget.style.color = '#B6C2CC';
+            }
+          }}
         >
           <Database className="w-3 h-3 inline mr-1" />
           History
@@ -82,7 +145,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
         {activeTab === 'tables' && (
           <div className="space-y-4">
             <div>
-              <h4 className="text-sm font-semibold text-slate-300 mb-3 uppercase tracking-wide">
+              <h4 className="text-sm font-semibold mb-3 uppercase tracking-wide" style={{ color: '#B6C2CC' }}>
                 Relevant Tables
               </h4>
               {tables && tables.length > 0 ? (
@@ -90,9 +153,13 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
                   {tables.map((table, idx) => (
                     <div
                       key={idx}
-                      className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl p-4 shadow-lg"
+                      className="rounded-xl p-4 shadow-lg"
+                      style={{
+                        background: 'linear-gradient(135deg, #11182A 0%, #1E2A40 100%)',
+                        border: '1px solid rgba(30, 42, 64, 0.6)'
+                      }}
                     >
-                      <div className="text-sm font-semibold text-purple-400 mb-3">
+                      <div className="text-sm font-semibold mb-3" style={{ color: '#F9A23F' }}>
                         {table}
                       </div>
                       {columns && columns[table] && Array.isArray(columns[table]) && columns[table].length > 0 && (
@@ -100,7 +167,12 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
                           {columns[table].map((col: string, colIdx: number) => (
                             <span
                               key={colIdx}
-                              className="px-3 py-1 bg-slate-700 text-slate-200 text-xs rounded-lg border border-slate-600"
+                              className="px-3 py-1 text-xs rounded-lg"
+                              style={{
+                                backgroundColor: '#1E2A40',
+                                color: '#FFFFFF',
+                                border: '1px solid rgba(30, 42, 64, 0.6)'
+                              }}
                             >
                               {col}
                             </span>
@@ -111,7 +183,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-slate-400">No table information available</p>
+                <p className="text-sm" style={{ color: '#B6C2CC' }}>No table information available</p>
               )}
             </div>
           </div>
@@ -119,15 +191,18 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
 
         {activeTab === 'sql' && (
           <div>
-            <h4 className="text-sm font-semibold text-slate-300 mb-3 uppercase tracking-wide">Generated SQL</h4>
+            <h4 className="text-sm font-semibold mb-3 uppercase tracking-wide" style={{ color: '#B6C2CC' }}>Generated SQL</h4>
             {sql_query ? (
-              <div className="bg-slate-950 rounded-xl overflow-hidden border border-slate-700 shadow-lg">
-                <pre className="p-5 text-sm text-slate-200 overflow-x-auto font-mono">
+              <div className="rounded-xl overflow-hidden shadow-lg" style={{
+                backgroundColor: '#0A0F1F',
+                border: '1px solid rgba(30, 42, 64, 0.6)'
+              }}>
+                <pre className="p-5 text-sm overflow-x-auto font-mono" style={{ color: '#FFFFFF' }}>
                   <code>{sql_query}</code>
                 </pre>
               </div>
             ) : (
-              <p className="text-sm text-slate-400">No SQL query available</p>
+              <p className="text-sm" style={{ color: '#B6C2CC' }}>No SQL query available</p>
             )}
           </div>
         )}
@@ -154,7 +229,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
                         ) : (
                           <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
                         )}
-                        <span className="text-xs font-medium text-purple-400">Q{idx + 1}:</span>
+                        <span className="text-xs font-medium" style={{ color: '#F9A23F' }}>Q{idx + 1}:</span>
                         <span className="text-sm text-slate-300 truncate flex-1">{query.question}</span>
                       </div>
                     </button>
@@ -167,7 +242,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentMessage, onClose }) => {
                             <div className="space-y-2">
                               {query.tables.map((table, tIdx) => (
                                 <div key={tIdx} className="bg-slate-900/50 rounded p-2">
-                                  <div className="text-xs font-medium text-purple-400 mb-1">{table}</div>
+                                  <div className="text-xs font-medium mb-1" style={{ color: '#F9A23F' }}>{table}</div>
                                   {query.columns && query.columns[table] && (
                                     <div className="flex flex-wrap gap-1">
                                       {query.columns[table].map((col: string, cIdx: number) => (

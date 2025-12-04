@@ -161,15 +161,31 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-950 via-slate-900/95 to-slate-950 text-gray-100">
+    <div className="flex h-screen text-gray-100" style={{ backgroundColor: '#0A0F1F' }}>
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 border-b border-slate-700/50 backdrop-blur-sm px-8 py-6 flex items-center justify-between shadow-xl">
+        <header className="border-b backdrop-blur-sm px-8 py-6 flex items-center justify-between shadow-xl" style={{ 
+          backgroundColor: '#11182A',
+          borderColor: 'rgba(30, 42, 64, 0.5)'
+        }}>
           <div className="flex items-center gap-6">
             <button
               onClick={() => setShowLanding(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-200 text-slate-300 hover:text-white"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200"
+              style={{
+                backgroundColor: '#1E2A40',
+                border: '1px solid rgba(30, 42, 64, 0.6)',
+                color: '#B6C2CC'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#1E2A40';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#1E2A40';
+                e.currentTarget.style.color = '#B6C2CC';
+              }}
               title="Back to Home"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,24 +194,34 @@ function App() {
               <span className="text-sm font-medium">Home</span>
             </button>
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent tracking-tight">
+              <h1 className="text-3xl font-bold tracking-tight" style={{ 
+                background: 'linear-gradient(to right, #F9A23F, #6EC1E4)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
                 HR Analytics Platform
               </h1>
-              <p className="text-sm text-slate-400 mt-1.5 font-medium">Intelligent Data Analysis & Insights</p>
+              <p className="text-sm mt-1.5 font-medium" style={{ color: '#B6C2CC' }}>Intelligent Data Analysis & Insights</p>
             </div>
           </div>
           <TokenCounter />
         </header>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto px-8 py-8 bg-gradient-to-b from-slate-950/30 via-slate-900/20 to-slate-950/30">
+        <div className="flex-1 overflow-y-auto px-8 py-8">
           {messages.length === 0 && (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-3">
+                <h2 className="text-3xl font-bold mb-3" style={{ 
+                  background: 'linear-gradient(to right, #F9A23F, #6EC1E4)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}>
                   Ready to Analyze
                 </h2>
-                <p className="text-slate-400 mb-8 text-lg">
+                <p className="mb-8 text-lg" style={{ color: '#B6C2CC' }}>
                   Ask questions about your HR data in natural language
                 </p>
               </div>
@@ -226,8 +252,8 @@ function App() {
             ))}
             {isLoading && (
               <div className="flex gap-4 mb-6">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#F9A23F' }}>
+                  <div className="w-5 h-5 border-2 border-transparent rounded-full animate-spin" style={{ borderTopColor: '#0A0F1F' }} />
                 </div>
                 <div className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3">
                   <div className="text-gray-400">Processing your query...</div>
@@ -239,7 +265,10 @@ function App() {
         </div>
 
         {/* Input Area */}
-        <div className="bg-gradient-to-r from-slate-900 to-slate-800 border-t border-slate-700">
+        <div className="border-t" style={{ 
+          backgroundColor: '#11182A',
+          borderColor: 'rgba(30, 42, 64, 0.5)'
+        }}>
           <ChatInput onSend={handleSendMessage} isLoading={isLoading} />
         </div>
       </div>

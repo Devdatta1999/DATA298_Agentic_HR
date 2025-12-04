@@ -25,9 +25,9 @@ const SingleValueCard: React.FC<SingleValueCardProps> = ({ data, question }) => 
       return <Users className="w-8 h-8 text-blue-400" />;
     }
     if (questionLower.includes('performance') || questionLower.includes('rating') || questionLower.includes('score')) {
-      return <Award className="w-8 h-8 text-purple-400" />;
+      return <Award className="w-8 h-8" style={{ color: '#F9A23F' }} />;
     }
-    return <BarChart3 className="w-8 h-8 text-cyan-400" />;
+    return <BarChart3 className="w-8 h-8" style={{ color: '#F9A23F' }} />;
   };
 
   // Format value based on type
@@ -64,20 +64,22 @@ const SingleValueCard: React.FC<SingleValueCardProps> = ({ data, question }) => 
           return (
             <div
               key={key}
-              className={`${
-                isPrimary
-                  ? 'bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-purple-500/30 backdrop-blur-sm'
-                  : 'bg-slate-700/30 border-slate-600/50 backdrop-blur-sm'
-              } border rounded-xl p-5`}
+              className="border rounded-xl p-5 backdrop-blur-sm"
+              style={isPrimary ? {
+                background: 'linear-gradient(135deg, rgba(249, 162, 63, 0.1), rgba(249, 162, 63, 0.15))',
+                borderColor: 'rgba(249, 162, 63, 0.3)'
+              } : {
+                backgroundColor: 'rgba(30, 42, 64, 0.3)',
+                borderColor: 'rgba(30, 42, 64, 0.5)'
+              }}
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-slate-300 uppercase tracking-wide">
+                <span className="text-sm font-semibold uppercase tracking-wide" style={{ color: '#B6C2CC' }}>
                   {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                 </span>
                 <span
-                  className={`text-3xl font-bold ${
-                    isPrimary ? 'text-purple-300' : 'text-white'
-                  }`}
+                  className="text-3xl font-bold"
+                  style={{ color: isPrimary ? '#F9A23F' : '#FFFFFF' }}
                 >
                   {formatValue(value)}
                 </span>

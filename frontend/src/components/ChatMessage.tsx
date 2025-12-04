@@ -20,8 +20,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
   return (
     <div className={`flex gap-4 mb-6 ${isUser ? 'justify-end' : 'justify-start'}`}>
       {!isUser && (
-        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg">
-          <Sparkles className="w-5 h-5 text-white" />
+        <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ backgroundColor: '#F9A23F' }}>
+          <Sparkles className="w-5 h-5" style={{ color: '#0A0F1F' }} />
         </div>
       )}
       
@@ -29,10 +29,17 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         {/* Main message bubble */}
         <div
           className={`rounded-2xl px-6 py-4 shadow-xl backdrop-blur-sm ${
-            isUser
-              ? 'bg-gradient-to-br from-blue-500/90 to-blue-600/90 text-white border border-blue-400/20'
-              : 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 text-gray-100 border border-slate-700/50'
+            isUser ? '' : ''
           }`}
+          style={isUser ? {
+            backgroundColor: '#F9A23F',
+            color: '#0A0F1F',
+            border: '1px solid rgba(249, 162, 63, 0.3)'
+          } : {
+            backgroundColor: '#11182A',
+            color: '#FFFFFF',
+            border: '1px solid rgba(30, 42, 64, 0.5)'
+          }}
         >
           <div className="whitespace-pre-wrap leading-relaxed text-[15px]">{mainContent.replace(/\*\*/g, '').trim()}</div>
         </div>
@@ -55,8 +62,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
       </div>
       
       {isUser && (
-        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
-          <User className="w-5 h-5 text-white" />
+        <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ backgroundColor: '#6EC1E4' }}>
+          <User className="w-5 h-5" style={{ color: '#0A0F1F' }} />
         </div>
       )}
     </div>
