@@ -7,11 +7,13 @@ import DataVisualization from './components/DataVisualization';
 import Sidebar from './components/Sidebar';
 import TokenCounter from './components/TokenCounter';
 import SingleValueCard from './components/SingleValueCard';
+import LandingPage from './components/LandingPage';
 import { Message } from './store/chatStore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+  const [showLanding, setShowLanding] = useState(true);
   const {
     sessionId,
     messages,
@@ -149,17 +151,38 @@ function App() {
 
   const lastVisualizationMessage = getLastAssistantMessage();
 
+  const handleEnterChat = () => {
+    setShowLanding(false);
+  };
+
+  // Show landing page first
+  if (showLanding) {
+    return <LandingPage onEnterChat={handleEnterChat} />;
+  }
+
   return (
     <div className="flex h-screen bg-gradient-to-br from-slate-950 via-slate-900/95 to-slate-950 text-gray-100">
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 border-b border-slate-700/50 backdrop-blur-sm px-8 py-6 flex items-center justify-between shadow-xl">
-          <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent tracking-tight">
-              HR Analytics Platform
-            </h1>
-            <p className="text-sm text-slate-400 mt-1.5 font-medium">Intelligent Data Analysis & Insights</p>
+          <div className="flex items-center gap-6">
+            <button
+              onClick={() => setShowLanding(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-200 text-slate-300 hover:text-white"
+              title="Back to Home"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="text-sm font-medium">Home</span>
+            </button>
+            <div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent tracking-tight">
+                HR Analytics Platform
+              </h1>
+              <p className="text-sm text-slate-400 mt-1.5 font-medium">Intelligent Data Analysis & Insights</p>
+            </div>
           </div>
           <TokenCounter />
         </header>
@@ -170,39 +193,11 @@ function App() {
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-3">
-                  Welcome to HR Analytics
+                  Ready to Analyze
                 </h2>
                 <p className="text-slate-400 mb-8 text-lg">
                   Ask questions about your HR data in natural language
                 </p>
-                <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-2xl p-8 max-w-2xl shadow-2xl">
-                  <h3 className="text-xl font-semibold text-slate-200 mb-6 flex items-center gap-2">
-                    <span className="w-1 h-6 bg-gradient-to-b from-purple-500 to-blue-500 rounded-full"></span>
-                    Example Questions:
-                  </h3>
-                  <ul className="space-y-3 text-left text-slate-300">
-                    <li className="flex items-center gap-3">
-                      <span className="text-purple-400">•</span>
-                      <span>Show me department wise headcount</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <span className="text-purple-400">•</span>
-                      <span>What is the average salary by department?</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <span className="text-purple-400">•</span>
-                      <span>Show employee turnover trends</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <span className="text-purple-400">•</span>
-                      <span>Which employees have the highest performance ratings?</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <span className="text-purple-400">•</span>
-                      <span>What is the attrition rate by department?</span>
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
           )}
