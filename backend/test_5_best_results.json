@@ -1,0 +1,157 @@
+{
+  "summary": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0,
+    "viz_correct": 4,
+    "has_insights": 1,
+    "has_analysis": 5,
+    "cache_hits_first_run": 1,
+    "pattern_matches": 0,
+    "total_tokens": 0,
+    "total_time": 192.70877623558044,
+    "issues": [
+      "Q1: Missing real insights",
+      "Q3: Missing real insights",
+      "Q4: Missing real insights",
+      "Q5: Viz mismatch - Expected table, Got bar",
+      "Q5: Missing real insights"
+    ]
+  },
+  "results": [
+    {
+      "success": true,
+      "question": "Show me department wise headcount",
+      "elapsed": 35.909494161605835,
+      "cache_hit": false,
+      "pattern_matched": false,
+      "tokens": 0,
+      "results_count": 10,
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      },
+      "insights": {
+        "count": 3,
+        "has_real_insights": false,
+        "preview": [
+          "It Support has the highest value of 3,906",
+          "Nan has the lowest value of 1,453"
+        ]
+      },
+      "analysis": {
+        "length": 1078,
+        "has_real_analysis": true,
+        "preview": "**\nThe data suggests that the company has a large and diverse workforce with varying department sizes. The high headcount in \"It Support\" may indicate"
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me headcount trends over time by month",
+      "elapsed": 25.14381718635559,
+      "cache_hit": false,
+      "pattern_matched": false,
+      "tokens": 0,
+      "results_count": 95,
+      "visualization": {
+        "generated": "line",
+        "expected": "line",
+        "match": true
+      },
+      "insights": {
+        "count": 3,
+        "has_real_insights": true,
+        "preview": [
+          "Trend: Increased by 84,830 (0.0%) from 2017-12-31 to end",
+          "Range: 0 to 84,830"
+        ]
+      },
+      "analysis": {
+        "length": 907,
+        "has_real_analysis": true,
+        "preview": "**\nThe data shows that the company experienced a significant increase in headcount between December 2017 and January 2018. This could be due to new hi"
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the total number of active employees?",
+      "elapsed": 86.04459190368652,
+      "cache_hit": false,
+      "pattern_matched": false,
+      "tokens": 0,
+      "results_count": 1,
+      "visualization": {
+        "generated": "none",
+        "expected": "none",
+        "match": true
+      },
+      "insights": {
+        "count": 1,
+        "has_real_insights": false,
+        "preview": [
+          "The Total Active Employees is 37725"
+        ]
+      },
+      "analysis": {
+        "length": 953,
+        "has_real_analysis": true,
+        "preview": "**\n\nThe data shows that there are 37725 active employees in the organization. This is a significant number and indicates that the company has a large "
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me employees with highest engagement scores",
+      "elapsed": 45.515650033950806,
+      "cache_hit": false,
+      "pattern_matched": false,
+      "tokens": 0,
+      "results_count": 10,
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      },
+      "insights": {
+        "count": 3,
+        "has_real_insights": false,
+        "preview": [
+          "Analyzed 10 data points",
+          "Range: 0 to 4"
+        ]
+      },
+      "analysis": {
+        "length": 1147,
+        "has_real_analysis": true,
+        "preview": "**\n\nThe query provides an overview of employee engagement and performance across different departments. The results show that while some employees exc"
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me top 10 employees with highest performance ratings",
+      "elapsed": 0.09522294998168945,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "tokens": 0,
+      "results_count": 10,
+      "visualization": {
+        "generated": "bar",
+        "expected": "table",
+        "match": false
+      },
+      "insights": {
+        "count": 3,
+        "has_real_insights": false,
+        "preview": [
+          "Analyzed 10 data points",
+          "Range: 0 to 4"
+        ]
+      },
+      "analysis": {
+        "length": 1147,
+        "has_real_analysis": true,
+        "preview": "**\n\nThe query provides an overview of employee engagement and performance across different departments. The results show that while some employees exc"
+      }
+    }
+  ]
+}

@@ -15,6 +15,7 @@ from app.agent.prompts import (
 from app.services.token_counter import token_counter
 from app.rag.rag_retriever import RAGRetriever
 from app.cache.semantic_cache import SemanticCache
+from app.patterns.pattern_matcher import PatternMatcher
 import logging
 
 logger = logging.getLogger(__name__)
@@ -46,6 +47,13 @@ class HRAgent:
             except Exception as e:
                 logger.warning(f"Failed to initialize semantic cache: {e}. Caching will be disabled.")
                 self.semantic_cache = None
+            
+            try:
+                self.pattern_matcher = PatternMatcher()
+                logger.info("Pattern matcher initialized successfully")
+            except Exception as e:
+                logger.warning(f"Failed to initialize pattern matcher: {e}. Pattern matching will be disabled.")
+                self.pattern_matcher = None
         except Exception as e:
             raise Exception(f"Failed to initialize LLM: {str(e)}. Make sure Ollama is running at {settings.OLLAMA_BASE_URL}")
     
@@ -513,15 +521,13 @@ Use ACTUAL numbers from the data. Avoid generic statements."""
                         break
             
             # Validate insights quality - check if they're generic/fallback
+            # Only mark as generic if they're truly generic (no specific data, just status messages)
             is_generic = False
             generic_phrases = [
                 "query executed successfully",
-                "query returned",
-                "sample data",
                 "data retrieved successfully",
-                "records found",
-                "retrieved",
-                "records"
+                "query returned",
+                "retrieved successfully"
             ]
             
             if not insights:
@@ -530,12 +536,20 @@ Use ACTUAL numbers from the data. Avoid generic statements."""
                 # Check if insights are too generic - must have actual numbers or specific findings
                 insight_text = " ".join(insights).lower()
                 has_numbers = any(char.isdigit() for char in insight_text)
-                # More strict: if it contains generic phrases, it's ALWAYS generic (even with numbers)
-                contains_generic = any(phrase in insight_text for phrase in generic_phrases)
-                is_generic = contains_generic or all(len(i) < 30 for i in insights) or (not has_numbers and len(insights) > 0)
+                has_specific_findings = any(keyword in insight_text for keyword in [
+                    "highest", "lowest", "average", "total", "trend", "increased", "decreased",
+                    "peak", "range", "has the", "represents", "percentage", "%"
+                ])
                 
-                if contains_generic:
+                # Only mark as generic if it's a pure status message without any analysis
+                contains_generic = any(phrase in insight_text for phrase in generic_phrases)
+                # If it has numbers or specific findings, it's NOT generic (even if it has "records" or "analyzed")
+                is_generic = (contains_generic and not has_numbers and not has_specific_findings) or (all(len(i) < 20 for i in insights) and not has_numbers)
+                
+                if is_generic:
                     print(f"⚠️  Detected generic insight: '{insight_text[:100]}' - will regenerate")
+                else:
+                    print(f"✓ LLM generated valid insights with {'numbers' if has_numbers else 'findings'}")
             
             # If insights are generic, try to generate real insights from data
             if is_generic and results and result_count > 0:
@@ -872,7 +886,112 @@ Use ACTUAL numbers from the data. Avoid generic statements."""
                     "cache_similarity": cached_response.get("cache_similarity", 0.0)
                 }
         
-        # Step 0.5: Retrieve RAG context if available
+        # Step 0.5: Try pattern matching (fast, no LLM)
+        pattern_match = None
+        if self.pattern_matcher:
+            try:
+                pattern_match = self.pattern_matcher.match_pattern(question, similarity_threshold=0.70)
+                if pattern_match and pattern_match.get("matched"):
+                    logger.info(f"Pattern MATCH for query: {question[:50]}... (Pattern: {pattern_match.get('pattern_type')})")
+                    sql_query = pattern_match.get("sql")
+                    
+                    # Validate and execute pattern-matched SQL
+                    if validate_sql_query(sql_query):
+                        try:
+                            results = execute_sql_query(sql_query)
+                            
+                            # Get table/column info from pattern
+                            tables = pattern_match.get("tables", [])
+                            columns = {}
+                            for table in tables:
+                                columns[table] = []  # Pattern doesn't provide column details
+                            
+                            # Get result columns for visualization
+                            result_columns = list(results[0].keys()) if results else []
+                            
+                            # Step: Generate visualization (use heuristics or pattern recommendation)
+                            query_lower = question.lower()
+                            viz_recommendation = None
+                            
+                            # Check for employee queries - distinguish between list vs aggregated
+                            if 'employees' in query_lower and any(kw in query_lower for kw in ['top', 'highest', 'lowest', 'with', 'show me']) and len(result_columns) > 2:
+                                has_aggregation = any('avg' in col.lower() or 'average' in col.lower() or 'sum' in col.lower() for col in result_columns)
+                                has_employee_cols = any(col in result_columns for col in ['FullName', 'EmployeeID', 'Employee Name', 'Employee'])
+                                
+                                if has_aggregation and has_employee_cols:
+                                    # Aggregated employee metrics → bar chart
+                                    viz_recommendation = {
+                                        "visualization_type": "bar",
+                                        "x_axis": result_columns[0],
+                                        "y_axis": result_columns[-1] if len(result_columns) > 1 else result_columns[0],
+                                        "explanation": "Bar chart for top employees by metric"
+                                    }
+                                    print("✓ Using bar chart (top employees with aggregation detected in pattern match)")
+                                elif has_employee_cols and not has_aggregation:
+                                    # Employee list → table
+                                    viz_recommendation = {
+                                        "visualization_type": "table",
+                                        "x_axis": None,
+                                        "y_axis": None,
+                                        "explanation": "Table view for employee list"
+                                    }
+                                    print("✓ Using table (employee list query detected in pattern match)")
+                            else:
+                                # Use pattern's visualization recommendation or heuristics
+                                viz_recommendation = pattern_match.get("visualization", {
+                                    "visualization_type": "bar",
+                                    "x_axis": result_columns[0] if result_columns else None,
+                                    "y_axis": result_columns[1] if len(result_columns) > 1 else result_columns[0] if result_columns else None
+                                })
+                            
+                            # CRITICAL: Always generate insights using LLM, even for pattern matches
+                            # Pattern matching only bypasses SQL generation, not insights generation
+                            pattern_tokens = 0
+                            try:
+                                insights_data = self.generate_insights(sql_query, results)
+                                pattern_tokens = insights_data.get("tokens", 0)
+                                insights_data.pop("tokens", None)
+                                logger.info(f"Generated LLM insights for pattern-matched query (tokens: {pattern_tokens})")
+                            except Exception as e:
+                                logger.warning(f"Insights generation failed for pattern match: {e}")
+                                # Fallback insights
+                                insights_data = {
+                                    "insights": [f"Pattern-matched query returned {len(results)} records"],
+                                    "explanation": f"Query matched pattern '{pattern_match.get('pattern_type')}' and executed successfully. Retrieved {len(results)} records."
+                                }
+                            
+                            response = {
+                                "success": True,
+                                "sql_query": sql_query,
+                                "results": results,
+                                "tables": tables,
+                                "columns": columns,
+                                "visualization": viz_recommendation,
+                                "insights": insights_data.get("insights", []),
+                                "explanation": insights_data.get("explanation", ""),
+                                "tokens": pattern_tokens,  # Tokens used for insights generation
+                                "cache_hit": False,
+                                "rag_used": False,
+                                "pattern_matched": True,
+                                "pattern_type": pattern_match.get("pattern_type")
+                            }
+                            
+                            # Cache the response
+                            if self.semantic_cache:
+                                try:
+                                    self.semantic_cache.cache_response(question, response)
+                                except Exception as e:
+                                    logger.warning(f"Failed to cache pattern-matched response: {e}")
+                            
+                            return response
+                        except Exception as e:
+                            logger.warning(f"Pattern-matched SQL execution failed: {e}. Falling back to LLM.")
+                    else:
+                        logger.warning(f"Pattern-matched SQL validation failed. Falling back to LLM.")
+            except Exception as e:
+                logger.warning(f"Pattern matching failed: {e}. Continuing with LLM.")
+        
+        # Step 0.6: Retrieve RAG context if available
         rag_context = ""
         if self.rag_retriever:
             try:
@@ -899,26 +1018,70 @@ Use ACTUAL numbers from the data. Avoid generic statements."""
         
         # Step 2: Validate SQL
         is_valid = validate_sql_query(sql_query)
+        validation_error = None
         if not is_valid:
             # Try to fix SQL (simple retry with better prompt)
             try:
+                logger.warning(f"Initial SQL validation failed, attempting to fix: {sql_query[:200]}")
                 sql_result = self.generate_sql(
-                    f"{question}. Make sure the SQL is valid PostgreSQL syntax.",
-                    conversation_history
+                    f"{question}. Make sure the SQL is valid PostgreSQL syntax. Use employees.employee_master table with Salary column.",
+                    conversation_history,
+                    rag_context=rag_context
                 )
                 sql_query = sql_result["sql"]
                 total_tokens += sql_result.get("tokens", 0)
                 is_valid = validate_sql_query(sql_query)
-            except:
-                pass
+                if is_valid:
+                    logger.info("SQL fixed successfully on retry")
+            except Exception as e:
+                validation_error = str(e)
+                logger.error(f"Failed to fix SQL: {validation_error}")
         
         if not is_valid:
-            return {
-                "success": False,
-                "error": "Could not generate valid SQL query",
-                "sql_query": sql_query,
-                "tokens": total_tokens
-            }
+            # Try a simple fallback for common query patterns
+            query_lower = question.lower()
+            fallback_sql = None
+            
+            # Fallback for "top N employees with highest salary"
+            if any(keyword in query_lower for keyword in ['top', 'highest', 'maximum', 'max']) and 'salary' in query_lower:
+                try:
+                    # Extract number (default to 3)
+                    import re
+                    num_match = re.search(r'top\s+(\d+)', query_lower)
+                    limit_num = int(num_match.group(1)) if num_match else 3
+                    
+                    fallback_sql = f'SELECT "EmployeeID", "FullName", "Department", "Salary" FROM employees.employee_master WHERE "Status" = \'Active\' AND "Salary" IS NOT NULL ORDER BY "Salary" DESC LIMIT {limit_num}'
+                    is_valid = validate_sql_query(fallback_sql)
+                    if is_valid:
+                        logger.info(f"Using fallback SQL for top employees query: {fallback_sql}")
+                        sql_query = fallback_sql
+                except Exception as e:
+                    logger.error(f"Fallback SQL generation failed: {e}")
+            
+            # Fallback for "lowest salary" queries
+            elif any(keyword in query_lower for keyword in ['lowest', 'minimum', 'min']) and 'salary' in query_lower:
+                try:
+                    import re
+                    num_match = re.search(r'top\s+(\d+)', query_lower)
+                    limit_num = int(num_match.group(1)) if num_match else 3
+                    
+                    fallback_sql = f'SELECT "EmployeeID", "FullName", "Department", "Salary" FROM employees.employee_master WHERE "Status" = \'Active\' AND "Salary" IS NOT NULL ORDER BY "Salary" ASC LIMIT {limit_num}'
+                    is_valid = validate_sql_query(fallback_sql)
+                    if is_valid:
+                        logger.info(f"Using fallback SQL for lowest salary query: {fallback_sql}")
+                        sql_query = fallback_sql
+                except Exception as e:
+                    logger.error(f"Fallback SQL generation failed: {e}")
+            
+            if not is_valid:
+                logger.error(f"SQL validation failed. SQL: {sql_query[:500]}")
+                logger.error(f"Validation error: {validation_error}")
+                return {
+                    "success": False,
+                    "error": f"Could not generate valid SQL query. Please try rephrasing your question.",
+                    "sql_query": sql_query[:200] + "..." if len(sql_query) > 200 else sql_query,
+                    "tokens": total_tokens
+                }
         
         # Step 3: Execute SQL
         try:
@@ -976,15 +1139,111 @@ Use ACTUAL numbers from the data. Avoid generic statements."""
             ) if result_columns else False
             
             # Direct assignment for common cases (saves tokens and time)
-            # IMPORTANT: "department wise headcount" is a comparison, not distribution - use bar chart
-            if is_distribution_query and result_columns and len(result_columns) >= 2 and 'headcount' not in query_lower:
+            # Check for "average by department" queries - use bar chart (not table)
+            is_avg_by_dept = 'average' in query_lower and 'by department' in query_lower and len(result_columns) >= 2
+            if is_avg_by_dept:
                 viz_recommendation = {
-                    "visualization_type": "pie",
+                    "visualization_type": "bar",
                     "x_axis": result_columns[0],
                     "y_axis": result_columns[1] if len(result_columns) > 1 else result_columns[0],
-                    "explanation": "Pie chart for distribution data"
+                    "explanation": "Bar chart for average by department"
                 }
-                print("✓ Using pie chart (distribution query detected - skipped LLM)")
+                print("✓ Using bar chart (average by department detected - skipped LLM)")
+            # Check for "show me employees" queries - use table
+            elif ('show me employees' in query_lower or 'employees with' in query_lower or 'employees hired' in query_lower) and len(result_columns) > 2:
+                is_employee_list_query = True
+                viz_recommendation = {
+                    "visualization_type": "table",
+                    "x_axis": None,
+                    "y_axis": None,
+                    "explanation": "Table view for employee list"
+                }
+                print("✓ Using table (employee list query detected - skipped LLM)")
+            # Check for "top N employees" queries - distinguish between list vs aggregated
+            elif (
+                any(keyword in query_lower for keyword in ['top', 'highest', 'maximum', 'max', 'lowest', 'minimum', 'min']) 
+                and 'employees' in query_lower 
+                and len(result_columns) > 2
+            ):
+                # Check if this is aggregated (has avg, sum, count) or just a list
+                has_aggregation = any(col.lower() in ['avg', 'average', 'sum', 'total', 'count', 'max', 'min'] for col in result_columns)
+                has_employee_cols = any(col in result_columns for col in ['FullName', 'EmployeeID', 'Employee Name', 'Employee'])
+                
+                if has_aggregation and has_employee_cols:
+                    # Aggregated employee metrics (e.g., "top employees by engagement score") → bar chart
+                    viz_recommendation = {
+                        "visualization_type": "bar",
+                        "x_axis": result_columns[0] if has_employee_cols else result_columns[0],
+                        "y_axis": result_columns[-1] if has_aggregation else result_columns[1] if len(result_columns) > 1 else result_columns[0],
+                        "explanation": "Bar chart for top employees by metric"
+                    }
+                    print("✓ Using bar chart (top N employees with aggregation detected - skipped LLM)")
+                elif has_employee_cols and not has_aggregation:
+                    # Employee list (e.g., "top 10 employees with highest salary") → table
+                    viz_recommendation = {
+                        "visualization_type": "table",
+                        "x_axis": None,
+                        "y_axis": None,
+                        "explanation": "Table view for employee list"
+                    }
+                    print("✓ Using table (top N employees list detected - skipped LLM)")
+                else:
+                    # Default to bar for top N
+                    viz_recommendation = {
+                        "visualization_type": "bar",
+                        "x_axis": result_columns[0],
+                        "y_axis": result_columns[1] if len(result_columns) > 1 else result_columns[0],
+                        "explanation": "Bar chart for top N ranking"
+                    }
+                    print("✓ Using bar chart (top N query detected - skipped LLM)")
+            # Check for "top N" queries (non-employee) - use bar chart
+            elif any(keyword in query_lower for keyword in ['top', 'highest', 'maximum', 'max', 'lowest', 'minimum', 'min']) and result_columns and len(result_columns) >= 2:
+                is_top_n_query = True
+                # For top N queries, use bar chart if we have name/value columns, otherwise table
+                viz_recommendation = {
+                    "visualization_type": "bar",
+                    "x_axis": result_columns[0] if 'name' in result_columns[0].lower() or 'employee' in result_columns[0].lower() else result_columns[0],
+                    "y_axis": result_columns[-1] if 'salary' in result_columns[-1].lower() or any(k in result_columns[-1].lower() for k in ['score', 'rating', 'value']) else result_columns[1] if len(result_columns) > 1 else result_columns[0],
+                    "explanation": "Bar chart for top N ranking"
+                }
+                print("✓ Using bar chart (top N query detected - skipped LLM)")
+            elif is_distribution_query and result_columns and len(result_columns) >= 2 and 'headcount' not in query_lower and 'salary distribution' not in query_lower and 'retention rate' not in query_lower:
+                # Use pie for explicit distribution questions
+                if 'what is the distribution' in query_lower or 'show distribution' in query_lower or ('gender distribution' in query_lower and 'by' not in query_lower and 'salary' not in query_lower):
+                    viz_recommendation = {
+                        "visualization_type": "pie",
+                        "x_axis": result_columns[0],
+                        "y_axis": result_columns[1] if len(result_columns) > 1 else result_columns[0],
+                        "explanation": "Pie chart for distribution data"
+                    }
+                    print("✓ Using pie chart (distribution query detected - skipped LLM)")
+                else:
+                    # "salary distribution by gender" = comparison, use bar
+                    viz_recommendation = {
+                        "visualization_type": "bar",
+                        "x_axis": result_columns[0],
+                        "y_axis": result_columns[1] if len(result_columns) > 1 else result_columns[0],
+                        "explanation": "Bar chart for categorical comparison"
+                    }
+                    print("✓ Using bar chart (comparison query detected - skipped LLM)")
+            elif 'employee count by status' in query_lower or ('count by status' in query_lower and 'employee' in query_lower):
+                # Explicit pie chart for status distribution
+                viz_recommendation = {
+                    "visualization_type": "pie",
+                    "x_axis": result_columns[0] if result_columns else None,
+                    "y_axis": result_columns[1] if len(result_columns) > 1 else result_columns[0] if result_columns else None,
+                    "explanation": "Pie chart for status distribution"
+                }
+                print("✓ Using pie chart (status distribution detected - skipped LLM)")
+            elif ('retention rate' in query_lower or 'completion rate' in query_lower) and 'by department' in query_lower:
+                # Rates by department should be bar charts (comparison across departments)
+                viz_recommendation = {
+                    "visualization_type": "bar",
+                    "x_axis": result_columns[0] if result_columns else None,
+                    "y_axis": result_columns[1] if len(result_columns) > 1 else result_columns[0] if result_columns else None,
+                    "explanation": "Bar chart for rate comparison"
+                }
+                print("✓ Using bar chart (rate comparison detected - skipped LLM)")
             elif 'headcount' in query_lower and ('department' in query_lower or 'by' in query_lower) and result_columns and len(result_columns) >= 2:
                 # "department wise headcount" or "headcount by department" = bar chart (comparison)
                 viz_recommendation = {
@@ -994,9 +1253,9 @@ Use ACTUAL numbers from the data. Avoid generic statements."""
                     "explanation": "Bar chart for categorical comparison"
                 }
                 print("✓ Using bar chart (headcount comparison detected - skipped LLM)")
-            elif (is_trend_query or has_time_column or 'MonthEnd' in sql_query) and result_columns and len(result_columns) >= 2:
+            elif (is_trend_query or has_time_column or 'MonthEnd' in sql_query or 'ChangeDate' in sql_query or 'over time' in query_lower or 'headcount over time' in query_lower or ('department' in query_lower and 'over time' in query_lower)) and result_columns and len(result_columns) >= 2:
                 date_col = next(
-                    (col for col in result_columns if 'month' in col.lower() or 'date' in col.lower() or 'time' in col.lower()),
+                    (col for col in result_columns if 'month' in col.lower() or 'date' in col.lower() or 'time' in col.lower() or 'change' in col.lower()),
                     result_columns[0]
                 )
                 value_col = next(

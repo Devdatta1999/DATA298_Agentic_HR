@@ -39,15 +39,47 @@ class SemanticCache:
             logger.error(f"Error initializing cache collection: {e}")
             raise
     
-    def _normalize_query(self, query: str) -> str:
+    def _extract_parameters(self, query: str) -> Dict[str, Any]:
+        """Extract parameters from query (numbers, filters, etc.)"""
+        import re
+        params = {}
+        query_lower = query.lower()
+        
+        # Extract N from "top N", "bottom N", etc.
+        top_match = re.search(r'top\s+(\d+)', query_lower)
+        bottom_match = re.search(r'bottom\s+(\d+)', query_lower)
+        if top_match:
+            params['n'] = int(top_match.group(1))
+        elif bottom_match:
+            params['n'] = int(bottom_match.group(1))
+        
+        # Extract other numbers that might be parameters
+        number_matches = re.findall(r'\b(\d+)\b', query_lower)
+        if number_matches and 'n' not in params:
+            # If we have numbers but no explicit "top N", store them
+            params['numbers'] = [int(n) for n in number_matches]
+        
+        return params
+    
+    def _normalize_query(self, query: str, preserve_numbers: bool = False) -> str:
         """Normalize query for better semantic matching"""
         import re
+        
+        # Extract parameters BEFORE normalization
+        params = self._extract_parameters(query)
         
         # Convert to lowercase
         normalized = query.lower().strip()
         
+        # If preserve_numbers is False, replace numbers with placeholders for semantic matching
+        # But we'll use params for cache key generation
+        if not preserve_numbers and params:
+            # Replace specific numbers with placeholders for semantic similarity
+            if 'n' in params:
+                normalized = re.sub(rf'\b{params["n"]}\b', '{n}', normalized)
+        
         # Remove punctuation (except spaces)
-        normalized = re.sub(r'[^\w\s]', ' ', normalized)
+        normalized = re.sub(r'[^\w\s{}]', ' ', normalized)
         
         # Normalize whitespace (multiple spaces to single space)
         normalized = re.sub(r'\s+', ' ', normalized)
@@ -79,11 +111,24 @@ class SemanticCache:
         
         return normalized.strip()
     
+    def _generate_cache_key_with_params(self, query: str) -> str:
+        """Generate cache key including parameters"""
+        import json
+        params = self._extract_parameters(query)
+        normalized = self._normalize_query(query, preserve_numbers=False)
+        
+        # Create key from normalized query + parameters
+        key_data = {
+            "query": normalized,
+            "params": params
+        }
+        key_string = json.dumps(key_data, sort_keys=True)
+        return hashlib.md5(key_string.encode()).hexdigest()
+    
     def _generate_cache_id(self, query: str) -> str:
-        """Generate a unique ID for cache entry using normalized query"""
-        # Use normalized query to avoid duplicates from slight variations
-        normalized = self._normalize_query(query)
-        return hashlib.md5(normalized.encode()).hexdigest()
+        """Generate a unique ID for cache entry using normalized query + parameters"""
+        # Use parameter-aware cache key
+        return self._generate_cache_key_with_params(query)
     
     def get_cached_response(self, query: str) -> Optional[Dict[str, Any]]:
         """Retrieve cached response if similar query exists"""
@@ -123,6 +168,9 @@ class SemanticCache:
             # Generate embedding for the normalized query
             query_embedding = self.embedding_service.embed_text(normalized_query)
             
+            # Extract parameters from current query
+            current_params = self._extract_parameters(query)
+            
             # Search for similar cached queries (check top 3 matches)
             results = self.vector_store.search_similar(
                 collection_name=settings.CACHE_COLLECTION_NAME,
@@ -132,22 +180,34 @@ class SemanticCache:
             )
             
             if results and len(results) > 0:
-                # Find the best match above threshold
+                # Find the best match above threshold AND with matching parameters
                 for match in results:
                     if match["score"] >= settings.CACHE_SIMILARITY_THRESHOLD:
-                        logger.info(f"Cache HIT! Similarity: {match['score']:.3f}")
                         cached_data = match["payload"]
-                        return {
-                            "sql_query": cached_data.get("sql_query"),
-                            "tables": cached_data.get("tables", []),
-                            "columns": cached_data.get("columns", {}),
-                            "visualization": cached_data.get("visualization"),
-                            "results": cached_data.get("results"),
-                            "insights": cached_data.get("insights"),
-                        "explanation": cached_data.get("explanation"),
-                            "cache_similarity": match["score"],
-                            "cached_query": cached_data.get("original_query")
-                        }
+                        cached_params = cached_data.get("parameters", {})
+                        
+                        # Check if parameters match (especially 'n' for top N queries)
+                        params_match = True
+                        if current_params and cached_params:
+                            # If both have 'n' parameter, they must match
+                            if 'n' in current_params and 'n' in cached_params:
+                                if current_params['n'] != cached_params['n']:
+                                    params_match = False
+                                    logger.debug(f"Parameter mismatch: current n={current_params['n']}, cached n={cached_params['n']}")
+                        
+                        if params_match:
+                            logger.info(f"Cache HIT! Similarity: {match['score']:.3f}, Params: {current_params}")
+                            return {
+                                "sql_query": cached_data.get("sql_query"),
+                                "tables": cached_data.get("tables", []),
+                                "columns": cached_data.get("columns", {}),
+                                "visualization": cached_data.get("visualization"),
+                                "results": cached_data.get("results"),
+                                "insights": cached_data.get("insights"),
+                                "explanation": cached_data.get("explanation"),
+                                "cache_similarity": match["score"],
+                                "cached_query": cached_data.get("original_query")
+                            }
             
             logger.info("Cache MISS - no similar query found")
             return None
@@ -171,7 +231,10 @@ class SemanticCache:
             # Generate embedding for the normalized query
             query_embedding = self.embedding_service.embed_text(normalized_query)
             
-            # Generate cache ID
+            # Extract parameters
+            params = self._extract_parameters(query)
+            
+            # Generate cache ID (parameter-aware)
             cache_id = self._generate_cache_id(query)
             
             # Create point with response data
@@ -181,6 +244,7 @@ class SemanticCache:
                 payload={
                     "original_query": query,  # Keep original for display
                     "normalized_query": normalized_query,  # Store normalized for reference
+                    "parameters": params,  # Store parameters for matching
                     "sql_query": response.get("sql_query"),
                     "tables": response.get("tables", []),
                     "columns": response.get("columns", {}),

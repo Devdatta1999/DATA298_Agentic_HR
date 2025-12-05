@@ -1,0 +1,370 @@
+{
+  "metadata": {
+    "total_questions": 25,
+    "description": "Best 25 questions selected for demo - diverse types, visualizations, and complexity",
+    "selected_from": "comprehensive_questions.json (100 questions)",
+    "visualization_distribution": {
+      "bar": 16,
+      "pie": 2,
+      "line": 5,
+      "none": 1,
+      "scatter": 1
+    },
+    "category_distribution": {
+      "easy": 12,
+      "medium": 12,
+      "tricky": 1
+    },
+    "pattern_types_count": 14
+  },
+  "questions": [
+    {
+      "id": 1,
+      "question": "Show me department wise headcount",
+      "category": "easy",
+      "pattern_type": "headcount_by_department",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\" ORDER BY headcount DESC",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "headcount"
+    },
+    {
+      "id": 2,
+      "question": "What is the gender distribution?",
+      "category": "easy",
+      "pattern_type": "distribution",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+      "visualization": "pie",
+      "x_axis": "Gender",
+      "y_axis": "count"
+    },
+    {
+      "id": 3,
+      "question": "Show me headcount trends over time by month",
+      "category": "easy",
+      "pattern_type": "time_series_trend",
+      "tables": [
+        "employees.headcount_attrition_summary"
+      ],
+      "sql": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS Total_Headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+      "visualization": "line",
+      "x_axis": "MonthEnd",
+      "y_axis": "Total_Headcount"
+    },
+    {
+      "id": 4,
+      "question": "Give me Top 3 Employees with highest salary",
+      "category": "easy",
+      "pattern_type": "top_n_ranking",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL ORDER BY \"Salary\" DESC LIMIT 3",
+      "visualization": "bar",
+      "x_axis": "FullName",
+      "y_axis": "Salary",
+      "parameters": {
+        "n": 3,
+        "order": "DESC",
+        "field": "Salary"
+      }
+    },
+    {
+      "id": 6,
+      "question": "Show me average salary by department",
+      "category": "easy",
+      "pattern_type": "aggregation_by_group",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"Department\", ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_salary DESC",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "avg_salary"
+    },
+    {
+      "id": 7,
+      "question": "Show me monthly attrition rate trends",
+      "category": "medium",
+      "pattern_type": "time_series_trend",
+      "tables": [
+        "employees.headcount_attrition_summary"
+      ],
+      "sql": "SELECT \"MonthEnd\", AVG(\"AttritionRate\") AS avg_attrition_rate FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+      "visualization": "line",
+      "x_axis": "MonthEnd",
+      "y_axis": "avg_attrition_rate"
+    },
+    {
+      "id": 8,
+      "question": "What is the total number of active employees?",
+      "category": "easy",
+      "pattern_type": "single_value_count",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT COUNT(*) AS total_employees FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "visualization": "none",
+      "x_axis": null,
+      "y_axis": null
+    },
+    {
+      "id": 9,
+      "question": "Show me employees by job title",
+      "category": "easy",
+      "pattern_type": "group_by_category",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"JobTitle\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\" ORDER BY count DESC",
+      "visualization": "bar",
+      "x_axis": "JobTitle",
+      "y_axis": "count"
+    },
+    {
+      "id": 10,
+      "question": "What is the average performance rating by department?",
+      "category": "medium",
+      "pattern_type": "aggregation_by_group",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"Department\", ROUND(AVG(\"PerformanceRating\"), 2) AS avg_rating FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"PerformanceRating\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_rating DESC",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "avg_rating"
+    },
+    {
+      "id": 11,
+      "question": "Show me salary changes over time for employee PNR-1001",
+      "category": "medium",
+      "pattern_type": "time_series_join",
+      "tables": [
+        "employees.employee_master",
+        "employees.compensation_history"
+      ],
+      "sql": "SELECT ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\", ch.\"Reason\", em.\"FullName\" FROM employees.compensation_history ch JOIN employees.employee_master em ON ch.\"EmployeeID\" = em.\"EmployeeID\" WHERE ch.\"EmployeeID\" = 'PNR-1001' ORDER BY ch.\"ChangeDate\"",
+      "visualization": "line",
+      "x_axis": "ChangeDate",
+      "y_axis": "NewSalary"
+    },
+    {
+      "id": 13,
+      "question": "Show me employees with highest engagement scores",
+      "category": "medium",
+      "pattern_type": "top_n_join",
+      "tables": [
+        "employees.employee_master",
+        "employees.engagement_surveys"
+      ],
+      "sql": "SELECT em.\"FullName\", em.\"Department\", AVG(es.\"OverallSatisfaction\") AS avg_satisfaction FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" ORDER BY avg_satisfaction DESC LIMIT 10",
+      "visualization": "bar",
+      "x_axis": "FullName",
+      "y_axis": "avg_satisfaction"
+    },
+    {
+      "id": 14,
+      "question": "What is the average work-life balance score by department?",
+      "category": "medium",
+      "pattern_type": "aggregation_join",
+      "tables": [
+        "employees.employee_master",
+        "employees.engagement_surveys"
+      ],
+      "sql": "SELECT em.\"Department\", ROUND(AVG(es.\"WorkLifeBalanceScore\"), 2) AS avg_worklife_score FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_worklife_score DESC",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "avg_worklife_score"
+    },
+    {
+      "id": 15,
+      "question": "Show me monthly hiring trends",
+      "category": "easy",
+      "pattern_type": "time_series_trend",
+      "tables": [
+        "employees.headcount_attrition_summary"
+      ],
+      "sql": "SELECT \"MonthEnd\", SUM(\"Hires\") AS total_hires FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+      "visualization": "line",
+      "x_axis": "MonthEnd",
+      "y_axis": "total_hires"
+    },
+    {
+      "id": 16,
+      "question": "Which department has the highest average attrition rate?",
+      "category": "medium",
+      "pattern_type": "top_n_aggregation",
+      "tables": [
+        "employees.headcount_attrition_summary"
+      ],
+      "sql": "SELECT \"Department\", AVG(\"AttritionRate\") AS avg_attrition FROM employees.headcount_attrition_summary GROUP BY \"Department\" ORDER BY avg_attrition DESC LIMIT 1",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "avg_attrition"
+    },
+    {
+      "id": 18,
+      "question": "What is the average performance score by department?",
+      "category": "medium",
+      "pattern_type": "aggregation_join",
+      "tables": [
+        "employees.employee_master",
+        "employees.performance_reviews"
+      ],
+      "sql": "SELECT em.\"Department\", ROUND(AVG(pr.\"OverallScore\"), 2) AS avg_performance FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_performance DESC",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "avg_performance"
+    },
+    {
+      "id": 20,
+      "question": "What are the most common skills?",
+      "category": "easy",
+      "pattern_type": "group_by_category",
+      "tables": [
+        "employees.skills_inventory"
+      ],
+      "sql": "SELECT \"SkillName\", COUNT(*) AS count FROM employees.skills_inventory GROUP BY \"SkillName\" ORDER BY count DESC",
+      "visualization": "bar",
+      "x_axis": "SkillName",
+      "y_axis": "count"
+    },
+    {
+      "id": 21,
+      "question": "Show me training completion rates by department",
+      "category": "medium",
+      "pattern_type": "aggregation_join",
+      "tables": [
+        "employees.employee_master",
+        "employees.training_records"
+      ],
+      "sql": "SELECT em.\"Department\", COUNT(CASE WHEN tr.\"Status\" = 'Completed' THEN 1 END) * 100.0 / COUNT(tr.\"TrainingID\") AS completion_rate FROM employees.employee_master em JOIN employees.training_records tr ON em.\"EmployeeID\" = tr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\"",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "completion_rate"
+    },
+    {
+      "id": 25,
+      "question": "Show me top 10 employees with highest performance ratings",
+      "category": "easy",
+      "pattern_type": "top_n_ranking",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"PerformanceRating\" IS NOT NULL ORDER BY \"PerformanceRating\" DESC LIMIT 10",
+      "visualization": "bar",
+      "x_axis": "FullName",
+      "y_axis": "PerformanceRating",
+      "parameters": {
+        "n": 10,
+        "order": "DESC",
+        "field": "PerformanceRating"
+      }
+    },
+    {
+      "id": 26,
+      "question": "What is the salary distribution by gender?",
+      "category": "medium",
+      "pattern_type": "distribution",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"Gender\", COUNT(*) AS count, ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Gender\"",
+      "visualization": "bar",
+      "x_axis": "Gender",
+      "y_axis": "avg_salary"
+    },
+    {
+      "id": 31,
+      "question": "What is department headcount over time?",
+      "category": "medium",
+      "pattern_type": "time_series_grouped",
+      "tables": [
+        "employees.headcount_attrition_summary"
+      ],
+      "sql": "SELECT \"MonthEnd\", \"Department\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\", \"Department\" ORDER BY \"MonthEnd\", \"Department\"",
+      "visualization": "line",
+      "x_axis": "MonthEnd",
+      "y_axis": "headcount"
+    },
+    {
+      "id": 32,
+      "question": "Show me employee count by status",
+      "category": "easy",
+      "pattern_type": "group_by_category",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"Status\", COUNT(*) AS count FROM employees.employee_master GROUP BY \"Status\"",
+      "visualization": "pie",
+      "x_axis": "Status",
+      "y_axis": "count"
+    },
+    {
+      "id": 38,
+      "question": "What is the correlation between engagement and performance?",
+      "category": "tricky",
+      "pattern_type": "correlation_analysis",
+      "tables": [
+        "employees.employee_master",
+        "employees.engagement_surveys",
+        "employees.performance_reviews"
+      ],
+      "sql": "SELECT em.\"Department\", ROUND(AVG(es.\"OverallSatisfaction\"), 2) AS avg_engagement, ROUND(AVG(pr.\"OverallScore\"), 2) AS avg_performance FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\"",
+      "visualization": "scatter",
+      "x_axis": "avg_engagement",
+      "y_axis": "avg_performance"
+    },
+    {
+      "id": 39,
+      "question": "Show me top 5 departments by average salary",
+      "category": "easy",
+      "pattern_type": "top_n_aggregation",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"Department\", ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_salary DESC LIMIT 5",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "avg_salary",
+      "parameters": {
+        "n": 5,
+        "order": "DESC",
+        "field": "avg_salary"
+      }
+    },
+    {
+      "id": 43,
+      "question": "Show me department with highest engagement scores",
+      "category": "medium",
+      "pattern_type": "top_n_aggregation",
+      "tables": [
+        "employees.employee_master",
+        "employees.engagement_surveys"
+      ],
+      "sql": "SELECT em.\"Department\", ROUND(AVG(es.\"OverallSatisfaction\"), 2) AS avg_engagement FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_engagement DESC LIMIT 1",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "avg_engagement"
+    },
+    {
+      "id": 50,
+      "question": "What is the retention rate by department?",
+      "category": "medium",
+      "pattern_type": "calculated_metric",
+      "tables": [
+        "employees.employee_master"
+      ],
+      "sql": "SELECT \"Department\", COUNT(CASE WHEN \"Status\" = 'Active' THEN 1 END) * 100.0 / COUNT(*) AS retention_rate FROM employees.employee_master GROUP BY \"Department\"",
+      "visualization": "bar",
+      "x_axis": "Department",
+      "y_axis": "retention_rate"
+    }
+  ]
+}

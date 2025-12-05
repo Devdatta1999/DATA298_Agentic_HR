@@ -1,0 +1,921 @@
+{
+  "metadata": {
+    "total_patterns": 40,
+    "source": "comprehensive_questions.json",
+    "description": "Query patterns extracted from 100 comprehensive HR questions"
+  },
+  "patterns": [
+    {
+      "pattern_type": "headcount_by_department",
+      "keywords": [
+        "headcount",
+        "department"
+      ],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\" ORDER BY headcount DESC",
+      "example_questions": [
+        "Show me department wise headcount"
+      ],
+      "example_sql": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\" ORDER BY headcount DESC",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "distribution",
+      "keywords": [
+        "distribution",
+        "gender",
+        "skill",
+        "salary"
+      ],
+      "tables": [
+        "employees.skills_inventory",
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+      "example_questions": [
+        "What is the gender distribution of employees?",
+        "What is the salary distribution by gender?",
+        "Show me skill proficiency distribution",
+        "What is the employee distribution by job title?"
+      ],
+      "example_sql": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary"
+      },
+      "count": 4
+    },
+    {
+      "pattern_type": "time_series_trend",
+      "keywords": [
+        "headcount",
+        "hiring",
+        "termination",
+        "trends",
+        "attrition",
+        "over time",
+        "by month",
+        "monthly"
+      ],
+      "tables": [
+        "employees.headcount_attrition_summary"
+      ],
+      "visualization": "line",
+      "sql_template": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS Total_Headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+      "example_questions": [
+        "Show me headcount trends over time by month",
+        "Show me monthly attrition rate trends",
+        "Show me monthly hiring trends",
+        "Show me monthly termination trends"
+      ],
+      "example_sql": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS Total_Headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+      "parameter_extraction": {},
+      "count": 4
+    },
+    {
+      "pattern_type": "top_n_ranking",
+      "keywords": [
+        "top 10",
+        "salary",
+        "highest",
+        "performance",
+        "top 3",
+        "top 5",
+        "lowest"
+      ],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL ORDER BY \"Salary\" DESC LIMIT {limit}",
+      "example_questions": [
+        "Give me Top 3 Employees with highest salary",
+        "Show me top 5 highest paid employees",
+        "Show me top 10 employees with highest performance ratings",
+        "Show me top 3 lowest paid employees"
+      ],
+      "example_sql": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL ORDER BY \"Salary\" DESC LIMIT 3",
+      "parameter_extraction": {
+        "n": "Extract number from 'top N' or 'bottom N' pattern",
+        "order": "DESC for highest/maximum/top, ASC for lowest/minimum/bottom",
+        "field": "Field to rank by: Salary, PerformanceRating"
+      },
+      "count": 4
+    },
+    {
+      "pattern_type": "aggregation_by_group",
+      "keywords": [
+        "training",
+        "salary",
+        "department",
+        "average",
+        "performance"
+      ],
+      "tables": [
+        "employees.training_records",
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT \"Department\", ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_salary DESC",
+      "example_questions": [
+        "What is the average salary by department?",
+        "What is the average performance rating by department?",
+        "What is the average training score by course?"
+      ],
+      "example_sql": "SELECT \"Department\", ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_salary DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary, PerformanceRating"
+      },
+      "count": 3
+    },
+    {
+      "pattern_type": "single_value_count",
+      "keywords": [
+        "training",
+        "total",
+        "active"
+      ],
+      "tables": [
+        "employees.training_records",
+        "employees.employee_master"
+      ],
+      "visualization": "none",
+      "sql_template": "SELECT COUNT(*) AS total_employees FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "example_questions": [
+        "What is the total number of active employees?",
+        "What is the total number of training courses completed?"
+      ],
+      "example_sql": "SELECT COUNT(*) AS total_employees FROM employees.employee_master WHERE \"Status\" = 'Active'",
+      "parameter_extraction": {},
+      "count": 2
+    },
+    {
+      "pattern_type": "group_by_category",
+      "keywords": [
+        "count",
+        "headcount",
+        "salary",
+        "department",
+        "total",
+        "active",
+        "skills"
+      ],
+      "tables": [
+        "employees.skills_inventory",
+        "employees.compensation_history",
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT \"JobTitle\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\" ORDER BY count DESC",
+      "example_questions": [
+        "Show me employees by job title",
+        "What skills are most common in the organization?",
+        "What is the employee count by status?",
+        "Show me department headcount comparison",
+        "What is the most common reason for salary changes?"
+      ],
+      "example_sql": "SELECT \"JobTitle\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\" ORDER BY count DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary"
+      },
+      "count": 6
+    },
+    {
+      "pattern_type": "time_series_join",
+      "keywords": [
+        "salary",
+        "engagement",
+        "average",
+        "performance",
+        "trends",
+        "over time",
+        "monthly"
+      ],
+      "tables": [
+        "employees.compensation_history",
+        "employees.performance_reviews",
+        "employees.engagement_surveys",
+        "employees.employee_master"
+      ],
+      "visualization": "line",
+      "sql_template": "SELECT ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\", ch.\"Reason\", em.\"FullName\" FROM employees.compensation_history ch JOIN employees.employee_master em ON ch.\"EmployeeID\" = em.\"EmployeeID\" WHERE em.\"EmployeeID\" = 'PNR-1001' ORDER BY ch.\"ChangeDate\"",
+      "example_questions": [
+        "Show me salary changes over time for a specific employee",
+        "Show me monthly compensation changes",
+        "Show me performance trends over time",
+        "Show me monthly average engagement scores"
+      ],
+      "example_sql": "SELECT ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\", ch.\"Reason\", em.\"FullName\" FROM employees.compensation_history ch JOIN employees.employee_master em ON ch.\"EmployeeID\" = em.\"EmployeeID\" WHERE em.\"EmployeeID\" = 'PNR-1001' ORDER BY ch.\"ChangeDate\"",
+      "parameter_extraction": {
+        "field": "Field to rank by: OverallSatisfaction, Salary, PerformanceRating"
+      },
+      "count": 4
+    },
+    {
+      "pattern_type": "calculated_metric",
+      "keywords": [
+        "average",
+        "training",
+        "department",
+        "salary"
+      ],
+      "tables": [
+        "employees.employee_master",
+        "employees.training_records",
+        "employees.compensation_history"
+      ],
+      "visualization": "none",
+      "sql_template": "SELECT ROUND(AVG(((ch.\"NewSalary\" - ch.\"OldSalary\") / NULLIF(ch.\"OldSalary\", 0)) * 100), 2) AS avg_increase_percent FROM employees.compensation_history ch WHERE ch.\"OldSalary\" IS NOT NULL AND ch.\"NewSalary\" IS NOT NULL",
+      "example_questions": [
+        "What is the average salary increase percentage?",
+        "What is the average tenure of employees by department?",
+        "What is the employee turnover rate?",
+        "What is the retention rate by department?",
+        "What is the average age of employees by department?"
+      ],
+      "example_sql": "SELECT ROUND(AVG(((ch.\"NewSalary\" - ch.\"OldSalary\") / NULLIF(ch.\"OldSalary\", 0)) * 100), 2) AS avg_increase_percent FROM employees.compensation_history ch WHERE ch.\"OldSalary\" IS NOT NULL AND ch.\"NewSalary\" IS NOT NULL",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary"
+      },
+      "count": 6
+    },
+    {
+      "pattern_type": "top_n_join",
+      "keywords": [
+        "highest",
+        "engagement",
+        "skills",
+        "training"
+      ],
+      "tables": [
+        "employees.skills_inventory",
+        "employees.engagement_surveys",
+        "employees.training_records",
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT em.\"FullName\", em.\"Department\", AVG(es.\"OverallSatisfaction\") AS avg_satisfaction FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" ORDER BY avg_satisfaction DESC LIMIT {limit}",
+      "example_questions": [
+        "Show me employees with highest engagement scores",
+        "Show me employees with most skills",
+        "Show me employees with highest training scores",
+        "Show me employees with highest number of completed trainings"
+      ],
+      "example_sql": "SELECT em.\"FullName\", em.\"Department\", AVG(es.\"OverallSatisfaction\") AS avg_satisfaction FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" ORDER BY avg_satisfaction DESC LIMIT 10",
+      "parameter_extraction": {
+        "order": "DESC for highest/maximum/top, ASC for lowest/minimum/bottom",
+        "field": "Field to rank by: OverallSatisfaction"
+      },
+      "count": 4
+    },
+    {
+      "pattern_type": "aggregation_join",
+      "keywords": [
+        "training",
+        "engagement",
+        "department",
+        "average",
+        "performance"
+      ],
+      "tables": [
+        "employees.engagement_surveys",
+        "employees.performance_reviews",
+        "employees.training_records",
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT em.\"Department\", ROUND(AVG(es.\"WorkLifeBalanceScore\"), 2) AS avg_worklife_score FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_worklife_score DESC",
+      "example_questions": [
+        "What is the average work-life balance score by department?",
+        "What is the average performance score by department?",
+        "Show me training completion rates by department",
+        "What is the average training score by department?",
+        "What is the average engagement score by job title?"
+      ],
+      "example_sql": "SELECT em.\"Department\", ROUND(AVG(es.\"WorkLifeBalanceScore\"), 2) AS avg_worklife_score FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_worklife_score DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: OverallSatisfaction, PerformanceRating"
+      },
+      "count": 5
+    },
+    {
+      "pattern_type": "top_n_aggregation",
+      "keywords": [
+        "training",
+        "headcount",
+        "top 10",
+        "salary",
+        "engagement",
+        "department",
+        "highest",
+        "average",
+        "top 5",
+        "skills",
+        "attrition"
+      ],
+      "tables": [
+        "employees.skills_inventory",
+        "employees.employee_master",
+        "employees.training_records",
+        "employees.headcount_attrition_summary",
+        "employees.engagement_surveys"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT em.\"Department\", ROUND(AVG(es.\"OverallSatisfaction\"), 2) AS avg_engagement FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_engagement DESC LIMIT {limit}",
+      "example_questions": [
+        "What is the department with highest attrition rate?",
+        "Show me top 5 departments by average salary",
+        "Show me department with highest engagement scores",
+        "What is the department with most terminations?",
+        "What is the department with highest average engagement?"
+      ],
+      "example_sql": "SELECT em.\"Department\", ROUND(AVG(es.\"OverallSatisfaction\"), 2) AS avg_engagement FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_engagement DESC LIMIT 1",
+      "parameter_extraction": {
+        "n": "Extract number from 'top N' or 'bottom N' pattern",
+        "order": "DESC for highest/maximum/top, ASC for lowest/minimum/bottom",
+        "field": "Field to rank by: Salary, OverallSatisfaction"
+      },
+      "count": 9
+    },
+    {
+      "pattern_type": "join_display",
+      "keywords": [
+        "performance"
+      ],
+      "tables": [
+        "employees.performance_reviews",
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT em.\"FullName\", em.\"Department\", pr.\"ReviewDate\", pr.\"OverallScore\", pr.\"Communication\", pr.\"Teamwork\", pr.\"ProblemSolving\" FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' ORDER BY pr.\"ReviewDate\" DESC",
+      "example_questions": [
+        "Show me employees with their performance review scores"
+      ],
+      "example_sql": "SELECT em.\"FullName\", em.\"Department\", pr.\"ReviewDate\", pr.\"OverallScore\", pr.\"Communication\", pr.\"Teamwork\", pr.\"ProblemSolving\" FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' ORDER BY pr.\"ReviewDate\" DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: PerformanceRating"
+      },
+      "count": 1
+    },
+    {
+      "pattern_type": "date_filter",
+      "keywords": [],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"HireDate\" FROM employees.employee_master WHERE \"HireDate\" >= CURRENT_DATE - INTERVAL '1 year' AND \"Status\" = 'Active' ORDER BY \"HireDate\" DESC",
+      "example_questions": [
+        "Show me employees hired in the last year"
+      ],
+      "example_sql": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"HireDate\" FROM employees.employee_master WHERE \"HireDate\" >= CURRENT_DATE - INTERVAL '1 year' AND \"Status\" = 'Active' ORDER BY \"HireDate\" DESC",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "single_value_aggregation",
+      "keywords": [
+        "training",
+        "salary",
+        "average",
+        "total",
+        "skills"
+      ],
+      "tables": [
+        "employees.skills_inventory",
+        "employees.employee_master",
+        "employees.compensation_history",
+        "employees.training_records",
+        "employees.engagement_surveys"
+      ],
+      "visualization": "none",
+      "sql_template": "SELECT ROUND(AVG(\"ManagerFeedbackScore\"), 2) AS avg_manager_feedback FROM employees.engagement_surveys WHERE \"ManagerFeedbackScore\" IS NOT NULL",
+      "example_questions": [
+        "What is the average manager feedback score?",
+        "What is the average number of skills per employee?",
+        "What is the total training hours completed?",
+        "What is the average salary increase amount?",
+        "What is the average number of training courses per employee?"
+      ],
+      "example_sql": "SELECT ROUND(AVG(\"ManagerFeedbackScore\"), 2) AS avg_manager_feedback FROM employees.engagement_surveys WHERE \"ManagerFeedbackScore\" IS NOT NULL",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary"
+      },
+      "count": 8
+    },
+    {
+      "pattern_type": "filter_above_average",
+      "keywords": [
+        "average",
+        "salary"
+      ],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" > (SELECT AVG(\"Salary\") FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL) ORDER BY \"Salary\" DESC",
+      "example_questions": [
+        "Show me employees with salary above average"
+      ],
+      "example_sql": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" > (SELECT AVG(\"Salary\") FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL) ORDER BY \"Salary\" DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary"
+      },
+      "count": 1
+    },
+    {
+      "pattern_type": "date_filtered_aggregation",
+      "keywords": [
+        "total"
+      ],
+      "tables": [
+        "employees.compensation_history"
+      ],
+      "visualization": "none",
+      "sql_template": "SELECT SUM(\"NewSalary\" - \"OldSalary\") AS total_change FROM employees.compensation_history WHERE EXTRACT(YEAR FROM \"ChangeDate\") = EXTRACT(YEAR FROM CURRENT_DATE)",
+      "example_questions": [
+        "What is the total compensation change amount this year?"
+      ],
+      "example_sql": "SELECT SUM(\"NewSalary\" - \"OldSalary\") AS total_change FROM employees.compensation_history WHERE EXTRACT(YEAR FROM \"ChangeDate\") = EXTRACT(YEAR FROM CURRENT_DATE)",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "time_series_grouped",
+      "keywords": [
+        "headcount",
+        "department",
+        "average",
+        "over time",
+        "monthly"
+      ],
+      "tables": [
+        "employees.headcount_attrition_summary"
+      ],
+      "visualization": "line",
+      "sql_template": "SELECT \"MonthEnd\", \"Department\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\", \"Department\" ORDER BY \"MonthEnd\", \"Department\"",
+      "example_questions": [
+        "Show me department headcount over time",
+        "Show me monthly average headcount by department"
+      ],
+      "example_sql": "SELECT \"MonthEnd\", \"Department\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\", \"Department\" ORDER BY \"MonthEnd\", \"Department\"",
+      "parameter_extraction": {},
+      "count": 2
+    },
+    {
+      "pattern_type": "latest_record_join",
+      "keywords": [
+        "performance"
+      ],
+      "tables": [
+        "employees.performance_reviews",
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT DISTINCT ON (em.\"EmployeeID\") em.\"FullName\", em.\"Department\", pr.\"ReviewDate\", pr.\"OverallScore\" FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' ORDER BY em.\"EmployeeID\", pr.\"ReviewDate\" DESC",
+      "example_questions": [
+        "Show me employees with their latest performance review"
+      ],
+      "example_sql": "SELECT DISTINCT ON (em.\"EmployeeID\") em.\"FullName\", em.\"Department\", pr.\"ReviewDate\", pr.\"OverallScore\" FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' ORDER BY em.\"EmployeeID\", pr.\"ReviewDate\" DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: PerformanceRating"
+      },
+      "count": 1
+    },
+    {
+      "pattern_type": "monthly_comparison",
+      "keywords": [
+        "total",
+        "headcount"
+      ],
+      "tables": [
+        "employees.headcount_attrition_summary"
+      ],
+      "visualization": "none",
+      "sql_template": "SELECT SUM(\"Headcount\") - LAG(SUM(\"Headcount\")) OVER (ORDER BY \"MonthEnd\") AS headcount_change FROM employees.headcount_attrition_summary WHERE \"MonthEnd\" >= CURRENT_DATE - INTERVAL '2 months' GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\" DESC LIMIT {limit}",
+      "example_questions": [
+        "What is the total headcount change this month?"
+      ],
+      "example_sql": "SELECT SUM(\"Headcount\") - LAG(SUM(\"Headcount\")) OVER (ORDER BY \"MonthEnd\") AS headcount_change FROM employees.headcount_attrition_summary WHERE \"MonthEnd\" >= CURRENT_DATE - INTERVAL '2 months' GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\" DESC LIMIT 1",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "having_clause",
+      "keywords": [
+        "performance",
+        "salary"
+      ],
+      "tables": [
+        "employees.compensation_history",
+        "employees.performance_reviews",
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT em.\"FullName\", em.\"Department\", COUNT(pr.\"ReviewID\") AS review_count FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" HAVING COUNT(pr.\"ReviewID\") > 1 ORDER BY review_count DESC",
+      "example_questions": [
+        "Show me employees with multiple performance reviews",
+        "Show me employees with multiple salary changes"
+      ],
+      "example_sql": "SELECT em.\"FullName\", em.\"Department\", COUNT(pr.\"ReviewID\") AS review_count FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" HAVING COUNT(pr.\"ReviewID\") > 1 ORDER BY review_count DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary, PerformanceRating"
+      },
+      "count": 2
+    },
+    {
+      "pattern_type": "correlation_analysis",
+      "keywords": [
+        "performance",
+        "engagement",
+        "salary"
+      ],
+      "tables": [
+        "employees.engagement_surveys",
+        "employees.performance_reviews",
+        "employees.employee_master"
+      ],
+      "visualization": "scatter",
+      "sql_template": "SELECT em.\"Department\", ROUND(AVG(es.\"OverallSatisfaction\"), 2) AS avg_engagement, ROUND(AVG(pr.\"OverallScore\"), 2) AS avg_performance FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\"",
+      "example_questions": [
+        "What is the correlation between engagement and performance?",
+        "What is the correlation between salary and performance?"
+      ],
+      "example_sql": "SELECT em.\"Department\", ROUND(AVG(es.\"OverallSatisfaction\"), 2) AS avg_engagement, ROUND(AVG(pr.\"OverallScore\"), 2) AS avg_performance FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\"",
+      "parameter_extraction": {
+        "field": "Field to rank by: OverallSatisfaction, PerformanceRating, Salary"
+      },
+      "count": 2
+    },
+    {
+      "pattern_type": "date_filter_join",
+      "keywords": [
+        "training"
+      ],
+      "tables": [
+        "employees.training_records",
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT em.\"FullName\", em.\"Department\", tr.\"CourseName\", tr.\"CompletionDate\", tr.\"Score\" FROM employees.employee_master em JOIN employees.training_records tr ON em.\"EmployeeID\" = tr.\"EmployeeID\" WHERE tr.\"Status\" = 'Completed' AND tr.\"CompletionDate\" >= CURRENT_DATE - INTERVAL '6 months' ORDER BY tr.\"CompletionDate\" DESC",
+      "example_questions": [
+        "Show me employees who completed training in the last 6 months"
+      ],
+      "example_sql": "SELECT em.\"FullName\", em.\"Department\", tr.\"CourseName\", tr.\"CompletionDate\", tr.\"Score\" FROM employees.employee_master em JOIN employees.training_records tr ON em.\"EmployeeID\" = tr.\"EmployeeID\" WHERE tr.\"Status\" = 'Completed' AND tr.\"CompletionDate\" >= CURRENT_DATE - INTERVAL '6 months' ORDER BY tr.\"CompletionDate\" DESC",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "window_function",
+      "keywords": [
+        "average",
+        "performance",
+        "over time"
+      ],
+      "tables": [
+        "employees.performance_reviews"
+      ],
+      "visualization": "none",
+      "sql_template": "SELECT \"EmployeeID\", AVG(EXTRACT(EPOCH FROM (\"ReviewDate\" - LAG(\"ReviewDate\") OVER (PARTITION BY \"EmployeeID\" ORDER BY \"ReviewDate\"))) / 86400) AS avg_days_between_reviews FROM employees.performance_reviews GROUP BY \"EmployeeID\" HAVING COUNT(*) > 1",
+      "example_questions": [
+        "What is the average time between performance reviews?",
+        "What is the average performance score improvement over time?",
+        "Show me employees with declining performance",
+        "Show me employees with performance improvement"
+      ],
+      "example_sql": "SELECT \"EmployeeID\", AVG(EXTRACT(EPOCH FROM (\"ReviewDate\" - LAG(\"ReviewDate\") OVER (PARTITION BY \"EmployeeID\" ORDER BY \"ReviewDate\"))) / 86400) AS avg_days_between_reviews FROM employees.performance_reviews GROUP BY \"EmployeeID\" HAVING COUNT(*) > 1",
+      "parameter_extraction": {
+        "field": "Field to rank by: PerformanceRating"
+      },
+      "count": 4
+    },
+    {
+      "pattern_type": "calculated_percentage",
+      "keywords": [
+        "training",
+        "skills"
+      ],
+      "tables": [
+        "employees.skills_inventory",
+        "employees.training_records",
+        "employees.employee_master"
+      ],
+      "visualization": "none",
+      "sql_template": "SELECT COUNT(DISTINCT CASE WHEN si.\"ProficiencyLevel\" = 'Advanced' OR si.\"ProficiencyLevel\" = 'Expert' THEN em.\"EmployeeID\" END) * 100.0 / COUNT(DISTINCT em.\"EmployeeID\") AS advanced_skill_percentage FROM employees.employee_master em LEFT JOIN employees.skills_inventory si ON em.\"EmployeeID\" = si.\"EmployeeID\" WHERE em.\"Status\" = 'Active'",
+      "example_questions": [
+        "What is the percentage of employees with advanced skills?",
+        "What is the completion rate for each training course?"
+      ],
+      "example_sql": "SELECT COUNT(DISTINCT CASE WHEN si.\"ProficiencyLevel\" = 'Advanced' OR si.\"ProficiencyLevel\" = 'Expert' THEN em.\"EmployeeID\" END) * 100.0 / COUNT(DISTINCT em.\"EmployeeID\") AS advanced_skill_percentage FROM employees.employee_master em LEFT JOIN employees.skills_inventory si ON em.\"EmployeeID\" = si.\"EmployeeID\" WHERE em.\"Status\" = 'Active'",
+      "parameter_extraction": {},
+      "count": 2
+    },
+    {
+      "pattern_type": "left_join_null",
+      "keywords": [
+        "performance",
+        "skills",
+        "engagement"
+      ],
+      "tables": [
+        "employees.skills_inventory",
+        "employees.engagement_surveys",
+        "employees.performance_reviews",
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT em.\"EmployeeID\", em.\"FullName\", em.\"Department\" FROM employees.employee_master em LEFT JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' AND pr.\"ReviewID\" IS NULL",
+      "example_questions": [
+        "Show me employees with no performance reviews",
+        "Show me employees with no skills recorded",
+        "Show me employees with no engagement surveys"
+      ],
+      "example_sql": "SELECT em.\"EmployeeID\", em.\"FullName\", em.\"Department\" FROM employees.employee_master em LEFT JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' AND pr.\"ReviewID\" IS NULL",
+      "parameter_extraction": {
+        "field": "Field to rank by: OverallSatisfaction, PerformanceRating"
+      },
+      "count": 3
+    },
+    {
+      "pattern_type": "calculated_filter",
+      "keywords": [
+        "salary"
+      ],
+      "tables": [
+        "employees.employee_master",
+        "employees.compensation_history"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT em.\"FullName\", em.\"Department\", ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\", ROUND(((ch.\"NewSalary\" - ch.\"OldSalary\") / NULLIF(ch.\"OldSalary\", 0)) * 100, 2) AS increase_percent FROM employees.compensation_history ch JOIN employees.employee_master em ON ch.\"EmployeeID\" = em.\"EmployeeID\" WHERE ((ch.\"NewSalary\" - ch.\"OldSalary\") / NULLIF(ch.\"OldSalary\", 0)) * 100 > 10 ORDER BY increase_percent DESC",
+      "example_questions": [
+        "Show me employees with salary increases above 10%"
+      ],
+      "example_sql": "SELECT em.\"FullName\", em.\"Department\", ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\", ROUND(((ch.\"NewSalary\" - ch.\"OldSalary\") / NULLIF(ch.\"OldSalary\", 0)) * 100, 2) AS increase_percent FROM employees.compensation_history ch JOIN employees.employee_master em ON ch.\"EmployeeID\" = em.\"EmployeeID\" WHERE ((ch.\"NewSalary\" - ch.\"OldSalary\") / NULLIF(ch.\"OldSalary\", 0)) * 100 > 10 ORDER BY increase_percent DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary"
+      },
+      "count": 1
+    },
+    {
+      "pattern_type": "filter_join",
+      "keywords": [
+        "engagement",
+        "training"
+      ],
+      "tables": [
+        "employees.engagement_surveys",
+        "employees.training_records",
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT em.\"FullName\", em.\"Department\", es.\"OverallSatisfaction\" FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' AND es.\"OverallSatisfaction\" < 3 ORDER BY es.\"OverallSatisfaction\"",
+      "example_questions": [
+        "Show me employees with engagement scores below 3",
+        "Show me employees with pending training",
+        "Show me employees with low engagement scores"
+      ],
+      "example_sql": "SELECT em.\"FullName\", em.\"Department\", es.\"OverallSatisfaction\" FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' AND es.\"OverallSatisfaction\" < 3 ORDER BY es.\"OverallSatisfaction\"",
+      "parameter_extraction": {
+        "field": "Field to rank by: OverallSatisfaction"
+      },
+      "count": 3
+    },
+    {
+      "pattern_type": "filter",
+      "keywords": [
+        "performance"
+      ],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"PerformanceRating\" > 4 ORDER BY \"PerformanceRating\" DESC",
+      "example_questions": [
+        "Show me employees with performance rating above 4"
+      ],
+      "example_sql": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"PerformanceRating\" > 4 ORDER BY \"PerformanceRating\" DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: PerformanceRating"
+      },
+      "count": 1
+    },
+    {
+      "pattern_type": "multi_group_by",
+      "keywords": [
+        "count",
+        "salary",
+        "gender",
+        "department",
+        "average"
+      ],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT \"Department\", \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\", \"Gender\" ORDER BY \"Department\", \"Gender\"",
+      "example_questions": [
+        "What is the employee count by gender and department?",
+        "What is the employee count by status and department?",
+        "What is the average salary by gender and department?"
+      ],
+      "example_sql": "SELECT \"Department\", \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\", \"Gender\" ORDER BY \"Department\", \"Gender\"",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary"
+      },
+      "count": 3
+    },
+    {
+      "pattern_type": "self_join",
+      "keywords": [],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT e.\"EmployeeID\", e.\"FullName\" AS employee_name, e.\"Department\", m.\"FullName\" AS manager_name FROM employees.employee_master e LEFT JOIN employees.employee_master m ON e.\"ManagerID\" = m.\"EmployeeID\" WHERE e.\"Status\" = 'Active'",
+      "example_questions": [
+        "Show me employees with manager information"
+      ],
+      "example_sql": "SELECT e.\"EmployeeID\", e.\"FullName\" AS employee_name, e.\"Department\", m.\"FullName\" AS manager_name FROM employees.employee_master e LEFT JOIN employees.employee_master m ON e.\"ManagerID\" = m.\"EmployeeID\" WHERE e.\"Status\" = 'Active'",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "self_join_aggregation",
+      "keywords": [
+        "average"
+      ],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT m.\"FullName\" AS manager_name, COUNT(e.\"EmployeeID\") AS direct_reports FROM employees.employee_master m LEFT JOIN employees.employee_master e ON m.\"EmployeeID\" = e.\"ManagerID\" WHERE m.\"Status\" = 'Active' GROUP BY m.\"EmployeeID\", m.\"FullName\" HAVING COUNT(e.\"EmployeeID\") > 0 ORDER BY direct_reports DESC",
+      "example_questions": [
+        "What is the average number of direct reports per manager?"
+      ],
+      "example_sql": "SELECT m.\"FullName\" AS manager_name, COUNT(e.\"EmployeeID\") AS direct_reports FROM employees.employee_master m LEFT JOIN employees.employee_master e ON m.\"EmployeeID\" = e.\"ManagerID\" WHERE m.\"Status\" = 'Active' GROUP BY m.\"EmployeeID\", m.\"FullName\" HAVING COUNT(e.\"EmployeeID\") > 0 ORDER BY direct_reports DESC",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "range_aggregation",
+      "keywords": [
+        "department",
+        "salary"
+      ],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT \"Department\", MIN(\"Salary\") AS min_salary, MAX(\"Salary\") AS max_salary, ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_salary DESC",
+      "example_questions": [
+        "What is the salary range by department?"
+      ],
+      "example_sql": "SELECT \"Department\", MIN(\"Salary\") AS min_salary, MAX(\"Salary\") AS max_salary, ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_salary DESC",
+      "parameter_extraction": {
+        "field": "Field to rank by: Salary"
+      },
+      "count": 1
+    },
+    {
+      "pattern_type": "trend_analysis",
+      "keywords": [
+        "headcount"
+      ],
+      "tables": [
+        "employees.headcount_attrition_summary"
+      ],
+      "visualization": "line",
+      "sql_template": "SELECT \"Department\", \"MonthEnd\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"Department\", \"MonthEnd\" ORDER BY \"Department\", \"MonthEnd\"",
+      "example_questions": [
+        "Show me departments with increasing headcount"
+      ],
+      "example_sql": "SELECT \"Department\", \"MonthEnd\", SUM(\"Headcount\") AS headcount FROM employees.headcount_attrition_summary GROUP BY \"Department\", \"MonthEnd\" ORDER BY \"Department\", \"MonthEnd\"",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "time_series_calculated",
+      "keywords": [
+        "monthly"
+      ],
+      "tables": [
+        "employees.compensation_history"
+      ],
+      "visualization": "line",
+      "sql_template": "SELECT DATE_TRUNC('month', \"ChangeDate\") AS month, SUM(\"NewSalary\" - \"OldSalary\") AS budget_change FROM employees.compensation_history GROUP BY DATE_TRUNC('month', \"ChangeDate\") ORDER BY month",
+      "example_questions": [
+        "Show me monthly compensation budget changes"
+      ],
+      "example_sql": "SELECT DATE_TRUNC('month', \"ChangeDate\") AS month, SUM(\"NewSalary\" - \"OldSalary\") AS budget_change FROM employees.compensation_history GROUP BY DATE_TRUNC('month', \"ChangeDate\") ORDER BY month",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "complex_filter",
+      "keywords": [
+        "average",
+        "engagement"
+      ],
+      "tables": [
+        "employees.engagement_surveys",
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT em.\"FullName\", em.\"Department\", AVG(es.\"OverallSatisfaction\") AS avg_satisfaction, AVG(es.\"WorkLifeBalanceScore\") AS avg_worklife, AVG(es.\"ManagerFeedbackScore\") AS avg_manager FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" HAVING AVG(es.\"OverallSatisfaction\") > (SELECT AVG(\"OverallSatisfaction\") FROM employees.engagement_surveys) AND AVG(es.\"WorkLifeBalanceScore\") > (SELECT AVG(\"WorkLifeBalanceScore\") FROM employees.engagement_surveys) AND AVG(es.\"ManagerFeedbackScore\") > (SELECT AVG(\"ManagerFeedbackScore\") FROM employees.engagement_surveys)",
+      "example_questions": [
+        "Show me employees with all three engagement metrics above average"
+      ],
+      "example_sql": "SELECT em.\"FullName\", em.\"Department\", AVG(es.\"OverallSatisfaction\") AS avg_satisfaction, AVG(es.\"WorkLifeBalanceScore\") AS avg_worklife, AVG(es.\"ManagerFeedbackScore\") AS avg_manager FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" HAVING AVG(es.\"OverallSatisfaction\") > (SELECT AVG(\"OverallSatisfaction\") FROM employees.engagement_surveys) AND AVG(es.\"WorkLifeBalanceScore\") > (SELECT AVG(\"WorkLifeBalanceScore\") FROM employees.engagement_surveys) AND AVG(es.\"ManagerFeedbackScore\") > (SELECT AVG(\"ManagerFeedbackScore\") FROM employees.engagement_surveys)",
+      "parameter_extraction": {
+        "field": "Field to rank by: OverallSatisfaction"
+      },
+      "count": 1
+    },
+    {
+      "pattern_type": "percentile_filter",
+      "keywords": [
+        "top 10",
+        "salary"
+      ],
+      "tables": [
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" >= (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY \"Salary\") FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL) ORDER BY \"Salary\" DESC",
+      "example_questions": [
+        "Show me employees with salary in top 10 percentile"
+      ],
+      "example_sql": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" >= (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY \"Salary\") FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL) ORDER BY \"Salary\" DESC",
+      "parameter_extraction": {
+        "n": "Extract number from 'top N' or 'bottom N' pattern",
+        "field": "Field to rank by: Salary"
+      },
+      "count": 1
+    },
+    {
+      "pattern_type": "self_join_with_other",
+      "keywords": [
+        "performance"
+      ],
+      "tables": [
+        "employees.performance_reviews",
+        "employees.employee_master"
+      ],
+      "visualization": "table",
+      "sql_template": "SELECT e.\"FullName\" AS employee, e.\"Department\", m.\"FullName\" AS manager, pr.\"OverallScore\" FROM employees.employee_master e LEFT JOIN employees.employee_master m ON e.\"ManagerID\" = m.\"EmployeeID\" LEFT JOIN employees.performance_reviews pr ON e.\"EmployeeID\" = pr.\"EmployeeID\" WHERE e.\"Status\" = 'Active'",
+      "example_questions": [
+        "Show me employees with manager and their performance"
+      ],
+      "example_sql": "SELECT e.\"FullName\" AS employee, e.\"Department\", m.\"FullName\" AS manager, pr.\"OverallScore\" FROM employees.employee_master e LEFT JOIN employees.employee_master m ON e.\"ManagerID\" = m.\"EmployeeID\" LEFT JOIN employees.performance_reviews pr ON e.\"EmployeeID\" = pr.\"EmployeeID\" WHERE e.\"Status\" = 'Active'",
+      "parameter_extraction": {
+        "field": "Field to rank by: PerformanceRating"
+      },
+      "count": 1
+    },
+    {
+      "pattern_type": "date_filtered_count",
+      "keywords": [
+        "total"
+      ],
+      "tables": [
+        "employees.compensation_history"
+      ],
+      "visualization": "none",
+      "sql_template": "SELECT COUNT(*) AS total_changes FROM employees.compensation_history WHERE EXTRACT(YEAR FROM \"ChangeDate\") = EXTRACT(YEAR FROM CURRENT_DATE)",
+      "example_questions": [
+        "What is the total number of compensation changes this year?"
+      ],
+      "example_sql": "SELECT COUNT(*) AS total_changes FROM employees.compensation_history WHERE EXTRACT(YEAR FROM \"ChangeDate\") = EXTRACT(YEAR FROM CURRENT_DATE)",
+      "parameter_extraction": {},
+      "count": 1
+    },
+    {
+      "pattern_type": "multi_join_top_n",
+      "keywords": [
+        "highest",
+        "performance",
+        "engagement"
+      ],
+      "tables": [
+        "employees.engagement_surveys",
+        "employees.performance_reviews",
+        "employees.employee_master"
+      ],
+      "visualization": "bar",
+      "sql_template": "SELECT em.\"FullName\", em.\"Department\", ROUND(AVG(es.\"OverallSatisfaction\"), 2) AS avg_engagement, ROUND(AVG(pr.\"OverallScore\"), 2) AS avg_performance FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" ORDER BY (AVG(es.\"OverallSatisfaction\") + AVG(pr.\"OverallScore\")) / 2 DESC LIMIT {limit}",
+      "example_questions": [
+        "Show me employees with highest engagement and performance scores"
+      ],
+      "example_sql": "SELECT em.\"FullName\", em.\"Department\", ROUND(AVG(es.\"OverallSatisfaction\"), 2) AS avg_engagement, ROUND(AVG(pr.\"OverallScore\"), 2) AS avg_performance FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" ORDER BY (AVG(es.\"OverallSatisfaction\") + AVG(pr.\"OverallScore\")) / 2 DESC LIMIT 10",
+      "parameter_extraction": {
+        "order": "DESC for highest/maximum/top, ASC for lowest/minimum/bottom",
+        "field": "Field to rank by: OverallSatisfaction, PerformanceRating"
+      },
+      "count": 1
+    }
+  ]
+}

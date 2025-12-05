@@ -4,8 +4,12 @@ import {
   Bar,
   LineChart,
   Line,
+  AreaChart,
+  Area,
   PieChart,
   Pie,
+  ScatterChart,
+  Scatter,
   Cell,
   XAxis,
   YAxis,
@@ -182,6 +186,96 @@ const DataVisualization: React.FC<DataVisualizationProps> = ({ data, visualizati
               wrapperStyle={{ color: '#cbd5e1', fontSize: '13px' }}
             />
           </PieChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  }
+
+  if (visualization_type === 'scatter') {
+    return (
+      <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 border border-slate-700/50 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
+        <ResponsiveContainer width="100%" height={450}>
+          <ScatterChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#475569" opacity={0.2} />
+            <XAxis 
+              dataKey={xKey} 
+              stroke="#94a3b8" 
+              tick={{ fill: '#cbd5e1', fontSize: 12, fontWeight: 500 }}
+              name={xKey}
+              type="number"
+            />
+            <YAxis 
+              stroke="#94a3b8" 
+              tick={{ fill: '#cbd5e1', fontSize: 12, fontWeight: 500 }}
+              name={yKey}
+              type="number"
+            />
+            <Tooltip
+              cursor={{ stroke: '#8b5cf6', strokeWidth: 1 }}
+              contentStyle={{
+                backgroundColor: '#1e293b',
+                border: '1px solid #475569',
+                borderRadius: '8px',
+                color: '#e2e8f0',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
+              }}
+            />
+            <Legend 
+              wrapperStyle={{ color: '#cbd5e1', fontSize: '13px' }}
+            />
+            <Scatter 
+              dataKey={yKey} 
+              fill="#8b5cf6" 
+              shape="circle"
+            />
+          </ScatterChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  }
+
+  if (visualization_type === 'area') {
+    return (
+      <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 border border-slate-700/50 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
+        <ResponsiveContainer width="100%" height={450}>
+          <AreaChart data={chartData}>
+            <defs>
+              <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#475569" opacity={0.2} />
+            <XAxis 
+              dataKey={xKey} 
+              stroke="#94a3b8" 
+              tick={{ fill: '#cbd5e1', fontSize: 12, fontWeight: 500 }}
+            />
+            <YAxis 
+              stroke="#94a3b8" 
+              tick={{ fill: '#cbd5e1', fontSize: 12, fontWeight: 500 }}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#1e293b',
+                border: '1px solid #475569',
+                borderRadius: '8px',
+                color: '#e2e8f0',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
+              }}
+              cursor={{ stroke: '#8b5cf6', strokeWidth: 1 }}
+            />
+            <Legend 
+              wrapperStyle={{ color: '#cbd5e1', fontSize: '13px' }}
+            />
+            <Area 
+              type="monotone" 
+              dataKey={yKey} 
+              stroke="#8b5cf6" 
+              strokeWidth={3}
+              fill="url(#areaGradient)"
+            />
+          </AreaChart>
         </ResponsiveContainer>
       </div>
     );

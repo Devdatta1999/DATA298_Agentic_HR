@@ -99,6 +99,20 @@ Use for: Training completion, learning analytics
 TABLE_SELECTION_GUIDELINES = """
 === CRITICAL: TABLE SELECTION RULES ===
 
+0. EMPLOYEE RANKING QUERIES - Choose the RIGHT table and metric:
+   
+   "employees with highest engagement scores" or "top employees by engagement":
+   → Use: employee_master JOIN engagement_surveys
+   → Metric: AVG(es."OverallSatisfaction")
+   → DO NOT include performance_reviews
+   → SQL: SELECT em."FullName", em."Department", AVG(es."OverallSatisfaction") AS avg_engagement FROM employees.employee_master em JOIN employees.engagement_surveys es ON em."EmployeeID" = es."EmployeeID" WHERE em."Status" = 'Active' GROUP BY em."EmployeeID", em."FullName", em."Department" ORDER BY avg_engagement DESC LIMIT 10
+   
+   "top N employees with highest performance ratings" or "employees with highest performance ratings":
+   → Use: employee_master ONLY (single table, no JOIN)
+   → Metric: "PerformanceRating" column
+   → DO NOT join performance_reviews unless query explicitly asks for "performance reviews" or "performance scores"
+   → SQL: SELECT "EmployeeID", "FullName", "Department", "PerformanceRating" FROM employees.employee_master WHERE "Status" = 'Active' AND "PerformanceRating" IS NOT NULL ORDER BY "PerformanceRating" DESC LIMIT N
+
 1. HEADCOUNT QUERIES - Choose the RIGHT table:
    
    USE employee_master when question asks for:
@@ -188,11 +202,22 @@ CRITICAL: Analyze the question type first:
 - Is this asking for CURRENT headcount? → Use employee_master
 - Is this asking for HISTORICAL/TREND headcount? → Use headcount_attrition_summary with "MonthEnd"
 - Does this need employee details? → Start with employee_master
-- Does this need salary history? → JOIN compensation_history
-- Does this need performance data? → JOIN performance_reviews
-- Does this need engagement data? → JOIN engagement_surveys
-- Does this need skills? → JOIN skills_inventory
-- Does this need training? → JOIN training_records
+- For CURRENT salary queries (average salary, salary by department, top N salary, salary distribution): → Use employee_master."Salary" (DO NOT use compensation_history)
+- For salary CHANGES, salary HISTORY, salary INCREASES, salary over time: → JOIN compensation_history
+- CRITICAL: "average salary by department" = employee_master."Salary", NOT compensation_history."NewSalary"
+- CRITICAL: "department with highest attrition rate" = Use AVG("AttritionRate"), NOT MAX("AttritionRate")
+- For ENGAGEMENT queries (engagement scores, satisfaction, work-life balance, "employees with highest engagement"): → JOIN engagement_surveys ONLY, use AVG(es."OverallSatisfaction"), DO NOT include performance_reviews
+- For PERFORMANCE queries:
+  → "employees with highest performance ratings" or "top N employees with highest performance ratings" → Use employee_master."PerformanceRating" (single table, NO JOIN to performance_reviews)
+  → "performance reviews" or "performance scores" → JOIN performance_reviews and use pr."OverallScore"
+  → CRITICAL: "top N employees with highest performance ratings" = employee_master."PerformanceRating" ONLY
+  → CRITICAL: "employees with highest engagement scores" = engagement_surveys ONLY (NOT performance_reviews)
+- For SKILLS queries (most common skills, skills by employee, skills distribution): → Use skills_inventory table (may JOIN with employee_master for employee details)
+- For TRAINING queries (training courses, completion rates): → Use training_records table (may JOIN with employee_master for employee details)
+- CRITICAL: "most common skills" or "skills in organization" → Use skills_inventory table, NOT employee_master
+- CRITICAL: "department headcount over time" or "headcount by department over time" → Use headcount_attrition_summary with MonthEnd, NOT employee_master
+- CRITICAL: "employee count by status" → Count ALL statuses (Active, Inactive, Terminated), GROUP BY "Status", NOT just count active employees
+- CRITICAL: "salary changes over time for a specific employee" → Must filter by specific EmployeeID (e.g., WHERE em."EmployeeID" = 'PNR-1001')
 
 REMEMBER: For time-based queries, ALWAYS use "MonthEnd" column and GROUP BY "MonthEnd", not Department!
 
@@ -226,14 +251,17 @@ Result Columns: {columns}
 Sample Data: {sample_data}
 
 CRITICAL RULES (in priority order):
-1. If query contains "distribution", "percentage", "proportion", "share" → Use PIE chart
+1. If query contains "distribution", "percentage", "proportion", "share" AND asks "what is the distribution" → Use PIE chart
 2. If query asks "what is the distribution" or "show distribution" → Use PIE chart
-3. If result has date/time column (MonthEnd, date, timestamp) AND query mentions "trends" or "over time" → Use LINE chart
-4. If result has 2 columns and one is date/time → Use LINE chart
-5. If result shows categories with counts (Gender, Status, Department with counts) → Use PIE chart for distribution, BAR chart for comparison
-6. Bar chart for categorical comparisons when NOT asking for distribution
-7. Table for detailed data with many columns (>5 columns)
-8. None if single value (1 row, 1-2 columns)
+3. If query mentions "trends", "over time", "by month", "monthly" AND result has date/time column → Use LINE chart
+4. If result has date/time column (MonthEnd, ChangeDate, ReviewDate, etc.) AND query mentions "over time" or "trends" → Use LINE chart
+5. If query asks to "show me employees" with details (list, hired, etc.) → Use TABLE (not bar chart)
+6. If query asks "salary distribution by X" (comparison, not proportion) → Use BAR chart (not pie)
+7. If result shows categories with counts (Gender, Status, Department with counts) → Use PIE chart ONLY if query explicitly asks for "distribution", otherwise BAR chart
+8. Bar chart for categorical comparisons when NOT asking for distribution
+9. Table for detailed data with many columns (>5 columns) OR when showing employee lists
+10. None if single value (1 row, 1-2 columns) AND query asks for a single metric (total, average, count)
+11. If query asks "employee count by status" or similar → Use PIE chart (distribution of statuses)
 
 DECISION TREE:
 - Question asks for "distribution" → PIE chart
@@ -244,11 +272,20 @@ DECISION TREE:
 
 Return JSON:
 {{
-  "visualization_type": "bar|line|pie|table|scatter|none",
+  "visualization_type": "bar|line|pie|table|scatter|area|none",
   "x_axis": "column_name",
   "y_axis": "column_name",
   "explanation": "why this visualization"
 }}
+
+CHART TYPE GUIDE:
+- "bar": Categorical comparisons, rankings, top N lists
+- "line": Time series trends, changes over time
+- "area": Cumulative trends, stacked time series, volume over time
+- "pie": Distributions, proportions, percentages
+- "scatter": Correlations, relationships between two metrics
+- "table": Employee lists, detailed data with many columns
+- "none": Single value results (counts, averages, totals)
 
 IMPORTANT: 
 - "distribution" queries → ALWAYS use "pie" chart

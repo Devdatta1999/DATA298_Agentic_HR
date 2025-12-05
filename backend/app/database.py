@@ -53,11 +53,35 @@ def execute_sql_query(query: str) -> List[Dict[str, Any]]:
 def validate_sql_query(query: str) -> bool:
     """Validate SQL query syntax"""
     try:
+        # Basic sanity checks first
+        if not query or not query.strip():
+            return False
+        
+        # Check for dangerous operations (basic security)
+        dangerous_keywords = ['DROP', 'DELETE', 'TRUNCATE', 'ALTER', 'CREATE', 'INSERT', 'UPDATE']
+        query_upper = query.upper()
+        # Allow CREATE/ALTER in CTEs (WITH clauses)
+        if any(keyword in query_upper for keyword in dangerous_keywords):
+            # Check if it's in a WITH clause (CTE) - that's okay
+            if 'WITH' not in query_upper or not all(
+                keyword not in query_upper.split('WITH')[0] if 'WITH' in query_upper else True
+                for keyword in dangerous_keywords
+            ):
+                # Check if it's a comment or part of a string
+                if not any(f'-- {kw}' in query_upper or f'/* {kw}' in query_upper for kw in dangerous_keywords):
+                    return False
+        
         with postgres_engine.connect() as conn:
             # Use EXPLAIN to validate without executing
             conn.execute(text(f"EXPLAIN {query}"))
             return True
     except Exception as e:
+        # Log the actual error for debugging
+        import logging
+        logger = logging.getLogger(__name__)
+        error_msg = str(e)
+        # Don't log full query if it's very long, just first 200 chars
+        logger.debug(f"SQL validation error: {error_msg[:200]}")
         return False
 
 

@@ -1,0 +1,804 @@
+{
+  "summary": {
+    "total": 25,
+    "successful": 25,
+    "failed": 0,
+    "sql_correct": 20,
+    "viz_correct": 21,
+    "cache_hits": 23,
+    "pattern_matches": 0,
+    "total_tokens": 6208,
+    "total_time": 95.27959632873535
+  },
+  "results": [
+    {
+      "success": true,
+      "question": "Show me department wise headcount",
+      "elapsed": 1.3177030086517334,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 10,
+      "sql": {
+        "generated": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\"",
+        "expected": "SELECT \"Department\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Department\" ORDER BY headcount DESC",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 0.8333333333333334,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": false,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the gender distribution of employees?",
+      "elapsed": 0.22725605964660645,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 4,
+      "sql": {
+        "generated": "SELECT \"Gender\", COUNT(*) AS headcount FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\";",
+        "expected": "SELECT \"Gender\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"Gender\"",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "pie",
+        "expected": "pie",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me headcount trends over time by month",
+      "elapsed": 0.013829946517944336,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 95,
+      "sql": {
+        "generated": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS Total_Headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "expected": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS Total_Headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "comparison": {
+          "match": true,
+          "type": "exact",
+          "score": 1.0
+        }
+      },
+      "visualization": {
+        "generated": "line",
+        "expected": "line",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Give me Top 3 Employees with highest salary",
+      "elapsed": 0.2651219367980957,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 3,
+      "sql": {
+        "generated": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL ORDER BY \"Salary\" DESC LIMIT 3",
+        "expected": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL ORDER BY \"Salary\" DESC LIMIT 3",
+        "comparison": {
+          "match": true,
+          "type": "exact",
+          "score": 1.0
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me top 5 highest paid employees",
+      "elapsed": 0.22089600563049316,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 3,
+      "sql": {
+        "generated": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL ORDER BY \"Salary\" DESC LIMIT 3",
+        "expected": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL ORDER BY \"Salary\" DESC LIMIT 5",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the average salary by department?",
+      "elapsed": 0.042755126953125,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 10,
+      "sql": {
+        "generated": "SELECT \"Department\", AVG(\"NewSalary\") AS avg_salary FROM employees.employee_master \nJOIN employees.compensation_history ON employee_master.\"EmployeeID\" = compensation_history.\"EmployeeID\"\nGROUP BY \"Department\";",
+        "expected": "SELECT \"Department\", ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_salary DESC",
+        "comparison": {
+          "match": false,
+          "type": "mismatch",
+          "score": 0.6666666666666666,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": false,
+            "group_by": true,
+            "order_by": false,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me monthly attrition rate trends",
+      "elapsed": 0.14841794967651367,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 95,
+      "sql": {
+        "generated": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS Total_Headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "expected": "SELECT \"MonthEnd\", AVG(\"AttritionRate\") AS avg_attrition_rate FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "line",
+        "expected": "line",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the total number of active employees?",
+      "elapsed": 0.011105060577392578,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 1,
+      "sql": {
+        "generated": "SELECT COUNT(*) AS Total_Active_Employees FROM employees.employee_master WHERE \"Status\" = 'Active' OR \"TerminationDate\" IS NULL",
+        "expected": "SELECT COUNT(*) AS total_employees FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "none",
+        "expected": "none",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me employees by job title",
+      "elapsed": 0.011417150497436523,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 26,
+      "sql": {
+        "generated": "SELECT \"JobTitle\", COUNT(*) AS Total_Employees FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\" ORDER BY \"JobTitle\";",
+        "expected": "SELECT \"JobTitle\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\" ORDER BY count DESC",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the average performance rating by department?",
+      "elapsed": 0.009381771087646484,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 10,
+      "sql": {
+        "generated": "SELECT \"Department\", ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_salary DESC",
+        "expected": "SELECT \"Department\", ROUND(AVG(\"PerformanceRating\"), 2) AS avg_rating FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"PerformanceRating\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_rating DESC",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me salary changes over time for a specific employee",
+      "elapsed": 24.484673976898193,
+      "cache_hit": false,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 2323,
+      "results_count": 0,
+      "sql": {
+        "generated": "SELECT e.\"EmployeeID\", ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\"\nFROM employees.employee_master e\nJOIN employees.compensation_history ch ON e.\"EmployeeID\" = ch.\"EmployeeID\"\nWHERE e.\"EmployeeID\" = 'specific_employee_ID'",
+        "expected": "SELECT ch.\"ChangeDate\", ch.\"OldSalary\", ch.\"NewSalary\", ch.\"Reason\", em.\"FullName\" FROM employees.compensation_history ch JOIN employees.employee_master em ON ch.\"EmployeeID\" = em.\"EmployeeID\" WHERE em.\"EmployeeID\" = 'PNR-1001' ORDER BY ch.\"ChangeDate\"",
+        "comparison": {
+          "match": false,
+          "type": "semantic",
+          "score": 0.8333333333333334,
+          "tables_match": false,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": false,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "none",
+        "expected": "line",
+        "match": false
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the average salary increase percentage?",
+      "elapsed": 0.035585641860961914,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 1,
+      "sql": {
+        "generated": "SELECT AVG(\"NewSalary\") - AVG(\"OldSalary\") * 100 AS avg_salary_increase_percentage \nFROM employees.compensation_history \nWHERE \"ChangeDate\" > (CURRENT_DATE - INTERVAL '1 year')",
+        "expected": "SELECT ROUND(AVG(((ch.\"NewSalary\" - ch.\"OldSalary\") / NULLIF(ch.\"OldSalary\", 0)) * 100), 2) AS avg_increase_percent FROM employees.compensation_history ch WHERE ch.\"OldSalary\" IS NOT NULL AND ch.\"NewSalary\" IS NOT NULL",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "table",
+        "expected": "none",
+        "match": false
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me employees with highest engagement scores",
+      "elapsed": 0.016630887985229492,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 10,
+      "sql": {
+        "generated": "SELECT em.\"FullName\", em.\"Department\", ROUND(AVG(es.\"OverallSatisfaction\"), 2) AS avg_engagement, ROUND(AVG(pr.\"OverallScore\"), 2) AS avg_performance FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" ORDER BY (AVG(es.\"OverallSatisfaction\") + AVG(pr.\"OverallScore\")) / 2 DESC LIMIT 10",
+        "expected": "SELECT em.\"FullName\", em.\"Department\", AVG(es.\"OverallSatisfaction\") AS avg_satisfaction FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" ORDER BY avg_satisfaction DESC LIMIT 10",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the average work-life balance score by department?",
+      "elapsed": 0.021294116973876953,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 10,
+      "sql": {
+        "generated": "SELECT em.\"Department\", ROUND(AVG(es.\"WorkLifeBalanceScore\"), 2) AS avg_worklife_score FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_worklife_score DESC",
+        "expected": "SELECT em.\"Department\", ROUND(AVG(es.\"WorkLifeBalanceScore\"), 2) AS avg_worklife_score FROM employees.employee_master em JOIN employees.engagement_surveys es ON em.\"EmployeeID\" = es.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_worklife_score DESC",
+        "comparison": {
+          "match": true,
+          "type": "exact",
+          "score": 1.0
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me monthly hiring trends",
+      "elapsed": 0.01922297477722168,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 95,
+      "sql": {
+        "generated": "SELECT \"MonthEnd\", SUM(\"Headcount\") AS Total_Headcount FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "expected": "SELECT \"MonthEnd\", SUM(\"Hires\") AS total_hires FROM employees.headcount_attrition_summary GROUP BY \"MonthEnd\" ORDER BY \"MonthEnd\"",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "line",
+        "expected": "line",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the department with highest attrition rate?",
+      "elapsed": 0.014372110366821289,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 1,
+      "sql": {
+        "generated": "SELECT \"Department\", MAX(\"AttritionRate\") AS Max_Attrition FROM employees.headcount_attrition_summary WHERE \"Headcount\" > 0 GROUP BY \"Department\" ORDER BY Max_Attrition DESC LIMIT 1",
+        "expected": "SELECT \"Department\", AVG(\"AttritionRate\") AS avg_attrition FROM employees.headcount_attrition_summary GROUP BY \"Department\" ORDER BY avg_attrition DESC LIMIT 1",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 0.8333333333333334,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": false,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me employees with their performance review scores",
+      "elapsed": 1.1534359455108643,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 72265,
+      "sql": {
+        "generated": "SELECT em.\"FullName\", em.\"Department\", pr.\"ReviewDate\", pr.\"OverallScore\", pr.\"Communication\", pr.\"Teamwork\", pr.\"ProblemSolving\" FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' ORDER BY pr.\"ReviewDate\" DESC",
+        "expected": "SELECT em.\"FullName\", em.\"Department\", pr.\"ReviewDate\", pr.\"OverallScore\", pr.\"Communication\", pr.\"Teamwork\", pr.\"ProblemSolving\" FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' ORDER BY pr.\"ReviewDate\" DESC",
+        "comparison": {
+          "match": true,
+          "type": "exact",
+          "score": 1.0
+        }
+      },
+      "visualization": {
+        "generated": "table",
+        "expected": "table",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the average performance score by department?",
+      "elapsed": 0.41532421112060547,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 10,
+      "sql": {
+        "generated": "SELECT \"Department\", ROUND(AVG(\"Salary\"), 2) AS avg_salary FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_salary DESC",
+        "expected": "SELECT em.\"Department\", ROUND(AVG(pr.\"OverallScore\"), 2) AS avg_performance FROM employees.employee_master em JOIN employees.performance_reviews pr ON em.\"EmployeeID\" = pr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\" ORDER BY avg_performance DESC",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me employees with most skills",
+      "elapsed": 66.02811193466187,
+      "cache_hit": false,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 3885,
+      "results_count": 10,
+      "sql": {
+        "generated": "SELECT e1.\"EmployeeID\", COUNT(e2.\"SkillName\") AS num_skills \nFROM employees.employee_master e1 \nJOIN employees.skills_inventory e2 ON e1.\"EmployeeID\" = e2.\"EmployeeID\" \nGROUP BY e1.\"EmployeeID\" ORDER BY num_skills DESC LIMIT 10;",
+        "expected": "SELECT em.\"FullName\", em.\"Department\", COUNT(si.\"SkillID\") AS skill_count FROM employees.employee_master em LEFT JOIN employees.skills_inventory si ON em.\"EmployeeID\" = si.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"EmployeeID\", em.\"FullName\", em.\"Department\" ORDER BY skill_count DESC LIMIT 10",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 0.8333333333333334,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": false,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "pie",
+        "expected": "bar",
+        "match": false
+      }
+    },
+    {
+      "success": true,
+      "question": "What skills are most common in the organization?",
+      "elapsed": 0.027524232864379883,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 26,
+      "sql": {
+        "generated": "SELECT \"JobTitle\", COUNT(*) AS count FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\" ORDER BY count DESC",
+        "expected": "SELECT \"SkillName\", COUNT(*) AS count FROM employees.skills_inventory GROUP BY \"SkillName\" ORDER BY count DESC",
+        "comparison": {
+          "match": false,
+          "type": "semantic",
+          "score": 0.8333333333333334,
+          "tables_match": false,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": false,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me training completion rates by department",
+      "elapsed": 0.01761913299560547,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 10,
+      "sql": {
+        "generated": "SELECT \n  e.\"Department\",\n  SUM(CASE WHEN tr.\"Status\" = 'Completed' THEN 1 ELSE 0 END) AS Completed_Training,\n  COUNT(*) AS Total_Employees\nFROM employees.employee_master e\nJOIN employees.training_records tr ON e.\"EmployeeID\" = tr.\"EmployeeID\"\nGROUP BY e.\"Department\";",
+        "expected": "SELECT em.\"Department\", COUNT(CASE WHEN tr.\"Status\" = 'Completed' THEN 1 END) * 100.0 / COUNT(tr.\"TrainingID\") AS completion_rate FROM employees.employee_master em JOIN employees.training_records tr ON em.\"EmployeeID\" = tr.\"EmployeeID\" WHERE em.\"Status\" = 'Active' GROUP BY em.\"Department\"",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 0.8333333333333334,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": false,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the total number of training courses completed?",
+      "elapsed": 0.011256217956542969,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 1,
+      "sql": {
+        "generated": "SELECT COUNT(*) AS total_employees FROM employees.employee_master WHERE \"Status\" = 'Active'",
+        "expected": "SELECT COUNT(*) AS total_completed FROM employees.training_records WHERE \"Status\" = 'Completed'",
+        "comparison": {
+          "match": false,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": false,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "none",
+        "expected": "none",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me employees hired in the last year",
+      "elapsed": 0.3982877731323242,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 26,
+      "sql": {
+        "generated": "SELECT \"JobTitle\", COUNT(*) AS Total_Employees FROM employees.employee_master WHERE \"Status\" = 'Active' GROUP BY \"JobTitle\" ORDER BY \"JobTitle\";",
+        "expected": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"HireDate\" FROM employees.employee_master WHERE \"HireDate\" >= CURRENT_DATE - INTERVAL '1 year' AND \"Status\" = 'Active' ORDER BY \"HireDate\" DESC",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 0.8333333333333334,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": false,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "table",
+        "match": false
+      }
+    },
+    {
+      "success": true,
+      "question": "What is the average tenure of employees by department?",
+      "elapsed": 0.05402421951293945,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 10,
+      "sql": {
+        "generated": "SELECT \"Department\", AVG(\"NewSalary\") AS avg_salary FROM employees.employee_master \nJOIN employees.compensation_history ON employee_master.\"EmployeeID\" = compensation_history.\"EmployeeID\"\nGROUP BY \"Department\";",
+        "expected": "SELECT \"Department\", ROUND(AVG(EXTRACT(EPOCH FROM (CURRENT_DATE - \"HireDate\")) / 365.25), 2) AS avg_tenure_years FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"HireDate\" IS NOT NULL GROUP BY \"Department\" ORDER BY avg_tenure_years DESC",
+        "comparison": {
+          "match": false,
+          "type": "mismatch",
+          "score": 0.6666666666666666,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": false,
+            "group_by": true,
+            "order_by": false,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    },
+    {
+      "success": true,
+      "question": "Show me top 10 employees with highest performance ratings",
+      "elapsed": 0.3143489360809326,
+      "cache_hit": true,
+      "pattern_matched": false,
+      "rag_used": false,
+      "tokens": 0,
+      "results_count": 3,
+      "sql": {
+        "generated": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"Salary\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"Salary\" IS NOT NULL ORDER BY \"Salary\" DESC LIMIT 3",
+        "expected": "SELECT \"EmployeeID\", \"FullName\", \"Department\", \"PerformanceRating\" FROM employees.employee_master WHERE \"Status\" = 'Active' AND \"PerformanceRating\" IS NOT NULL ORDER BY \"PerformanceRating\" DESC LIMIT 10",
+        "comparison": {
+          "match": true,
+          "type": "semantic",
+          "score": 1.0,
+          "tables_match": true,
+          "components": {
+            "select": true,
+            "from": true,
+            "where": true,
+            "group_by": true,
+            "order_by": true,
+            "limit": true
+          }
+        }
+      },
+      "visualization": {
+        "generated": "bar",
+        "expected": "bar",
+        "match": true
+      }
+    }
+  ]
+}
