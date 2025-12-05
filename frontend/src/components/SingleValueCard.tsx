@@ -19,15 +19,15 @@ const SingleValueCard: React.FC<SingleValueCardProps> = ({ data, question }) => 
   const getIcon = () => {
     const questionLower = (question || '').toLowerCase();
     if (questionLower.includes('salary') || questionLower.includes('compensation')) {
-      return <DollarSign className="w-8 h-8 text-green-400" />;
+      return <DollarSign className="w-8 h-8 text-[#D4A373]" />;
     }
     if (questionLower.includes('employee') || questionLower.includes('headcount') || questionLower.includes('count')) {
-      return <Users className="w-8 h-8 text-blue-400" />;
+      return <Users className="w-8 h-8 text-[#588157]" />;
     }
     if (questionLower.includes('performance') || questionLower.includes('rating') || questionLower.includes('score')) {
-      return <Award className="w-8 h-8 text-purple-400" />;
+      return <Award className="w-8 h-8 text-[#588157]" />;
     }
-    return <BarChart3 className="w-8 h-8 text-cyan-400" />;
+    return <BarChart3 className="w-8 h-8 text-[#344E41]" />;
   };
 
   // Format value based on type
@@ -43,13 +43,13 @@ const SingleValueCard: React.FC<SingleValueCardProps> = ({ data, question }) => 
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-800/95 via-slate-900/95 to-slate-800/95 border border-slate-700/50 rounded-2xl p-8 shadow-2xl mb-6 backdrop-blur-sm">
+    <div className="bg-white border border-[#DFE4DD] rounded-2xl p-8 shadow-sm mb-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           {getIcon()}
           <div>
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wide">Result</h3>
-            <p className="text-xl font-bold text-white mt-1">
+            <h3 className="text-sm font-medium text-[#344E41] uppercase tracking-wide">Result</h3>
+            <p className="text-xl font-bold text-[#222] mt-1">
               {keys[0]?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
             </p>
           </div>
@@ -66,17 +66,17 @@ const SingleValueCard: React.FC<SingleValueCardProps> = ({ data, question }) => 
               key={key}
               className={`${
                 isPrimary
-                  ? 'bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-purple-500/30 backdrop-blur-sm'
-                  : 'bg-slate-700/30 border-slate-600/50 backdrop-blur-sm'
+                  ? 'bg-[#F8F9F5] border-[#588157]'
+                  : 'bg-[#F8F9F5] border-[#DFE4DD]'
               } border rounded-xl p-5`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-slate-300 uppercase tracking-wide">
+                <span className="text-sm font-semibold text-[#222] uppercase tracking-wide">
                   {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                 </span>
                 <span
                   className={`text-3xl font-bold ${
-                    isPrimary ? 'text-purple-300' : 'text-white'
+                    isPrimary ? 'text-[#588157]' : 'text-[#222]'
                   }`}
                 >
                   {formatValue(value)}
@@ -88,8 +88,8 @@ const SingleValueCard: React.FC<SingleValueCardProps> = ({ data, question }) => 
       </div>
 
       {keys.length === 1 && (
-        <div className="mt-6 pt-6 border-t border-slate-700/50">
-          <p className="text-sm text-slate-400 text-center">
+        <div className="mt-6 pt-6 border-t border-[#DFE4DD]">
+          <p className="text-sm text-[#344E41] text-center">
             Single value result - no chart visualization needed
           </p>
         </div>
