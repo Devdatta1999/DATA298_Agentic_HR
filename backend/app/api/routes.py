@@ -71,11 +71,13 @@ async def process_query(request: QueryRequest):
                 sql_query=result.get("sql_query")
             )
         
-        # Format response
-        answer = result.get("explanation", "Analysis complete")
-        if result.get("insights"):
-            insights_text = "\n".join([f"• {insight}" for insight in result["insights"]])
-            answer = f"{insights_text}\n\n{answer}"
+        # Format response - only include brief summary if we have structured insights
+        # The structured InsightsCard will display everything nicely
+        if result.get("insights") and len(result.get("insights", [])) > 0:
+            # Just a brief acknowledgment - InsightsCard will show the details
+            answer = "Analysis complete. See insights below."
+        else:
+            answer = result.get("explanation", "Analysis complete")
         
         # Add assistant message
         metadata = {
